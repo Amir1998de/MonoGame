@@ -18,7 +18,7 @@ public class Player : Entity
     private bool isAttacking;
     #endregion Variablen
 
-    public Player(int health, float speed, Vector2 pos, Vector2 velocity) : base(int health, float speed, Vector2 pos, Vector2 velocity)
+    public Player(int health, float speed, Vector2 pos, Vector2 velocity) : base(health, speed, pos, velocity)
     {
         isAttacking = false;
     }
@@ -28,28 +28,41 @@ public class Player : Entity
         return !(isAttacking);
     }
 
-    public void MovePlayerLeft()
+    public void MovePlayerLeft(Texture2D playerTexture)
     {
-        pos.X = pos.X - speed;
-        return pos;
+        pos.X -= speed;
+
+        if (pos.X < playerTexture.Width - 40)
+            pos.X = playerTexture.Width - 40;      
     }
 
-    public void MovePlayerRight()
+    public void MovePlayerRight(Texture2D playerTexture)
     {
         pos.X = pos.X + speed;
-        return pos;
+
+        if (pos.X < playerTexture.Width + 40)
+            pos.X = playerTexture.Width + 40;
     }
 
-    public void MovePlayerUp()
+    public void MovePlayerUp(Texture2D playerTexture)
     {
         pos.Y = pos.Y - speed;
-        return pos;
+
+        if (pos.Y < playerTexture.Height - 40)
+            pos.Y = playerTexture.Height - 40;
+
     }
 
-    public void MovePlayerDown()
+    public void MovePlayerDown(Texture2D playerTexture)
     {
         pos.Y = pos.Y + speed;
-        return pos;
+        if (pos.Y < playerTexture.Height + 40)
+            pos.Y = playerTexture.Height + 40;
+    }
+
+    public void DrawPlayer(SpriteBatch spriteBatch, Texture2D playerTexture)
+    {
+        spriteBatch.Draw(playerTexture, pos, null, Color.White, 0, new Vector2(playerTexture.Width / 2f, playerTexture.Height / 2f),0,SpriteEffects.None,0);
     }
 
 }

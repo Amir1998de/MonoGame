@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FH_Projekt;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -12,10 +13,11 @@ public abstract class Enemy : Entity, IObserver
 {
     #region Variablen
     private float attackPower;
+    
 
     #endregion Variablen
 
-    public Enemy()
+    public Enemy(int health, float speed, Vector2 pos, Vector2 velocity) : base(health, speed,pos,velocity)
 	{
 	}
 }
