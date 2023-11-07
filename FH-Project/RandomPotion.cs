@@ -10,7 +10,31 @@ namespace FH_Project;
 
 public class RandomPotion : Potion
 {
-	public RandomPotion()
+    Random random = new Random();
+	public RandomPotion() : base()
 	{
 	}
+
+    public override void Change(Player player)
+    {
+        int i = random.Next(0, 3);
+
+        switch (i)
+        {
+            case 0:
+                player.AddHealth(wert);
+                break;
+            case 1:
+                player.ReduceHealth(wert);
+                break;
+            case 2:
+                player.AddShield(wert);
+                break;
+            case 3:
+                player.ReduceShield(wert);
+                break;
+            default:
+                break;
+        }
+    }
 }

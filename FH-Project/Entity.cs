@@ -12,13 +12,21 @@ public abstract class Entity
 {
     #region Variablen
 
-    private Texture2D entityTexture;
+
+    protected float maxW;
+
+    protected float maxH;
+
+
+    protected Texture2D entityTexture;
 
     protected int health;
 
     protected float speed;
 
     protected Vector2 pos;
+
+    private int maxHealth;
     
 
     protected Vector2 velocity;
@@ -26,12 +34,17 @@ public abstract class Entity
 
     #endregion Variablen
 
-    public Entity(int health, float speed, Vector2 pos, Vector2 velocity)
+    public Entity(int health, float speed, Vector2 pos, Vector2 velocity, Texture2D entityTexture, float maxH, float maxW)
 	{
+        maxHealth = health;
         this.health = health;
         this.speed = speed;
         this.pos = pos;
         this.velocity = velocity;
+        this.entityTexture = entityTexture;
+
+        this.maxW = maxW;
+        this.maxH = maxH;
 	}
     ~Entity()
     {
@@ -49,9 +62,16 @@ public abstract class Entity
         return false;
     }
 
-    public void ChangeHealth(int value)
+    public void AddHealth(int value)
     {
         health += value;
+        if (health > maxHealth)
+            health = maxHealth;
+    }
+
+    public void ReduceHealth(int value)
+    {
+        health -= value;
         if (health < 0)
             health = 0;
     }

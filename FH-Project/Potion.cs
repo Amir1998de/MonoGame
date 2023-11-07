@@ -10,7 +10,12 @@ namespace FH_Project;
 
 public abstract class Potion : Item
 {
+	protected int wert;
+	Random random = new Random();
 	public Potion()
 	{
+		wert = random.Next(25,50);
 	}
+
+	public abstract void Change(Player player);
 }

@@ -10,7 +10,12 @@ namespace FH_Project;
 
 public class HealingPotion : Potion
 {
-	public HealingPotion()
+	public HealingPotion() : base()
 	{
 	}
+
+    public override void Change(Player player)
+    {
+        player.AddHealth(wert);
+    }
 }

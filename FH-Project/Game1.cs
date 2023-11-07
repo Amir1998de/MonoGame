@@ -34,8 +34,9 @@ public class Game1 : Game
         spriteBatch = new SpriteBatch(GraphicsDevice);
 
         playerTexture = Content.Load<Texture2D>("Idle (1)");
+        
         viewport = GraphicsDevice.Viewport;
-        player = new Player(100,10,new Vector2(viewport.Width / 2, viewport.Height - 100),new Vector2(0,0));
+        player = new Player(100,2,new Vector2(0, 0),new Vector2(0,0), playerTexture, viewport.Height, viewport.Width);
         
    
         // TODO: use this.Content to load your game content here
@@ -46,13 +47,13 @@ public class Game1 : Game
         keyboardState = Keyboard.GetState();
 
         if (keyboardState.IsKeyDown(Keys.Left))
-            player.MovePlayerLeft(playerTexture);
+            player.MovePlayerLeft();
         else if(keyboardState.IsKeyDown(Keys.Right))
-            player.MovePlayerRight(playerTexture);
+            player.MovePlayerRight();
         else if(keyboardState.IsKeyDown(Keys.Up))
-            player.MovePlayerUp(playerTexture);
+            player.MovePlayerUp();
         else if(keyboardState.IsKeyDown(Keys.Down))
-            player.MovePlayerDown(playerTexture);
+            player.MovePlayerDown();
 
         
 
@@ -64,7 +65,7 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
         spriteBatch.Begin();
-        player.DrawPlayer(spriteBatch, playerTexture);
+        player.DrawPlayer(spriteBatch);
         spriteBatch.End();
 
         base.Draw(gameTime);

@@ -17,7 +17,8 @@ public abstract class Enemy : Entity, IObserver
 
     #endregion Variablen
 
-    public Enemy(int health, float speed, Vector2 pos, Vector2 velocity) : base(health, speed,pos,velocity)
+    public Enemy(int health, float speed, Vector2 pos, Vector2 velocity, Texture2D texture, float maxH, float maxW
+        ) : base(health, speed,pos,velocity, texture, maxH, maxW)
 	{
 	}
 }
