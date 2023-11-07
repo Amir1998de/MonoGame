@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FH_Project;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -10,5 +11,5 @@ namespace FH_Projekt;
 
 public interface IObserver
 {
-	
+	public void OnNotify(PlayerActions data);
 }

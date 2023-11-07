@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FH_Projekt;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -16,17 +17,20 @@ public abstract class Entity
     protected float maxW;
 
     protected float maxH;
+    private List<IObserver> observers = new List<IObserver>();
 
 
-    protected Texture2D entityTexture;
+    public Texture2D EntityTexture { get; private set; }
 
     protected int health;
 
     protected float speed;
+    public bool IsDestroyed { get; set; }
 
-    protected Vector2 pos;
+    public Vector2 Postion { get; set; }
 
     private int maxHealth;
+    
     
 
     protected Vector2 velocity;
@@ -39,10 +43,10 @@ public abstract class Entity
         maxHealth = health;
         this.health = health;
         this.speed = speed;
-        this.pos = pos;
+        this.Postion = pos;
         this.velocity = velocity;
-        this.entityTexture = entityTexture;
-
+        this.EntityTexture = entityTexture;
+        IsDestroyed = false;
         this.maxW = maxW;
         this.maxH = maxH;
 	}
@@ -76,19 +80,13 @@ public abstract class Entity
             health = 0;
     }
 
-    public void Destroy()
-    {
-       
-    }
+    
 
-    public void Attack()
-    {
-
-    }
+    public abstract void Attack();
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(entityTexture, pos, Color.White);
+        spriteBatch.Draw(EntityTexture, Postion, null, Color.White, 0, new Vector2(0, 0), 0.33f, SpriteEffects.None, 0);
     }
 
     public void Add(Entity entity, SpriteBatch spriteBatch)
@@ -101,9 +99,27 @@ public abstract class Entity
 
     }
 
-    protected void GetNotified()
+    protected void GetNotified(PlayerActions data)
     {
-
+        observers.ForEach(a => a.OnNotify(data));
     }
 
+    public void AddObserver(IObserver io)
+    {
+        observers.Add(io);
+    }
+
+    public void RemoveObserver(IObserver io)
+    {
+        observers.Remove(io);
+    }
+
+    public bool CheckCollision(Rectangle playerBounds)
+    {
+        Rectangle enemyBounds = new Rectangle((int)Postion.X, (int)Postion.Y, EntityTexture.Width / 3, EntityTexture.Height / 3);
+        bool test = playerBounds.Intersects(enemyBounds);
+        return test;
+    }
+
+    
 }

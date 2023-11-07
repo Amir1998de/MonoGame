@@ -18,12 +18,14 @@ public class Player : Entity
     private bool isAttacking;
     protected int shield;
     private int maxShield = 100;
+    public Weapon Weapon { get; set; }
     #endregion Variablen
 
-    public Player(int health, float speed, Vector2 pos, Vector2 velocity, Texture2D texture, float maxH, float maxW) : base(health, speed, pos, velocity, texture, maxH, maxW)
+    public Player(int health, float speed, Vector2 postion, Vector2 velocity, Texture2D texture, float maxH, float maxW) : base(health, speed, postion, velocity, texture, maxH, maxW)
     {
         isAttacking = false;
         shield = 0;
+        Weapon = new Sword();
     }
 
     public void AddShield(int value)
@@ -32,6 +34,8 @@ public class Player : Entity
         if (health > maxShield)
             health = maxShield;
     }
+
+
 
     public void ReduceShield(int value)
     {
@@ -47,48 +51,58 @@ public class Player : Entity
 
     public void MovePlayerLeft()
     {
-        pos.X -= speed;
+        Postion = new Vector2(Postion.X - speed, Postion.Y);
 
-        if (pos.X < 0)
-            pos.X = 0;      
+        if (Postion.X < 0)
+            Postion = new Vector2(0, Postion.Y);
     }
 
     public void MovePlayerRight()
     {
-        pos.X = pos.X + speed;
+        Postion = new Vector2(Postion.X + speed, Postion.Y);
 
         // Durch 2 weil man unten beim Draw 0.33f scale hat. 
-        float z = (float) entityTexture.Width / 3 ;
+        float z = (float) EntityTexture.Width / 3 ;
 
-        if (pos.X + z  > maxW)
-            pos.X = maxW - z ;
+        if (Postion.X + z  > maxW)
+            Postion = new Vector2(maxW - z, Postion.Y);
     }
 
     public void MovePlayerUp()
     {
-        pos.Y = pos.Y - speed;
+        Postion = new Vector2(Postion.X, Postion.Y - speed);
 
-       
 
-        if (pos.Y < 0)
-            pos.Y = 0;
+
+        if (Postion.Y < 0)
+            Postion = new Vector2(Postion.X, 0);
 
     }
 
     public void MovePlayerDown()
     {
-        pos.Y = pos.Y + speed;
+        Postion = new Vector2(Postion.X, Postion.Y + speed);
 
         // Durch 2 weil man unten beim Draw 0.33f scale hat. 
-        float z = (float)entityTexture.Height / 3;
+        float z = (float)EntityTexture.Height / 3;
 
-        if (pos.Y  + z > maxH)
-            pos.Y = maxH -z;
+        if (Postion.Y  + z > maxH)
+            Postion = new Vector2(Postion.X , maxH -z);
     }
 
-    public void DrawPlayer(SpriteBatch spriteBatch)
+    public override void Attack()
     {
-        spriteBatch.Draw(entityTexture, pos, null, Color.White, 0, new Vector2(0,0), 0.33f ,SpriteEffects.None,0);
+        //isAttacking = true;
+        GetNotified(PlayerActions.Attack);
+        Animation();
     }
+
+    public void Animation()
+    {
+        
+        
+    }
+
+    
 
 }

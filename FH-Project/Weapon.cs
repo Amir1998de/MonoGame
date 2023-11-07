@@ -10,7 +10,10 @@ namespace FH_Project;
 
 public abstract class Weapon : Item
 {
+	public int Damage {  get; set; }
+
 	public Weapon()
 	{
+		Damage = 100;
 	}
 }
