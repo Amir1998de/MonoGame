@@ -10,7 +10,7 @@ namespace FH_Project;
 
 class Slime : Enemy
 {
-    public Slime(int health, float speed, Vector2 pos, Vector2 velocity, Texture2D texture, float maxH, float maxW, Player player) : base(health, speed, pos, velocity, texture, maxH, maxW, player)
+    public Slime(int health, float speed, Vector2 pos, Vector2 velocity, Texture2D texture,Player player) : base(health, speed, pos, velocity, texture, player)
     {
     }
 

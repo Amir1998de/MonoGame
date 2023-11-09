@@ -10,7 +10,12 @@ namespace FH_Project;
 
 public class Hammer : Weapon
 {
-	public Hammer()
+	public Hammer(int damage, int speed, Texture2D texture) : base(damage, speed, texture)
 	{
 	}
+
+    public override void Draw(SpriteBatch spriteBatch)
+    {
+        spriteBatch.Draw(Texture, Position, null, Color.White, 0, new Vector2(0, 0), 0.25f, SpriteEffects.None, 0);
+    }
 }

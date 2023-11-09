@@ -12,8 +12,21 @@ public abstract class Weapon : Item
 {
 	public int Damage {  get; set; }
 
-	public Weapon()
+	//Mıt Speed ıst dıe Waffengeschwındıgkeıt gemeint. Zb beim Bogen wie oft er schießen kann pro Sekunde
+	public int Speed { get; set; }
+
+	//Wird in Player gemacht, weil es propotional zum Spieler Pos ist
+	public Vector2 Position { get; set; }
+
+	public Texture2D Texture { get; set; }
+
+	public Weapon(int damage, int speed, Texture2D texture)
 	{
-		Damage = 100;
+		Damage = damage;
+		Speed = speed;
+		Texture = texture;
 	}
+
+	public abstract void Draw(SpriteBatch spriteBatch);
+
 }

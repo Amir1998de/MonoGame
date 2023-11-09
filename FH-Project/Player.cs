@@ -21,11 +21,12 @@ public class Player : Entity
     public Weapon Weapon { get; set; }
     #endregion Variablen
 
-    public Player(int health, float speed, Vector2 postion, Vector2 velocity, Texture2D texture, float maxH, float maxW) : base(health, speed, postion, velocity, texture, maxH, maxW)
+    public Player(int health, float speed, Vector2 postion, Vector2 velocity, Texture2D texture, Weapon weapon) : base(health, speed, postion, velocity, texture)
     {
         isAttacking = false;
         shield = 0;
-        Weapon = new Sword();
+        Weapon = weapon;
+        Weapon.Position = new Vector2(Postion.X + 40, Postion.Y + 40);
     }
 
     public void AddShield(int value)
@@ -55,6 +56,8 @@ public class Player : Entity
 
         if (Postion.X < 0)
             Postion = new Vector2(0, Postion.Y);
+
+        Weapon.Position = new Vector2(Postion.X + 40, Postion.Y + 40);
     }
 
     public void MovePlayerRight()
@@ -64,8 +67,10 @@ public class Player : Entity
         // Durch 2 weil man unten beim Draw 0.33f scale hat. 
         float z = (float) EntityTexture.Width / 3 ;
 
-        if (Postion.X + z  > maxW)
-            Postion = new Vector2(maxW - z, Postion.Y);
+        if (Postion.X + z  > maxWeidth)
+            Postion = new Vector2(maxWeidth - z, Postion.Y);
+       
+        Weapon.Position = new Vector2(Postion.X + 40, Postion.Y + 40);
     }
 
     public void MovePlayerUp()
@@ -76,6 +81,8 @@ public class Player : Entity
 
         if (Postion.Y < 0)
             Postion = new Vector2(Postion.X, 0);
+        
+        Weapon.Position = new Vector2(Postion.X + 40, Postion.Y + 40);
 
     }
 
@@ -86,20 +93,21 @@ public class Player : Entity
         // Durch 2 weil man unten beim Draw 0.33f scale hat. 
         float z = (float)EntityTexture.Height / 3;
 
-        if (Postion.Y  + z > maxH)
-            Postion = new Vector2(Postion.X , maxH -z);
+        if (Postion.Y  + z > maxHeight)
+            Postion = new Vector2(Postion.X , maxHeight -z);
+        
+        Weapon.Position = new Vector2(Postion.X + 40, Postion.Y + 40);
     }
 
     public override void Attack()
     {
-        //isAttacking = true;
+        isAttacking = true;
         GetNotified(PlayerActions.Attack);
         Animation();
     }
 
     public void Animation()
     {
-        
         
     }
 

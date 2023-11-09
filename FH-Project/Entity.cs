@@ -14,13 +14,13 @@ public abstract class Entity
     #region Variablen
 
 
-    protected float maxW;
+    protected static float maxWeidth=0;
 
-    protected float maxH;
+    protected static float maxHeight=0;
     private List<IObserver> observers = new List<IObserver>();
 
 
-    public Texture2D EntityTexture { get; private set; }
+    public Texture2D EntityTexture { get;  set; }
 
     protected int health;
 
@@ -38,7 +38,7 @@ public abstract class Entity
 
     #endregion Variablen
 
-    public Entity(int health, float speed, Vector2 pos, Vector2 velocity, Texture2D entityTexture, float maxH, float maxW)
+    public Entity(int health, float speed, Vector2 pos, Vector2 velocity, Texture2D entityTexture)
 	{
         maxHealth = health;
         this.health = health;
@@ -47,8 +47,6 @@ public abstract class Entity
         this.velocity = velocity;
         this.EntityTexture = entityTexture;
         IsDestroyed = false;
-        this.maxW = maxW;
-        this.maxH = maxH;
 	}
     ~Entity()
     {
@@ -58,6 +56,13 @@ public abstract class Entity
         //this.velocity = null;
     }
 
+    public static void View(float maxW, float maxH)
+    {
+        maxHeight = maxH;
+        maxWeidth = maxW;
+    }
+
+
     public bool CheckIfDead()
     {
         if(health == 0)
@@ -65,6 +70,8 @@ public abstract class Entity
 
         return false;
     }
+
+   
 
     public void AddHealth(int value)
     {
