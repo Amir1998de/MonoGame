@@ -2,7 +2,9 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace FH_Project;
 
@@ -27,6 +29,7 @@ public class Game1 : Game
 
     private Texture2D enemyTexture;
     private Enemy enemy;
+    private Enemy enemy2;
 
     private Sword sword;
     private Texture2D swordTexture;
@@ -55,9 +58,6 @@ public class Game1 : Game
         spriteBatch = new SpriteBatch(GraphicsDevice);
 
 
-
-
-
         playerTexture = Content.Load<Texture2D>("Idle (1)");
         enemyTexture = Content.Load<Texture2D>("Idle (1)");
         swordTexture = Content.Load<Texture2D>("SwordT2");
@@ -78,10 +78,14 @@ public class Game1 : Game
         sword = new Sword(100, 5, swordTexture);
         hammer = new Hammer(100, 5, hammerTexture);
         bow = new Bow(100, 5, bowTexture);
+
         player = new Player(100,2,new Vector2(0, 0),new Vector2(0,0), playerTexture, sword);
+
+        
+
         enemy = new Slime(100, 2, new Vector2(viewport.Height/2, viewport.Width/3), new Vector2(0, 0), enemyTexture,player);
         
-   
+
         // TODO: use this.Content to load your game content here
     }
 
@@ -174,6 +178,13 @@ public class Game1 : Game
 
         if (!enemy.IsDestroyed)
             enemy.Draw(spriteBatch);
+
+        // EnemyFactory 
+
+        EnemyProduction(spriteBatch);
+
+        EnemyFactory enemyFactory = new EnemyFactory();
+
         player.Weapon.Draw(spriteBatch);
         spriteBatch.End();
 
@@ -191,6 +202,39 @@ public class Game1 : Game
         player.EntityTexture = playerTexture;
         player.Draw(spriteBatch);
     }
+
+    //  EnemyProduction
+    public void EnemyProduction(SpriteBatch spriteBatch)
+    {
+
+        int enemyCount = Enemy.GetEnemyCount();
+
+        // Debug.WriteLine($"enemyCount: {enemyCount}");
+        int counter = 2;
+    
+ 
+
+        for (int i = 0; i < enemyCount; i++)
+        {
+            Enemy enemy = Enemy.GetEnemies()[i];
+
+            if (!enemy.IsDestroyed)
+            {
+                counter --;
+            }
+
+            Debug.WriteLine($"IsDestroyed: {enemy.IsDestroyed}");
+
+            //  enemy2 = new Slime(100, 2, new Vector2(enemyCount, 0), new Vector2(0, 0), enemyTexture, player);
+            //  enemy2.Draw(spriteBatch);
+
+        }
+        
+
+
+        // Debug.WriteLine($"enemyCount: {enemyCount}");
+    }
+
 
 }
 

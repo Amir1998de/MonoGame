@@ -47,4 +47,26 @@ public abstract class Enemy : Entity, IObserver
 
        
     }
-}
+
+    /// <summary>
+    /// Gets the current count of active enemy instances.
+    /// </summary>
+    /// <returns>The number of active enemies.</returns>
+    public static int GetEnemyCount()
+    {
+        return enemies.Count;
+    }
+
+    public static List<Enemy> GetEnemies()
+    {
+        if (enemies == null)
+        {
+            throw new NullReferenceException("The 'enemies' list is null.");
+        }
+        else
+        {
+            return enemies;
+        }
+
+    }
+    }
