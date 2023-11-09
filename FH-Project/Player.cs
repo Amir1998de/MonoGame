@@ -101,7 +101,7 @@ public class Player : Entity
 
     public override void Attack()
     {
-        isAttacking = true;
+        //isAttacking = true;
         GetNotified(PlayerActions.Attack);
         Animation();
     }

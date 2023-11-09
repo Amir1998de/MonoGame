@@ -4,15 +4,14 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace FH_Project;
 
 public class Game1 : Game
 {
     int currentRunFrame = 0;
-    int totalRunFrames = 15; 
-    float frameRunTime = 0.1f; 
+    int totalRunFrames = 15;
+    float frameRunTime = 0.1f;
     float timer = 0f;
 
 
@@ -21,7 +20,7 @@ public class Game1 : Game
     private SpriteBatch spriteBatch;
     private KeyboardState keyboardState;
     private KeyboardState prevKeyboardState;
-    private Viewport viewport;
+    public static Viewport viewport;
 
     private Texture2D playerTexture;
     private Texture2D[] playerRunTexture;
@@ -29,7 +28,8 @@ public class Game1 : Game
 
     private Texture2D enemyTexture;
     private Enemy enemy;
-    private Enemy enemy2;
+    private Enemy enemyTwo;
+    private EnemyFactory enemyFactory;
 
     private Sword sword;
     private Texture2D swordTexture;
@@ -58,6 +58,9 @@ public class Game1 : Game
         spriteBatch = new SpriteBatch(GraphicsDevice);
 
 
+
+
+
         playerTexture = Content.Load<Texture2D>("Idle (1)");
         enemyTexture = Content.Load<Texture2D>("Idle (1)");
         swordTexture = Content.Load<Texture2D>("SwordT2");
@@ -78,13 +81,15 @@ public class Game1 : Game
         sword = new Sword(100, 5, swordTexture);
         hammer = new Hammer(100, 5, hammerTexture);
         bow = new Bow(100, 5, bowTexture);
+        player = new Player(100, 2, new Vector2(0, 0), new Vector2(0, 0), playerTexture, sword);
 
-        player = new Player(100,2,new Vector2(0, 0),new Vector2(0,0), playerTexture, sword);
+        enemyFactory = new EnemyFactory();
 
-        
+        enemy =  enemyFactory.createEnemy("Slime", 700, 2, new Vector2(viewport.Height / 2, viewport.Width / 3), new Vector2(0, 0), enemyTexture, player);
 
-        enemy = new Slime(100, 2, new Vector2(viewport.Height/2, viewport.Width/3), new Vector2(0, 0), enemyTexture,player);
-        
+      //  enemy = new Slime(10000, 2, new Vector2(viewport.Height / 2, viewport.Width / 3), new Vector2(0, 0), enemyTexture, player);
+      //  enemyTwo = new Slime(10000, 2, new Vector2(viewport.Height / 4, viewport.Width / 3), new Vector2(0, 0), enemyTexture, player);
+
 
         // TODO: use this.Content to load your game content here
     }
@@ -100,7 +105,7 @@ public class Game1 : Game
             currentRunFrame = (currentRunFrame + 1) % totalRunFrames;
             timer = 0f;
         }
-       
+
 
         prevKeyboardState = keyboardState;
 
@@ -111,7 +116,7 @@ public class Game1 : Game
         }
 
 
-        if(keyboardState.IsKeyDown(Keys.Right))
+        if (keyboardState.IsKeyDown(Keys.Right))
         {
             {
                 // Nur die Animation aktualisieren, wenn die Taste zuvor nicht gedrückt war
@@ -136,13 +141,13 @@ public class Game1 : Game
         }
 
 
-        if(keyboardState.IsKeyDown(Keys.Up))
+        if (keyboardState.IsKeyDown(Keys.Up))
         {
             player.MovePlayerUp();
         }
 
 
-        if(keyboardState.IsKeyDown(Keys.Down))
+        if (keyboardState.IsKeyDown(Keys.Down))
         {
             player.MovePlayerDown();
         }
@@ -153,12 +158,12 @@ public class Game1 : Game
             player.Attack();
         }
 
-        
+
 
         base.Update(gameTime);
     }
 
-    
+
 
     protected override void Draw(GameTime gameTime)
     {
@@ -168,6 +173,11 @@ public class Game1 : Game
 
         spriteBatch.Begin();
 
+        if (Keyboard.GetState().IsKeyDown(Keys.Space))
+        {
+            player.Weapon.Draw(spriteBatch);
+        }
+
         if (Keyboard.GetState().IsKeyDown(Keys.Right))
         {
             PlayerAnimtation(playerRunTexture, currentRunFrame);
@@ -175,17 +185,8 @@ public class Game1 : Game
         else
             PlayerIdle();
 
+        enemy.CheckEnemy(spriteBatch, player);
 
-        if (!enemy.IsDestroyed)
-            enemy.Draw(spriteBatch);
-
-        // EnemyFactory 
-
-        EnemyProduction(spriteBatch);
-
-        EnemyFactory enemyFactory = new EnemyFactory();
-
-        player.Weapon.Draw(spriteBatch);
         spriteBatch.End();
 
         base.Draw(gameTime);
@@ -193,8 +194,8 @@ public class Game1 : Game
 
     public void PlayerAnimtation(Texture2D[] animation, int currentFrame)
     {
-            player.EntityTexture = animation[currentFrame];
-            player.Draw(spriteBatch);
+        player.EntityTexture = animation[currentFrame];
+        player.Draw(spriteBatch);
     }
 
     public void PlayerIdle()
@@ -203,38 +204,4 @@ public class Game1 : Game
         player.Draw(spriteBatch);
     }
 
-    //  EnemyProduction
-    public void EnemyProduction(SpriteBatch spriteBatch)
-    {
-
-        int enemyCount = Enemy.GetEnemyCount();
-
-        // Debug.WriteLine($"enemyCount: {enemyCount}");
-        int counter = 2;
-    
- 
-
-        for (int i = 0; i < enemyCount; i++)
-        {
-            Enemy enemy = Enemy.GetEnemies()[i];
-
-            if (!enemy.IsDestroyed)
-            {
-                counter --;
-            }
-
-            Debug.WriteLine($"IsDestroyed: {enemy.IsDestroyed}");
-
-            //  enemy2 = new Slime(100, 2, new Vector2(enemyCount, 0), new Vector2(0, 0), enemyTexture, player);
-            //  enemy2.Draw(spriteBatch);
-
-        }
-        
-
-
-        // Debug.WriteLine($"enemyCount: {enemyCount}");
-    }
-
-
 }
-

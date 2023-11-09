@@ -71,8 +71,6 @@ public abstract class Entity
         return false;
     }
 
-   
-
     public void AddHealth(int value)
     {
         health += value;
