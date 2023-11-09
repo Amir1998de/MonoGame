@@ -166,6 +166,11 @@ public class Game1 : Game
 
         spriteBatch.Begin();
 
+        if(Keyboard.GetState().IsKeyDown(Keys.Space))
+        {
+            player.Weapon.Draw(spriteBatch);
+        }
+
         if (Keyboard.GetState().IsKeyDown(Keys.Right))
         {
             PlayerAnimtation(playerRunTexture, currentRunFrame);
@@ -183,7 +188,7 @@ public class Game1 : Game
         {
             enemyTwo.Draw(spriteBatch);
         }
-        player.Weapon.Draw(spriteBatch);
+
         spriteBatch.End();
 
         base.Draw(gameTime);
