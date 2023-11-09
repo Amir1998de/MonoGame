@@ -27,6 +27,7 @@ public class Game1 : Game
 
     private Texture2D enemyTexture;
     private Enemy enemy;
+    private Enemy enemyTwo;
 
     private Sword sword;
     private Texture2D swordTexture;
@@ -79,9 +80,10 @@ public class Game1 : Game
         hammer = new Hammer(100, 5, hammerTexture);
         bow = new Bow(100, 5, bowTexture);
         player = new Player(100,2,new Vector2(0, 0),new Vector2(0,0), playerTexture, sword);
-        enemy = new Slime(100, 2, new Vector2(viewport.Height/2, viewport.Width/3), new Vector2(0, 0), enemyTexture,player);
-        
-   
+        enemy = new Slime(10000, 2, new Vector2(viewport.Height/2, viewport.Width/3), new Vector2(0, 0), enemyTexture,player);
+        enemyTwo = new Slime(10000, 2, new Vector2(viewport.Height/4, viewport.Width / 3), new Vector2(0, 0), enemyTexture, player);
+
+
         // TODO: use this.Content to load your game content here
     }
 
@@ -173,7 +175,14 @@ public class Game1 : Game
 
 
         if (!enemy.IsDestroyed)
+        {
             enemy.Draw(spriteBatch);
+
+        }
+        if(!enemyTwo.IsDestroyed)
+        {
+            enemyTwo.Draw(spriteBatch);
+        }
         player.Weapon.Draw(spriteBatch);
         spriteBatch.End();
 

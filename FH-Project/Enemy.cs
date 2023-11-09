@@ -34,14 +34,15 @@ public abstract class Enemy : Entity, IObserver
 
         enemies.ForEach(enemy =>
         {
+            if (enemy.CheckIfDead())
+            {
+                enemy.IsDestroyed = true;
+                return;
+            }
+
             if (CheckCollision(new Rectangle((int)player.Weapon.Position.X, (int)player.Weapon.Position.Y, player.Weapon.Texture.Width / 4, player.Weapon.Texture.Height / 4 )))
             {
                 ReduceHealth(player.Weapon.Damage);
-                if (enemy.CheckIfDead())
-                {
-                    IsDestroyed = true;
-                    return;
-                }
             }
         });
 
