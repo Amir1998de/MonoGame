@@ -10,12 +10,14 @@ namespace FH_Project;
 
 public class HealingPotion : Potion
 {
-	public HealingPotion() : base()
+	public HealingPotion(int wert, Player player) : base(wert,player)
 	{
+        Inventory.AddItem(this);
 	}
 
-    public override void Change(Player player)
+    public override void UseEffect()
     {
         player.AddHealth(wert);
+        Inventory.RemoveItem(this);
     }
 }

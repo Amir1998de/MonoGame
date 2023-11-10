@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace FH_Project;
 
@@ -39,6 +40,8 @@ public class Game1 : Game
 
     private Bow bow;
     private Texture2D bowTexture;
+
+    private Potion potion;
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -84,6 +87,7 @@ public class Game1 : Game
         player = new Player(100, 2, new Vector2(0, 0), new Vector2(0, 0), playerTexture, sword);
 
         enemyFactory = new EnemyFactory();
+        potion = new HealingPotion(50,player);
 
         enemy =  enemyFactory.createEnemy("Slime", 700, 2, new Vector2(viewport.Height / 2, viewport.Width / 3), new Vector2(0, 0), enemyTexture, player);
 
@@ -158,7 +162,8 @@ public class Game1 : Game
             player.Attack();
         }
 
-
+        if (keyboardState.IsKeyDown(Keys.H))
+            Inventory.UseItem(potion);
 
         base.Update(gameTime);
     }

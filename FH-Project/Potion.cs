@@ -12,10 +12,27 @@ public abstract class Potion : Item
 {
 	protected int wert;
 	Random random = new Random();
-	public Potion()
+	protected Player player;
+	public Potion(int wert, Player player)
 	{
-		wert = random.Next(25,50);
+		this.wert = wert;
+		this.player = player;
 	}
 
-	public abstract void Change(Player player);
+    
+
+    public abstract void UseEffect();
+
+    public override bool Equals(object obj)
+    {
+        return obj is Potion potion &&
+               wert == potion.wert &&
+               EqualityComparer<Random>.Default.Equals(random, potion.random) &&
+               EqualityComparer<Player>.Default.Equals(player, potion.player);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(wert, random, player);
+    }
 }

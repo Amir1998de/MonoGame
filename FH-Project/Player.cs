@@ -52,7 +52,7 @@ public class Player : Entity
 
     public void MovePlayerLeft()
     {
-        Postion = new Vector2(Postion.X - speed, Postion.Y);
+        Postion = new Vector2(Postion.X - Speed, Postion.Y);
 
         if (Postion.X < 0)
             Postion = new Vector2(0, Postion.Y);
@@ -62,7 +62,7 @@ public class Player : Entity
 
     public void MovePlayerRight()
     {
-        Postion = new Vector2(Postion.X + speed, Postion.Y);
+        Postion = new Vector2(Postion.X + Speed, Postion.Y);
 
         // Durch 2 weil man unten beim Draw 0.33f scale hat. 
         float z = (float) EntityTexture.Width / 3 ;
@@ -75,7 +75,7 @@ public class Player : Entity
 
     public void MovePlayerUp()
     {
-        Postion = new Vector2(Postion.X, Postion.Y - speed);
+        Postion = new Vector2(Postion.X, Postion.Y - Speed);
 
 
 
@@ -88,7 +88,7 @@ public class Player : Entity
 
     public void MovePlayerDown()
     {
-        Postion = new Vector2(Postion.X, Postion.Y + speed);
+        Postion = new Vector2(Postion.X, Postion.Y + Speed);
 
         // Durch 2 weil man unten beim Draw 0.33f scale hat. 
         float z = (float)EntityTexture.Height / 3;

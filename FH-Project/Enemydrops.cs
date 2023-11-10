@@ -13,4 +13,9 @@ public class Enemydrops : Item
 	public Enemydrops()
 	{
 	}
+
+    public void UseEffect()
+    {
+        throw new NotImplementedException();
+    }
 }

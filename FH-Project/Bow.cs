@@ -18,4 +18,9 @@ public class Bow : Weapon
     {
         spriteBatch.Draw(Texture, Position, null, Color.White, 0, new Vector2(0, 0), 0.25f, SpriteEffects.None, 0);
     }
+
+    public override void UseEffect()
+    {
+        throw new NotImplementedException();
+    }
 }

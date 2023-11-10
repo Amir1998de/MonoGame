@@ -24,7 +24,7 @@ public abstract class Entity
 
     protected int health;
 
-    protected float speed;
+    public float Speed { get; set; }
     public bool IsDestroyed { get; set; }
 
     public Vector2 Postion { get; set; }
@@ -32,6 +32,7 @@ public abstract class Entity
     private int maxHealth;
     
     
+
 
     protected Vector2 velocity;
    
@@ -42,19 +43,13 @@ public abstract class Entity
 	{
         maxHealth = health;
         this.health = health;
-        this.speed = speed;
+        this.Speed = speed;
         this.Postion = pos;
         this.velocity = velocity;
         this.EntityTexture = entityTexture;
         IsDestroyed = false;
 	}
-    ~Entity()
-    {
-        this.health = 0;
-        this.speed = 0;
-        //this.Pos = ;
-        //this.velocity = null;
-    }
+  
 
     public static void View(float maxW, float maxH)
     {
@@ -76,6 +71,11 @@ public abstract class Entity
         health += value;
         if (health > maxHealth)
             health = maxHealth;
+    }
+
+    public int getHealth()
+    {
+        return health;
     }
 
     public void ReduceHealth(int value)
@@ -122,8 +122,8 @@ public abstract class Entity
     public bool CheckCollision(Rectangle playerBounds)
     {
         Rectangle enemyBounds = new Rectangle((int)Postion.X, (int)Postion.Y, EntityTexture.Width / 3, EntityTexture.Height / 3);
-        bool test = playerBounds.Intersects(enemyBounds);
-        return test;
+     
+        return playerBounds.Intersects(enemyBounds);
     }
 
     

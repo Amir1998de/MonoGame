@@ -28,5 +28,5 @@ public abstract class Weapon : Item
 	}
 
 	public abstract void Draw(SpriteBatch spriteBatch);
-
+    public abstract void UseEffect();
 }

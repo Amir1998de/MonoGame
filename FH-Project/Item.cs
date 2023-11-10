@@ -10,5 +10,5 @@ namespace FH_Project;
 
 public interface Item
 {
-	
+	public void UseEffect();
 }

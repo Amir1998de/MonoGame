@@ -11,12 +11,15 @@ namespace FH_Project;
 public class RandomPotion : Potion
 {
     Random random = new Random();
-	public RandomPotion() : base()
+	public RandomPotion(int wert, Player player) : base(wert, player)
 	{
 	}
 
-    public override void Change(Player player)
+   
+
+    public override void UseEffect()
     {
+
         int i = random.Next(0, 3);
 
         switch (i)

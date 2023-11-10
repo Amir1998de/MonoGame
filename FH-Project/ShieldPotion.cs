@@ -10,11 +10,13 @@ namespace FH_Project;
 
 public class ShieldPotion : Potion
 {
-	public ShieldPotion() : base()
+	public ShieldPotion(int wert, Player player) : base(wert, player)
 	{
 	}
 
-    public override void Change(Player player)
+    
+
+    public override void UseEffect()
     {
         player.AddShield(wert);
     }
