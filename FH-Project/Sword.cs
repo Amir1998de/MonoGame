@@ -10,10 +10,7 @@ namespace FH_Project;
 
 public class Sword : Weapon
 {
-	public Sword(int damage, int speed, Texture2D texture) : base(damage, speed, texture)
-	{
-
-	}
+	public Sword(int damage, int speed, Texture2D texture) : base(damage, speed, texture) {}
 
     public override void Draw(SpriteBatch spriteBatch)
     {

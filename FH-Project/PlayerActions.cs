@@ -8,8 +8,10 @@ namespace FH_Project;
 
 public enum PlayerActions
 {
-    Attack,
-    Health,
-    Moving
+    ATTACK,
+    USEDHEALTHPOTION,
+    USEDSHIELDPOTION,
+    USEDRANDOMPOTION
+    
 }
 

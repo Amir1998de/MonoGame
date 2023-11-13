@@ -10,7 +10,6 @@ namespace FH_Project;
 
 
 
-//Leere Klasse mit Base Konstruktor
 public class Player : Entity
 {
 
@@ -102,7 +101,7 @@ public class Player : Entity
     public override void Attack()
     {
         //isAttacking = true;
-        GetNotified(PlayerActions.Attack);
+        GetNotified(PlayerActions.ATTACK);
         Animation();
     }
 

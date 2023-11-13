@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace FH_Project;
 
-public abstract class Entity
+public abstract class Entity : Subject
 {
     #region Variablen
 
@@ -17,7 +17,6 @@ public abstract class Entity
     protected static float maxWeidth=0;
 
     protected static float maxHeight=0;
-    private List<IObserver> observers = new List<IObserver>();
 
 
     public Texture2D EntityTexture { get;  set; }
@@ -102,21 +101,6 @@ public abstract class Entity
     public void Remove(Entity entity, SpriteBatch spriteBatch)
     {
 
-    }
-
-    protected void GetNotified(PlayerActions data)
-    {
-        observers.ForEach(a => a.OnNotify(data));
-    }
-
-    public void AddObserver(IObserver io)
-    {
-        observers.Add(io);
-    }
-
-    public void RemoveObserver(IObserver io)
-    {
-        observers.Remove(io);
     }
 
     public bool CheckCollision(Rectangle playerBounds)

@@ -42,6 +42,8 @@ public class Game1 : Game
     private Texture2D bowTexture;
 
     private Potion potion;
+
+    private Map karte;
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -51,7 +53,10 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-        // TODO: Add your initialization logic here
+        karte = new Map();
+        karte.ErstelleZufälligeKarte(10, 15, 10, 20, 10, 20);
+
+        
 
         base.Initialize();
     }
@@ -60,7 +65,7 @@ public class Game1 : Game
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
 
-
+        GraphicsDevice.LoadPixel();
 
 
 
@@ -105,7 +110,6 @@ public class Game1 : Game
         timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
         if (timer > frameRunTime)
         {
-            // Zum nächsten Frame wechseln
             currentRunFrame = (currentRunFrame + 1) % totalRunFrames;
             timer = 0f;
         }
@@ -165,6 +169,8 @@ public class Game1 : Game
         if (keyboardState.IsKeyDown(Keys.H))
             Inventory.UseItem(potion);
 
+        Debug.WriteLine(Inventory.items.Count);
+
         base.Update(gameTime);
     }
 
@@ -191,6 +197,8 @@ public class Game1 : Game
             PlayerIdle();
 
         enemy.CheckEnemy(spriteBatch, player);
+
+        karte.Draw(spriteBatch);
 
         spriteBatch.End();
 

@@ -12,6 +12,7 @@ public class ShieldPotion : Potion
 {
 	public ShieldPotion(int wert, Player player) : base(wert, player)
 	{
+        Inventory.AddItem(this);
 	}
 
     
@@ -19,5 +20,6 @@ public class ShieldPotion : Potion
     public override void UseEffect()
     {
         player.AddShield(wert);
+        Inventory.RemoveItem(this);
     }
 }

@@ -10,7 +10,15 @@ namespace FH_Project;
 
 public class Room : MapEntity
 {
-	public Room()
-	{
-	}
+    public Rectangle Bereich { get; set; }
+
+    public Room(int x, int y, int breite, int höhe)
+    {
+        Bereich = new Rectangle(x, y, breite, höhe);
+    }
+
+    public bool ÜberlapptMitAnderemRaum(Room andererRaum)
+    {
+        return Bereich.Intersects(andererRaum.Bereich);
+    }
 }

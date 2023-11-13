@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace FH_Project;
 
-public abstract class Potion : Item
+public abstract class Potion : Subject ,Item
 {
 	protected int wert;
 	Random random = new Random();

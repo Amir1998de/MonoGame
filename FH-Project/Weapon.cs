@@ -10,6 +10,13 @@ namespace FH_Project;
 
 public abstract class Weapon : Item
 {
+	public Weapon(int damage, int speed, Texture2D texture)
+	{
+		Damage = damage;
+		Speed = speed;
+		Texture = texture;
+		Inventory.AddItem(this);
+	}
 	public int Damage {  get; set; }
 
 	//Mıt Speed ıst dıe Waffengeschwındıgkeıt gemeint. Zb beim Bogen wie oft er schießen kann pro Sekunde
@@ -20,12 +27,6 @@ public abstract class Weapon : Item
 
 	public Texture2D Texture { get; set; }
 
-	public Weapon(int damage, int speed, Texture2D texture)
-	{
-		Damage = damage;
-		Speed = speed;
-		Texture = texture;
-	}
 
 	public abstract void Draw(SpriteBatch spriteBatch);
     public abstract void UseEffect();

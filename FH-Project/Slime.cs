@@ -20,22 +20,22 @@ class Slime : Enemy
     public override void CheckEnemy(SpriteBatch spriteBatch, Player player)
     {
 
-        if (!this.IsDestroyed)
+        if (!IsDestroyed)
         {
-            this.Draw(spriteBatch);
+            Draw(spriteBatch);
             player.Weapon.Draw(spriteBatch);
          }
-        Debug.WriteLine($" this.health: {this.health}");
+        Debug.WriteLine($" this.health: {health}");
         if (Enemy.GetEnemyCount() == 0 )
          {
             float randomX = rnd.Next(0, Game1.viewport.Width -20);
             float randomY = rnd.Next(0, Game1.viewport.Height - 20);
 
-            this.Postion = new Vector2(randomX, randomY);
+            Postion = new Vector2(randomX, randomY);
 
-            this.IsDestroyed = false;
-            this.health = 700;
-            this.AddEnemy();
+            IsDestroyed = false;
+            health = 700;
+            AddEnemy();
 
 
             //  Debug.WriteLine($"counter: {enemyCount}");

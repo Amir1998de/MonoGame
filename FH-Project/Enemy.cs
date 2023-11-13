@@ -16,7 +16,7 @@ public abstract class Enemy : Entity, IObserver
 {
     #region Variablen
     
-    private float attackPower;
+
     private static List<Enemy> enemies = new List<Enemy>();
     private Player player;
 
@@ -33,7 +33,7 @@ public abstract class Enemy : Entity, IObserver
 
     public void OnNotify(PlayerActions data)
     {
-        if (!(data == PlayerActions.Attack)) return;
+        if (!(data == PlayerActions.ATTACK)) return;
 
         int index = -1;
          enemies.ForEach(enemy =>

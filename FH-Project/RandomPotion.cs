@@ -13,6 +13,7 @@ public class RandomPotion : Potion
     Random random = new Random();
 	public RandomPotion(int wert, Player player) : base(wert, player)
 	{
+        Inventory.AddItem(this);
 	}
 
    

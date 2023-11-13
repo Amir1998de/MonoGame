@@ -13,6 +13,7 @@ public class HealingPotion : Potion
 	public HealingPotion(int wert, Player player) : base(wert,player)
 	{
         Inventory.AddItem(this);
+        
 	}
 
     public override void UseEffect()

@@ -11,14 +11,14 @@ namespace FH_Project;
 public class Inventory
 {
 	private const int SPACE = 20;
-	private static List<Item> items = new List<Item>();
+	public static List<Item> items = new List<Item>();
 
 	private Inventory() { }
 	
 
 	public static void UseItem(Item item)
 	{
-        if (!items.Contains(item)) return;
+        if (!items.Contains(item)) throw new NoItemFoundException("This Item does not Exist");
 
         items.Find(i => i.Equals(item)).UseEffect();
     }
@@ -32,8 +32,8 @@ public class Inventory
 
 	public static void RemoveItem(Item item) 
 	{
-		if (!items.Contains(item)) return;
+		if (!items.Contains(item)) throw new NoItemFoundException("This Item does not Exist");
 
-		items.Remove(item);
+        items.Remove(item);
 	}
 }
