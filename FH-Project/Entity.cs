@@ -90,8 +90,10 @@ public abstract class Entity : Subject
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(EntityTexture, Postion, null, Color.White, 0, new Vector2(0, 0), 0.33f, SpriteEffects.None, 0);
+        spriteBatch.Draw(EntityTexture, Postion, null, Color.White, 0, new Vector2(0, 0), 3, SpriteEffects.None, 0);
     }
+
+
 
     public void Add(Entity entity, SpriteBatch spriteBatch)
     {
@@ -105,7 +107,8 @@ public abstract class Entity : Subject
 
     public bool CheckCollision(Rectangle playerBounds)
     {
-        Rectangle enemyBounds = new Rectangle((int)Postion.X, (int)Postion.Y, EntityTexture.Width / 3, EntityTexture.Height / 3);
+        // *3 weil Skalierung 3
+        Rectangle enemyBounds = new Rectangle((int)Postion.X, (int)Postion.Y, EntityTexture.Width * 3, EntityTexture.Height * 3);
      
         return playerBounds.Intersects(enemyBounds);
     }

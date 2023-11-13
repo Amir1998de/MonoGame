@@ -28,6 +28,9 @@ public abstract class Weapon : Item
 	public Texture2D Texture { get; set; }
 
 
-	public abstract void Draw(SpriteBatch spriteBatch);
+    public void Draw(SpriteBatch spriteBatch)
+    {
+        spriteBatch.Draw(Texture, Position, null, Color.White, 0, new Vector2(0, 0), 0.125f, SpriteEffects.None, 0);
+    }
     public abstract void UseEffect();
 }

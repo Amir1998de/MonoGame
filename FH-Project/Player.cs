@@ -25,7 +25,7 @@ public class Player : Entity
         isAttacking = false;
         shield = 0;
         Weapon = weapon;
-        Weapon.Position = new Vector2(Postion.X + 40, Postion.Y + 40);
+        Weapon.Position = new Vector2(Postion.X + EntityTexture.Width * 2, Postion.Y + EntityTexture.Height);
     }
 
     public void AddShield(int value)
@@ -49,6 +49,7 @@ public class Player : Entity
         return !(isAttacking);
     }
 
+
     public void MovePlayerLeft()
     {
         Postion = new Vector2(Postion.X - Speed, Postion.Y);
@@ -56,20 +57,20 @@ public class Player : Entity
         if (Postion.X < 0)
             Postion = new Vector2(0, Postion.Y);
 
-        Weapon.Position = new Vector2(Postion.X + 40, Postion.Y + 40);
+        Weapon.Position = new Vector2(Postion.X + EntityTexture.Width * 2, Postion.Y + EntityTexture.Height);
     }
 
     public void MovePlayerRight()
     {
         Postion = new Vector2(Postion.X + Speed, Postion.Y);
 
-        // Durch 2 weil man unten beim Draw 0.33f scale hat. 
-        float z = (float) EntityTexture.Width / 3 ;
+        // Durch 2 weil man unten beim Draw 3 scale hat. 
+        float z = (float) EntityTexture.Width * 3 ;
 
         if (Postion.X + z  > maxWeidth)
             Postion = new Vector2(maxWeidth - z, Postion.Y);
        
-        Weapon.Position = new Vector2(Postion.X + 40, Postion.Y + 40);
+        Weapon.Position = new Vector2(Postion.X + EntityTexture.Width * 2, Postion.Y + EntityTexture.Height);
     }
 
     public void MovePlayerUp()
@@ -80,8 +81,8 @@ public class Player : Entity
 
         if (Postion.Y < 0)
             Postion = new Vector2(Postion.X, 0);
-        
-        Weapon.Position = new Vector2(Postion.X + 40, Postion.Y + 40);
+
+        Weapon.Position = new Vector2(Postion.X + EntityTexture.Width * 2, Postion.Y + EntityTexture.Height);
 
     }
 
@@ -89,13 +90,13 @@ public class Player : Entity
     {
         Postion = new Vector2(Postion.X, Postion.Y + Speed);
 
-        // Durch 2 weil man unten beim Draw 0.33f scale hat. 
-        float z = (float)EntityTexture.Height / 3;
+        // Durch 2 weil man unten beim Draw 3 scale hat. 
+        float z = (float)EntityTexture.Height * 3;
 
         if (Postion.Y  + z > maxHeight)
             Postion = new Vector2(Postion.X , maxHeight -z);
-        
-        Weapon.Position = new Vector2(Postion.X + 40, Postion.Y + 40);
+
+        Weapon.Position = new Vector2(Postion.X + EntityTexture.Width * 2, Postion.Y + EntityTexture.Height);
     }
 
     public override void Attack()

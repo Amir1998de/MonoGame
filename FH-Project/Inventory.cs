@@ -11,7 +11,7 @@ namespace FH_Project;
 public class Inventory
 {
 	private const int SPACE = 20;
-	public static List<Item> items = new List<Item>();
+	private static List<Item> items = new List<Item>();
 
 	private Inventory() { }
 	

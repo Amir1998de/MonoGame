@@ -10,8 +10,14 @@ namespace FH_Project;
 
 public class Game1 : Game
 {
+    private Texture2D[] playerIdleTexture;
+    int currentIdleFrame = 0;
+    int totalIdleFrames = 4;
+    float frameIdleTime = 0.1f;
+    float IdleTimer = 0f;
+
     int currentRunFrame = 0;
-    int totalRunFrames = 15;
+    int totalRunFrames = 6;
     float frameRunTime = 0.1f;
     float timer = 0f;
 
@@ -56,7 +62,7 @@ public class Game1 : Game
         karte = new Map();
         karte.ErstelleZufälligeKarte(10, 15, 10, 20, 10, 20);
 
-        
+
 
         base.Initialize();
     }
@@ -69,8 +75,8 @@ public class Game1 : Game
 
 
 
-        playerTexture = Content.Load<Texture2D>("Idle (1)");
-        enemyTexture = Content.Load<Texture2D>("Idle (1)");
+        playerTexture = Content.Load<Texture2D>("Individual Sprites/adventurer-idle-00");
+        enemyTexture = Content.Load<Texture2D>("Individual Sprites/adventurer-idle-00");
         swordTexture = Content.Load<Texture2D>("SwordT2");
         hammerTexture = Content.Load<Texture2D>("HammerT2");
         bowTexture = Content.Load<Texture2D>("BowT1");
@@ -78,7 +84,13 @@ public class Game1 : Game
         playerRunTexture = new Texture2D[totalRunFrames];
         for (int i = 0; i < totalRunFrames; i++)
         {
-            playerRunTexture[i] = Content.Load<Texture2D>($"Run ({i + 1})");
+            playerRunTexture[i] = Content.Load<Texture2D>($"Individual Sprites/adventurer-run-0{i}");
+        }
+
+        playerIdleTexture = new Texture2D[totalIdleFrames];
+        for (int i = 0; i < totalIdleFrames; i++)
+        {
+            playerIdleTexture[i] = Content.Load<Texture2D>($"Individual Sprites/adventurer-idle-0{i}");
         }
 
 
@@ -92,12 +104,12 @@ public class Game1 : Game
         player = new Player(100, 2, new Vector2(0, 0), new Vector2(0, 0), playerTexture, sword);
 
         enemyFactory = new EnemyFactory();
-        potion = new HealingPotion(50,player);
+        potion = new HealingPotion(50, player);
 
-        enemy =  enemyFactory.createEnemy("Slime", 700, 2, new Vector2(viewport.Height / 2, viewport.Width / 3), new Vector2(0, 0), enemyTexture, player);
+        enemy = enemyFactory.createEnemy("Slime", 700, 2, new Vector2(viewport.Height / 2, viewport.Width / 3), new Vector2(0, 0), enemyTexture, player);
 
-      //  enemy = new Slime(10000, 2, new Vector2(viewport.Height / 2, viewport.Width / 3), new Vector2(0, 0), enemyTexture, player);
-      //  enemyTwo = new Slime(10000, 2, new Vector2(viewport.Height / 4, viewport.Width / 3), new Vector2(0, 0), enemyTexture, player);
+        //  enemy = new Slime(10000, 2, new Vector2(viewport.Height / 2, viewport.Width / 3), new Vector2(0, 0), enemyTexture, player);
+        //  enemyTwo = new Slime(10000, 2, new Vector2(viewport.Height / 4, viewport.Width / 3), new Vector2(0, 0), enemyTexture, player);
 
 
         // TODO: use this.Content to load your game content here
@@ -114,53 +126,80 @@ public class Game1 : Game
             timer = 0f;
         }
 
+        IdleTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        if (IdleTimer > frameIdleTime)
+        {
+            currentIdleFrame = (currentIdleFrame + 1) % totalIdleFrames;
+            IdleTimer = 0f;
+        }
+
 
         prevKeyboardState = keyboardState;
 
+        //Idle Animation
+        if (!keyboardState.IsKeyDown(Keys.Right) &&
+            !keyboardState.IsKeyDown(Keys.Left) &&
+            !keyboardState.IsKeyDown(Keys.Up) &&
+            !keyboardState.IsKeyDown(Keys.Down))
+        {
+            
+            if (!prevKeyboardState.IsKeyDown(Keys.Right) &&
+                !prevKeyboardState.IsKeyDown(Keys.Left) &&
+                !prevKeyboardState.IsKeyDown(Keys.Up) &&
+                !prevKeyboardState.IsKeyDown(Keys.Down))
+            {
+                // Starte die Animation
+                IdleTimer = 0f;
+                currentIdleFrame = 0;
+            }
+            
 
+            //IdleTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (IdleTimer > frameIdleTime)
+            {
+                // Zum nächsten Frame wechseln
+                currentIdleFrame = (currentIdleFrame + 1) % totalIdleFrames;
+                IdleTimer = 0f;
+            }
+        }
+        
         if (keyboardState.IsKeyDown(Keys.Left))
         {
             player.MovePlayerLeft();
         }
-
-
+           
         if (keyboardState.IsKeyDown(Keys.Right))
         {
+            // Nur die Animation aktualisieren, wenn die Taste zuvor nicht gedrückt war
+            if (!prevKeyboardState.IsKeyDown(Keys.Right))
             {
-                // Nur die Animation aktualisieren, wenn die Taste zuvor nicht gedrückt war
-                if (prevKeyboardState == null || !prevKeyboardState.IsKeyDown(Keys.Right))
-                {
-                    // Starte die Animation
-                    timer = 0f;
-                    currentRunFrame = 0;
-                }
-
-                timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                if (timer > frameRunTime)
-                {
-                    // Zum nächsten Frame wechseln
-                    currentRunFrame = (currentRunFrame + 1) % totalRunFrames;
-                    timer = 0f;
-                }
+                // Starte die Animation
+                timer = 0f;
+                currentRunFrame = 0;
             }
+            //timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (timer > frameRunTime)
+            {
+                // Zum nächsten Frame wechseln
+                currentRunFrame = (currentRunFrame + 1) % totalRunFrames;
+                timer = 0f;
+            }
+            
             player.MovePlayerRight();
-
         }
+               
+         if (keyboardState.IsKeyDown(Keys.Up))
+            {
+                player.MovePlayerUp();
+            }
 
-
-        if (keyboardState.IsKeyDown(Keys.Up))
-        {
-            player.MovePlayerUp();
-        }
-
-
-        if (keyboardState.IsKeyDown(Keys.Down))
+        if(keyboardState.IsKeyDown(Keys.Down))
         {
             player.MovePlayerDown();
         }
-
-
+                  
+     
         if (keyboardState.IsKeyDown(Keys.Space) && player.CanAttack())
         {
             player.Attack();
@@ -169,7 +208,7 @@ public class Game1 : Game
         if (keyboardState.IsKeyDown(Keys.H))
             Inventory.UseItem(potion);
 
-        Debug.WriteLine(Inventory.items.Count);
+
 
         base.Update(gameTime);
     }
@@ -184,17 +223,44 @@ public class Game1 : Game
 
         spriteBatch.Begin();
 
-        if (Keyboard.GetState().IsKeyDown(Keys.Space))
+        if(!Keyboard.GetState().IsKeyDown(Keys.Right) &&
+            !Keyboard.GetState().IsKeyDown(Keys.Left) &&
+            !Keyboard.GetState().IsKeyDown(Keys.Up) &&
+            !Keyboard.GetState().IsKeyDown(Keys.Down))
         {
-            player.Weapon.Draw(spriteBatch);
+            PlayerAnimtation(playerIdleTexture, currentIdleFrame);
         }
 
         if (Keyboard.GetState().IsKeyDown(Keys.Right))
         {
             PlayerAnimtation(playerRunTexture, currentRunFrame);
         }
-        else
-            PlayerIdle();
+
+        if (Keyboard.GetState().IsKeyDown(Keys.Left))
+        {
+            //Links Animation hinzufügen
+            PlayerAnimtation(playerRunTexture, currentRunFrame);
+        }
+
+        if (Keyboard.GetState().IsKeyDown(Keys.Up))
+        {
+            //Oben Animation hinzufügen
+            PlayerAnimtation(playerRunTexture, currentRunFrame);
+        }
+
+        if (Keyboard.GetState().IsKeyDown(Keys.Down))
+        {
+            //Unten Animation hinzufügen
+            PlayerAnimtation(playerRunTexture, currentRunFrame);
+        }
+
+        if (Keyboard.GetState().IsKeyDown(Keys.Space))
+        {
+            player.Weapon.Draw(spriteBatch);
+        }
+
+
+       
 
         enemy.CheckEnemy(spriteBatch, player);
 
@@ -205,16 +271,14 @@ public class Game1 : Game
         base.Draw(gameTime);
     }
 
+
     public void PlayerAnimtation(Texture2D[] animation, int currentFrame)
     {
         player.EntityTexture = animation[currentFrame];
         player.Draw(spriteBatch);
     }
 
-    public void PlayerIdle()
-    {
-        player.EntityTexture = playerTexture;
-        player.Draw(spriteBatch);
-    }
+
+ 
 
 }
