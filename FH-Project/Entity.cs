@@ -18,6 +18,7 @@ public abstract class Entity : Subject
 
     protected static float maxHeight=0;
 
+    public float BaseSpeed { get; private set; }
 
     public Texture2D EntityTexture { get;  set; }
 
@@ -47,6 +48,7 @@ public abstract class Entity : Subject
         this.velocity = velocity;
         this.EntityTexture = entityTexture;
         IsDestroyed = false;
+        BaseSpeed = 2;
 	}
   
 
