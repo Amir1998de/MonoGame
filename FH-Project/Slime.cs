@@ -25,7 +25,7 @@ class Slime : Enemy
             Draw(spriteBatch);
             player.Weapon.Draw(spriteBatch);
          }
-        Debug.WriteLine($" this.health: {health}");
+
         if (Enemy.GetEnemyCount() == 0 )
          {
             float randomX = rnd.Next(0, Game1.viewport.Width -20);

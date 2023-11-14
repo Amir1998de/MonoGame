@@ -14,10 +14,10 @@ public class Game1 : Game
     private int currentIdleFrame = 0;
     private int totalIdleFrames = 4;
     private float frameIdleTime = 0.1f;
-    private float IdleTimer = 0f;
+    private float idleTimer = 0f;
 
     private float frameRunTime = 0.1f;
-    private float Runtimer = 0f;
+    private float runtimer = 0f;
 
     //Für Bewegung nach rechts
     private int currentRightFrame = 0;
@@ -35,8 +35,12 @@ public class Game1 : Game
     private int currentDownFrame = 0;
     private int totalDownFrames = 6;
 
+    //Fürs Sprinten
     private float sprintTimer;
     private bool coolDownForSprint;
+
+    //Fürs Angreiffen
+    private float attackTimer;
 
 
     private ContentManager content;
@@ -129,12 +133,6 @@ public class Game1 : Game
         potion = new HealingPotion(50, player);
 
         enemy = enemyFactory.createEnemy("Slime", 700, 2, new Vector2(viewport.Height / 2, viewport.Width / 3), new Vector2(0, 0), enemyTexture, player);
-
-        //  enemy = new Slime(10000, 2, new Vector2(viewport.Height / 2, viewport.Width / 3), new Vector2(0, 0), enemyTexture, player);
-        //  enemyTwo = new Slime(10000, 2, new Vector2(viewport.Height / 4, viewport.Width / 3), new Vector2(0, 0), enemyTexture, player);
-
-
-        // TODO: use this.Content to load your game content here
     }
 
     protected override void Update(GameTime gameTime)
@@ -142,95 +140,67 @@ public class Game1 : Game
         keyboardState = Keyboard.GetState();
 
 
-        Runtimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-        if (Runtimer > frameRunTime)
+        runtimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        if (runtimer > frameRunTime)
         {
             currentRightFrame = (currentRightFrame + 1) % totalRightFrames;
             currentLeftFrame = (currentLeftFrame + 1) % totalLeftFrames;
             currentUpFrame = (currentUpFrame + 1) % totalUpFrames;
             currentDownFrame = (currentDownFrame + 1) % totalDownFrames;
-            Runtimer = 0f;
+            runtimer = 0f;
         }
 
 
         prevKeyboardState = keyboardState;
 
-        //Idle Animation
         if (!keyboardState.IsKeyDown(Keys.Right) &&
             !keyboardState.IsKeyDown(Keys.Left) &&
             !keyboardState.IsKeyDown(Keys.Up) &&
-            !keyboardState.IsKeyDown(Keys.Down))
-        {
-
-            // Starte die Animation
-
-            PlayerIdleAnimation(playerIdleTexture, gameTime);
-        }
+            !keyboardState.IsKeyDown(Keys.Down)) PlayerAnimation(playerIdleTexture, gameTime, runtimer, frameRunTime, currentIdleFrame, totalIdleFrames);
+      
 
         if (keyboardState.IsKeyDown(Keys.Left))
         {
-            // Nur die Animation aktualisieren, wenn die Taste zuvor nicht gedrückt war
-            if (!prevKeyboardState.IsKeyDown(Keys.Left))
-            {
-                // Starte die Animation
-                ResetAnimation(Runtimer, currentRightFrame);
-            }
-
-            PlayerRunAnimation(playerRightTexture, gameTime, Runtimer, frameRunTime, currentRightFrame, totalRightFrames);
+            if (!prevKeyboardState.IsKeyDown(Keys.Left)) ResetAnimation(runtimer, currentRightFrame);
+            
+            PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
             player.MovePlayerLeft();
         }
 
         if (keyboardState.IsKeyDown(Keys.Right))
         {
-            // Nur die Animation aktualisieren, wenn die Taste zuvor nicht gedrückt war
-            if (!prevKeyboardState.IsKeyDown(Keys.Right))
-            {
-                // Starte die Animation
-                ResetAnimation(Runtimer, currentRightFrame);
+            if (!prevKeyboardState.IsKeyDown(Keys.Right)) ResetAnimation(runtimer, currentRightFrame);
 
-            }
-            PlayerRunAnimation(playerRightTexture, gameTime, Runtimer, frameRunTime, currentRightFrame, totalRightFrames);
+            PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
             player.MovePlayerRight();
         }
 
         if (keyboardState.IsKeyDown(Keys.Up))
         {
-            // Nur die Animation aktualisieren, wenn die Taste zuvor nicht gedrückt war
-            if (!prevKeyboardState.IsKeyDown(Keys.Up))
-            {
-                // Starte die Animation
-                ResetAnimation(Runtimer, currentRightFrame);
-            }
-            PlayerRunAnimation(playerRightTexture, gameTime, Runtimer, frameRunTime, currentRightFrame, totalRightFrames);
+            if (!prevKeyboardState.IsKeyDown(Keys.Up)) ResetAnimation(runtimer, currentRightFrame);
+            
+            PlayerAnimation(playerRightTexture, gameTime, idleTimer, frameIdleTime, currentRightFrame, totalRightFrames);
             player.MovePlayerUp();
         }
 
         if (keyboardState.IsKeyDown(Keys.Down))
         {
-            // Nur die Animation aktualisieren, wenn die Taste zuvor nicht gedrückt war
-            if (!prevKeyboardState.IsKeyDown(Keys.Down))
-            {
-                // Starte die Animation
-                ResetAnimation(Runtimer, currentRightFrame);
-            }
-            PlayerRunAnimation(playerRightTexture, gameTime, Runtimer, frameRunTime, currentRightFrame, totalRightFrames);
+            if (!prevKeyboardState.IsKeyDown(Keys.Down)) ResetAnimation(runtimer, currentRightFrame);
+            
+            PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
             player.MovePlayerDown();
         }
 
 
-        if (keyboardState.IsKeyDown(Keys.Space) && player.CanAttack())
-        {
-            player.Attack();
-        }
+        
 
-        if (keyboardState.IsKeyDown(Keys.H))
-            Inventory.UseItem(potion);
+        if (keyboardState.IsKeyDown(Keys.H)) Inventory.UseItem(potion);
 
         if (keyboardState.IsKeyDown(Keys.LeftShift) && !coolDownForSprint)
         {
             if (sprintTimer <= 0f || sprintTimer <= 3f)
             {
-                player.Speed = 5;
+                player.Speed = 4;
                 sprintTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             if(sprintTimer >= 3f) coolDownForSprint = true;
@@ -248,7 +218,23 @@ public class Game1 : Game
             }
         }
 
-        Debug.WriteLine(sprintTimer);
+
+
+        if (keyboardState.IsKeyDown(Keys.Space) && player.CanAttack())
+        {
+            player.Attack();
+        }
+
+        if (player.IsAttacking && attackTimer >= 0.5f)
+        {
+            player.IsAttacking = false;
+            attackTimer = 0f;
+        }
+
+        if(player.IsAttacking) attackTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+        Debug.WriteLine(enemy.getHealth());
+        Debug.WriteLine(attackTimer);
         base.Update(gameTime);
     }
 
@@ -311,7 +297,7 @@ public class Game1 : Game
     }
 
 
-    public void PlayerRunAnimation(Texture2D[] animation, GameTime gameTime, float timer, float frameTime, int currentFrame, int totalFrames)
+    public void PlayerAnimation(Texture2D[] animation, GameTime gameTime, float timer, float frameTime, int currentFrame, int totalFrames)
     {
         timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
         if (timer > frameTime)
@@ -321,18 +307,6 @@ public class Game1 : Game
             timer = 0f;
         }
         player.EntityTexture = animation[currentFrame];
-    }
-
-    public void PlayerIdleAnimation(Texture2D[] animation, GameTime gameTime)
-    {
-        IdleTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-        if (IdleTimer > frameIdleTime)
-        {
-            // Zum nächsten Frame wechseln
-            currentIdleFrame = (currentIdleFrame + 1) % totalIdleFrames;
-            IdleTimer = 0f;
-        }
-        player.EntityTexture = animation[currentIdleFrame];
     }
 
     public void ResetAnimation(float Runtimer, int currentFrame)

@@ -14,15 +14,16 @@ public class Player : Entity
 {
 
     #region Variablen
-    private bool isAttacking;
+    public bool IsAttacking {  get; set; }
     protected int shield;
     private int maxShield = 100;
     public Weapon Weapon { get; set; }
+    GameTime gameTime;
     #endregion Variablen
 
     public Player(int health, float speed, Vector2 postion, Vector2 velocity, Texture2D texture, Weapon weapon) : base(health, speed, postion, velocity, texture)
     {
-        isAttacking = false;
+        IsAttacking = false;
         shield = 0;
         Weapon = weapon;
         Weapon.Position = new Vector2(Postion.X + EntityTexture.Width * 2, Postion.Y + EntityTexture.Height);
@@ -46,7 +47,7 @@ public class Player : Entity
 
     public bool CanAttack()
     {
-        return !(isAttacking);
+        return !(IsAttacking);
     }
 
 
@@ -101,7 +102,7 @@ public class Player : Entity
 
     public override void Attack()
     {
-        //isAttacking = true;
+        IsAttacking = true;
         GetNotified(PlayerActions.ATTACK);
         Animation();
     }
