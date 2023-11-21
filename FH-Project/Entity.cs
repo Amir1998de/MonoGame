@@ -30,8 +30,11 @@ public abstract class Entity : Subject
     public Vector2 Postion { get; set; }
 
     private int maxHealth;
-    
-    
+
+    public Sprite sprite;
+    private Vector2 _minPos, _maxPos;
+    private float SPEED = 300;
+
 
 
     protected Vector2 velocity;
@@ -49,8 +52,8 @@ public abstract class Entity : Subject
         this.EntityTexture = entityTexture;
         IsDestroyed = false;
         BaseSpeed = 2;
-	}
-  
+        sprite = new Sprite(entityTexture, pos);
+    }
 
     public static void View(float maxW, float maxH)
     {
@@ -95,8 +98,6 @@ public abstract class Entity : Subject
         spriteBatch.Draw(EntityTexture, Postion, null, Color.White, 0, new Vector2(0, 0), 3, SpriteEffects.None, 0);
     }
 
-
-
     public void Add(Entity entity, SpriteBatch spriteBatch)
     {
 
@@ -114,6 +115,16 @@ public abstract class Entity : Subject
      
         return playerBounds.Intersects(enemyBounds);
     }
+    public void SetBounds(Point mapSize, Point tileSize)
+    {
+        _minPos = new((-tileSize.X / 2) + sprite.Origin.X, (-tileSize.Y / 2) + sprite.Origin.Y);
+        _maxPos = new(mapSize.X - (tileSize.X / 2) - sprite.Origin.X, mapSize.Y - (tileSize.X / 2) - sprite.Origin.Y);
+    }
 
-    
+    public void Update()
+    {
+        sprite.Position += Game1.Direction * Globals.Time * SPEED;
+        sprite.Position = Vector2.Clamp(sprite.Position, _minPos, _maxPos);
+    }
+
 }

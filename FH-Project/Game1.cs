@@ -43,9 +43,9 @@ public class Game1 : Game
     private float attackTimer;
 
 
-    private ContentManager content;
+    public static ContentManager content;
     private GraphicsDeviceManager _graphics;
-    private SpriteBatch spriteBatch;
+    public static SpriteBatch spriteBatch;
     private KeyboardState keyboardState;
     private KeyboardState prevKeyboardState;
     public static Viewport viewport;
@@ -76,6 +76,11 @@ public class Game1 : Game
     private Potion potion;
 
     private Map karte;
+
+    private Matrix _translation;
+
+    private static Vector2 _direction;
+    public static Vector2 Direction => _direction;
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -83,12 +88,21 @@ public class Game1 : Game
         IsMouseVisible = true;
     }
 
+
     protected override void Initialize()
     {
+  
+        // Test
+        Globals.WindowSize = new(1024, 768);
+        _graphics.PreferredBackBufferWidth = Globals.WindowSize.X;
+        _graphics.PreferredBackBufferHeight = Globals.WindowSize.Y;
+        _graphics.ApplyChanges();
+
+        Globals.Content = Content;
+
         karte = new Map();
         karte.ErstelleZufälligeKarte(10, 15, 10, 20, 10, 20);
         coolDownForSprint = false;
-
 
         base.Initialize();
     }
@@ -97,9 +111,10 @@ public class Game1 : Game
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
 
+        // Test
+        Globals.SpriteBatch = spriteBatch;
+        //
         GraphicsDevice.LoadPixel();
-
-
 
         playerTexture = Content.Load<Texture2D>("Individual Sprites/adventurer-idle-00");
         enemyTexture = Content.Load<Texture2D>("Individual Sprites/adventurer-idle-00");
@@ -119,15 +134,16 @@ public class Game1 : Game
             playerIdleTexture[i] = Content.Load<Texture2D>($"Individual Sprites/adventurer-idle-0{i}");
         }
 
-
-
-
         viewport = GraphicsDevice.Viewport;
         Entity.View(viewport.Width, viewport.Height);
+
         sword = new Sword(100, 5, swordTexture);
         hammer = new Hammer(100, 5, hammerTexture);
         bow = new Bow(100, 5, bowTexture);
-        player = new Player(100, 2, new Vector2(0, 0), new Vector2(0, 0), playerTexture, sword);
+
+        // player
+        player = new Player(100, 500, new(0,0), new Vector2(0, 0), playerTexture, sword);
+        player.SetBounds(karte.MapSize, karte.TileSize);
 
         enemyFactory = new EnemyFactory();
         potion = new HealingPotion(50, player);
@@ -137,6 +153,7 @@ public class Game1 : Game
 
     protected override void Update(GameTime gameTime)
     {
+
         keyboardState = Keyboard.GetState();
 
 
@@ -233,63 +250,58 @@ public class Game1 : Game
 
         if(player.IsAttacking) attackTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-        Debug.WriteLine(enemy.getHealth());
-        Debug.WriteLine(attackTimer);
+        // Test 
+
+        Globals.Update(gameTime);
+
+        _direction = Vector2.Zero;
+
+        if (keyboardState.IsKeyDown(Keys.Up)) _direction.Y--;
+        if (keyboardState.IsKeyDown(Keys.Down)) _direction.Y++;
+        if (keyboardState.IsKeyDown(Keys.Left)) _direction.X--;
+        if (keyboardState.IsKeyDown(Keys.Right)) _direction.X++;
+
+        if (_direction != Vector2.Zero)
+        {
+            _direction.Normalize();
+        }
+
+        player.Update();
+
+        CalculateTranslation();
+
+       Debug.WriteLine(enemy.getHealth());
+       Debug.WriteLine(attackTimer);
+      //  Debug.WriteLine(_translation);
+
         base.Update(gameTime);
     }
 
 
-
+    // Draw
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.CornflowerBlue);
+        GraphicsDevice.Clear(Color.Black);
 
 
 
-        spriteBatch.Begin();
-
-        if (!Keyboard.GetState().IsKeyDown(Keys.Right) &&
-            !Keyboard.GetState().IsKeyDown(Keys.Left) &&
-            !Keyboard.GetState().IsKeyDown(Keys.Up) &&
-            !Keyboard.GetState().IsKeyDown(Keys.Down))
-        {
-            player.Draw(spriteBatch);
-        }
-
-        if (Keyboard.GetState().IsKeyDown(Keys.Right))
-        {
-            player.Draw(spriteBatch);
-        }
-
-        if (Keyboard.GetState().IsKeyDown(Keys.Left))
-        {
-            //Links Animation hinzufügen
-            player.Draw(spriteBatch);
-        }
-
-        if (Keyboard.GetState().IsKeyDown(Keys.Up))
-        {
-            //Oben Animation hinzufügen
-            player.Draw(spriteBatch);
-        }
-
-        if (Keyboard.GetState().IsKeyDown(Keys.Down))
-        {
-            //Unten Animation hinzufügen
-            player.Draw(spriteBatch);
-        }
+        spriteBatch.Begin(transformMatrix: _translation);
 
         if (Keyboard.GetState().IsKeyDown(Keys.Space))
         {
             player.Weapon.Draw(spriteBatch);
+            
         }
 
-
-
-
-        enemy.CheckEnemy(spriteBatch, player);
+        // Test
 
         karte.Draw(spriteBatch);
+
+        //player.sprite.Draw();
+
+        player.Draw(spriteBatch);
+
+        enemy.CheckEnemy(spriteBatch, player);
 
         spriteBatch.End();
 
@@ -313,6 +325,20 @@ public class Game1 : Game
     {
         Runtimer = 0f;
         currentFrame = 0;
+    }
+
+    private void CalculateTranslation()
+    {
+       
+        var dx = (Globals.WindowSize.X / 2) - player.sprite.Position.X;
+
+        dx = MathHelper.Clamp(dx, - karte.MapSize.X + Globals.WindowSize.X + (karte.TileSize.X / 2) , karte.TileSize.X / 2);
+
+        var dy = (Globals.WindowSize.Y / 2) - player.sprite.Position.Y;
+
+        dy = MathHelper.Clamp(dy, -karte.MapSize.Y + Globals.WindowSize.Y + (karte.TileSize.Y / 2), karte.TileSize.Y / 2);
+
+        _translation = Matrix.CreateTranslation(dx, dy, 0f);
     }
 
 

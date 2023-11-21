@@ -19,7 +19,10 @@ public class Player : Entity
     private int maxShield = 100;
     public Weapon Weapon { get; set; }
     GameTime gameTime;
+
+
     #endregion Variablen
+
 
     public Player(int health, float speed, Vector2 postion, Vector2 velocity, Texture2D texture, Weapon weapon) : base(health, speed, postion, velocity, texture)
     {
@@ -27,6 +30,8 @@ public class Player : Entity
         shield = 0;
         Weapon = weapon;
         Weapon.Position = new Vector2(Postion.X + EntityTexture.Width * 2, Postion.Y + EntityTexture.Height);
+      
+        
     }
 
     public void AddShield(int value)
@@ -112,6 +117,8 @@ public class Player : Entity
         
     }
 
-    
+ 
+
+
 
 }

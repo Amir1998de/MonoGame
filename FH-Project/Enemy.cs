@@ -27,10 +27,8 @@ public abstract class Enemy : Entity, IObserver
        // AddEnemy(this);
         this.player = player;
         this.player.AddObserver(this);
+
     }
-
-    
-
     public void OnNotify(PlayerActions data)
     {
         if (!(data == PlayerActions.ATTACK)) return;
