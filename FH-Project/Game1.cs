@@ -10,14 +10,34 @@ namespace FH_Project;
 
 public class Game1 : Game
 {
-    private Texture2D[] playerIdleTexture;
-    private int currentIdleFrame = 0;
-    private int totalIdleFrames = 4;
-    private float frameIdleTime = 0.1f;
+    
+    private float frameIdleTime = 0.2f;
     private float idleTimer = 0f;
 
     private float frameRunTime = 0.1f;
     private float runtimer = 0f;
+
+
+
+    public static ContentManager content;
+    private GraphicsDeviceManager _graphics;
+    public static SpriteBatch spriteBatch;
+    private KeyboardState keyboardState;
+    private KeyboardState prevKeyboardState;
+    public static Viewport viewport;
+
+
+    //Arrays für die jeweiligen Arrays
+    private Texture2D playerTexture;
+    private Texture2D[] playerIdleTexture;
+    private Texture2D[] playerRightTexture;
+    private Texture2D[] playerLeftTexture;
+    private Texture2D[] playerUpTexture;
+    private Texture2D[] playerDownTexture;
+    private Player player;
+    //IdleAnimation Player
+    private int currentIdleFrame = 0;
+    private int totalIdleFrames = 4;
 
     //Für Bewegung nach rechts
     private int currentRightFrame = 0;
@@ -42,37 +62,29 @@ public class Game1 : Game
     //Fürs Angreiffen
     private float attackTimer;
 
-
-    public static ContentManager content;
-    private GraphicsDeviceManager _graphics;
-    public static SpriteBatch spriteBatch;
-    private KeyboardState keyboardState;
-    private KeyboardState prevKeyboardState;
-    public static Viewport viewport;
-
-    private Texture2D playerTexture;
-
-    //Arrays für die jeweiligen Arrays
-    private Texture2D[] playerRightTexture;
-    private Texture2D[] playerLeftTexture;
-    private Texture2D[] playerUpTexture;
-    private Texture2D[] playerDownTexture;
-    private Player player;
-
+    //Enemy
     private Texture2D enemyTexture;
+    private Texture2D[] enemyIdleTexture;
     private Enemy enemy;
     private Enemy enemyTwo;
     private EnemyFactory enemyFactory;
 
+    //IdleAnimation Enemy
+    private int enemycurrentIdleFrame = 0;
+    private int enemytotalIdleFrames = 4;
+    
+    //Weapon
     private Sword sword;
     private Texture2D swordTexture;
-
     private Hammer hammer;
     private Texture2D hammerTexture;
-
     private Bow bow;
     private Texture2D bowTexture;
 
+    //Potion
+    private Texture2D healthPotionTexture;
+    private Texture2D shieldPotionTexture;
+    private Texture2D randomPotionTexture;
     private Potion potion;
 
     private Map karte;
@@ -117,10 +129,13 @@ public class Game1 : Game
         GraphicsDevice.LoadPixel();
 
         playerTexture = Content.Load<Texture2D>("Individual Sprites/adventurer-idle-00");
-        enemyTexture = Content.Load<Texture2D>("Individual Sprites/adventurer-idle-00");
-        swordTexture = Content.Load<Texture2D>("SwordT2");
-        hammerTexture = Content.Load<Texture2D>("HammerT2");
-        bowTexture = Content.Load<Texture2D>("BowT1");
+        enemyTexture = Content.Load<Texture2D>("Enemy/Slime/slime-idle-0");
+        swordTexture = Content.Load<Texture2D>("Items/Weapon/SwordT2");
+        hammerTexture = Content.Load<Texture2D>("Items/Weapon/HammerT2");
+        bowTexture = Content.Load<Texture2D>("Items/Weapon/BowT1");
+        healthPotionTexture = Content.Load<Texture2D>("Items/Potions/PotionRed");
+        shieldPotionTexture = Content.Load<Texture2D>("Items/Potions/PotionBlue");
+        randomPotionTexture = Content.Load<Texture2D>("Items/Potions/PotionGreen");
 
         playerRightTexture = new Texture2D[totalRightFrames];
         for (int i = 0; i < totalRightFrames; i++)
@@ -132,6 +147,12 @@ public class Game1 : Game
         for (int i = 0; i < totalIdleFrames; i++)
         {
             playerIdleTexture[i] = Content.Load<Texture2D>($"Individual Sprites/adventurer-idle-0{i}");
+        }
+
+        enemyIdleTexture = new Texture2D[enemytotalIdleFrames];
+        for (int i = 0; i < enemytotalIdleFrames; i++)
+        {
+            enemyIdleTexture[i] = Content.Load<Texture2D>($"Enemy/Slime/slime-idle-{i}");
         }
 
         viewport = GraphicsDevice.Viewport;
@@ -146,7 +167,7 @@ public class Game1 : Game
         player.SetBounds(karte.MapSize, karte.TileSize);
 
         enemyFactory = new EnemyFactory();
-        potion = new HealingPotion(50, player);
+        potion = new HealingPotion(null, healthPotionTexture);
 
         enemy = enemyFactory.createEnemy("Slime", 700, 2, new Vector2(viewport.Height / 2, viewport.Width / 3), new Vector2(0, 0), enemyTexture, player);
     }
@@ -156,55 +177,44 @@ public class Game1 : Game
 
         keyboardState = Keyboard.GetState();
 
+        UpdateIdle(gameTime);
+        UpdateRun(gameTime);
 
-        runtimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-        if (runtimer > frameRunTime)
-        {
-            currentRightFrame = (currentRightFrame + 1) % totalRightFrames;
-            currentLeftFrame = (currentLeftFrame + 1) % totalLeftFrames;
-            currentUpFrame = (currentUpFrame + 1) % totalUpFrames;
-            currentDownFrame = (currentDownFrame + 1) % totalDownFrames;
-            runtimer = 0f;
-        }
-
+        PlayerAnimation(enemy, enemyIdleTexture, gameTime, idleTimer, frameIdleTime, enemycurrentIdleFrame, enemytotalIdleFrames);
 
         prevKeyboardState = keyboardState;
 
         if (!keyboardState.IsKeyDown(Keys.Right) &&
             !keyboardState.IsKeyDown(Keys.Left) &&
             !keyboardState.IsKeyDown(Keys.Up) &&
-            !keyboardState.IsKeyDown(Keys.Down)) PlayerAnimation(playerIdleTexture, gameTime, runtimer, frameRunTime, currentIdleFrame, totalIdleFrames);
+            !keyboardState.IsKeyDown(Keys.Down)) PlayerAnimation(player,playerIdleTexture, gameTime, idleTimer, frameRunTime, currentIdleFrame, totalIdleFrames);
       
 
         if (keyboardState.IsKeyDown(Keys.Left))
         {
-            if (!prevKeyboardState.IsKeyDown(Keys.Left)) ResetAnimation(runtimer, currentRightFrame);
             
-            PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
+            PlayerAnimation(player,playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
             player.MovePlayerLeft();
         }
 
         if (keyboardState.IsKeyDown(Keys.Right))
         {
-            if (!prevKeyboardState.IsKeyDown(Keys.Right)) ResetAnimation(runtimer, currentRightFrame);
 
-            PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
+            PlayerAnimation(player,playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
             player.MovePlayerRight();
         }
 
         if (keyboardState.IsKeyDown(Keys.Up))
         {
-            if (!prevKeyboardState.IsKeyDown(Keys.Up)) ResetAnimation(runtimer, currentRightFrame);
             
-            PlayerAnimation(playerRightTexture, gameTime, idleTimer, frameIdleTime, currentRightFrame, totalRightFrames);
+            PlayerAnimation(player,playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
             player.MovePlayerUp();
         }
 
         if (keyboardState.IsKeyDown(Keys.Down))
         {
-            if (!prevKeyboardState.IsKeyDown(Keys.Down)) ResetAnimation(runtimer, currentRightFrame);
             
-            PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
+            PlayerAnimation(player, playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
             player.MovePlayerDown();
         }
 
@@ -299,6 +309,8 @@ public class Game1 : Game
 
         //player.sprite.Draw();
 
+        potion.Draw();
+
         player.Draw(spriteBatch);
 
         enemy.CheckEnemy(spriteBatch, player);
@@ -309,7 +321,7 @@ public class Game1 : Game
     }
 
 
-    public void PlayerAnimation(Texture2D[] animation, GameTime gameTime, float timer, float frameTime, int currentFrame, int totalFrames)
+    public void PlayerAnimation(Entity entity,Texture2D[] animation, GameTime gameTime, float timer, float frameTime, int currentFrame, int totalFrames)
     {
         timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
         if (timer > frameTime)
@@ -318,14 +330,10 @@ public class Game1 : Game
             currentFrame = (currentFrame + 1) % totalFrames;
             timer = 0f;
         }
-        player.EntityTexture = animation[currentFrame];
+        entity.EntityTexture = animation[currentFrame];
     }
 
-    public void ResetAnimation(float Runtimer, int currentFrame)
-    {
-        Runtimer = 0f;
-        currentFrame = 0;
-    }
+   
 
     private void CalculateTranslation()
     {
@@ -339,6 +347,30 @@ public class Game1 : Game
         dy = MathHelper.Clamp(dy, -karte.MapSize.Y + Globals.WindowSize.Y + (karte.TileSize.Y / 2), karte.TileSize.Y / 2);
 
         _translation = Matrix.CreateTranslation(dx, dy, 0f);
+    }
+
+    public void UpdateIdle(GameTime gameTime)
+    {
+        idleTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        if (idleTimer > frameIdleTime)
+        {
+            currentIdleFrame = (currentIdleFrame + 1) % totalIdleFrames;
+            enemycurrentIdleFrame = (enemycurrentIdleFrame + 1) % enemytotalIdleFrames;
+            idleTimer = 0f;
+        }
+    }
+
+    public void UpdateRun(GameTime gameTime)
+    {
+        runtimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        if (runtimer > frameRunTime)
+        {
+            currentRightFrame = (currentRightFrame + 1) % totalRightFrames;
+            currentLeftFrame = (currentLeftFrame + 1) % totalLeftFrames;
+            currentUpFrame = (currentUpFrame + 1) % totalUpFrames;
+            currentDownFrame = (currentDownFrame + 1) % totalDownFrames;
+            runtimer = 0f;
+        }
     }
 
 

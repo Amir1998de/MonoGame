@@ -11,14 +11,35 @@ namespace FH_Project;
 public abstract class Potion : Subject ,Item
 {
 	protected int wert;
+    protected Texture2D potionTexture;
 	Random random = new Random();
 	protected Player player;
-	public Potion(int wert, Player player)
+    protected Vector2 pos;
+	public Potion(Player? player, Texture2D texture)
 	{
-		this.wert = wert;
-		this.player = player;
+        wert = random.Next(25, 100);
+        potionTexture = texture;
+        if (player != null)
+        {
+		    this.player = player;
+        }
+        else
+        {
+            pos = new Vector2(100,100); 
+        }
 	}
 
+    public void Draw()
+    {
+        if (player != null)
+        {
+            Globals.SpriteBatch.Draw(potionTexture, new Vector2(player.Postion.X + player.EntityTexture.Width, player.Postion.Y + player.EntityTexture.Height), null, Color.White, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+        }
+        else
+        {
+            Globals.SpriteBatch.Draw(potionTexture, pos, null, Color.White, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+        }
+    }
     
 
     public abstract void UseEffect();

@@ -10,7 +10,7 @@ namespace FH_Project;
 
 public class HealingPotion : Potion
 {
-	public HealingPotion(int wert, Player player) : base(wert,player)
+	public HealingPotion(Player player, Texture2D texture) : base(player, texture)
 	{
         Inventory.AddItem(this);
         

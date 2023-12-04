@@ -11,7 +11,7 @@ namespace FH_Project;
 public class RandomPotion : Potion
 {
     Random random = new Random();
-	public RandomPotion(int wert, Player player) : base(wert, player)
+	public RandomPotion(Player player, Texture2D texture) : base(player, texture)
 	{
         Inventory.AddItem(this);
 	}

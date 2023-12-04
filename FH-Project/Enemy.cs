@@ -44,7 +44,7 @@ public abstract class Enemy : Entity, IObserver
             }
 
             // /8 weil Scalierung der Waffe auf 0.125
-            if (CheckCollision(new Rectangle((int)player.Weapon.Position.X, (int)player.Weapon.Position.Y, player.Weapon.Texture.Width / 8, player.Weapon.Texture.Height / 8 )))
+            if (CheckCollision(new Rectangle((int)player.Weapon.Position.X, (int)player.Weapon.Position.Y, player.Weapon.Texture.Width, player.Weapon.Texture.Height)))
             {
                 ReduceHealth(player.Weapon.Damage);
             }

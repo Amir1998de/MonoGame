@@ -10,7 +10,7 @@ namespace FH_Project;
 
 public class ShieldPotion : Potion
 {
-	public ShieldPotion(int wert, Player player) : base(wert, player)
+	public ShieldPotion(Player player, Texture2D texture) : base(player, texture)
 	{
         Inventory.AddItem(this);
 	}

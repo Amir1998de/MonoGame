@@ -30,7 +30,7 @@ public abstract class Weapon : Item
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(Texture, Position, null, Color.White, 0, new Vector2(0, 0), 0.125f, SpriteEffects.None, 0);
+        spriteBatch.Draw(Texture, Position, null, Color.White, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
     }
     public abstract void UseEffect();
 }
