@@ -33,7 +33,7 @@ public abstract class Potion : Subject ,Item
     {
         if (player != null)
         {
-            Globals.SpriteBatch.Draw(potionTexture, new Vector2(player.Postion.X + player.EntityTexture.Width, player.Postion.Y + player.EntityTexture.Height), null, Color.White, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+            Globals.SpriteBatch.Draw(potionTexture, new Vector2(player.Position.X + player.EntityTexture.Width, player.Position.Y + player.EntityTexture.Height), null, Color.White, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
         }
         else
         {

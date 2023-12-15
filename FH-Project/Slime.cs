@@ -9,6 +9,7 @@ class Slime : Enemy
 {
     Random rnd = new Random();
 
+
     public Slime(int health, float speed, Vector2 pos, Vector2 velocity, Texture2D texture,Player player) : base(health, speed, pos, velocity, texture, player)
     {
     }
@@ -17,32 +18,6 @@ class Slime : Enemy
         throw new NotImplementedException();
     }
 
-    public override void CheckEnemy(SpriteBatch spriteBatch, Player player)
-    {
-
-        if (!IsDestroyed)
-        {
-            Draw(spriteBatch);
-            player.Weapon.Draw(spriteBatch);
-         }
-
-        if (Enemy.GetEnemyCount() == 0 )
-         {
-            float randomX = rnd.Next(0, Game1.viewport.Width -20);
-            float randomY = rnd.Next(0, Game1.viewport.Height - 20);
-
-            Postion = new Vector2(randomX, randomY);
-
-            IsDestroyed = false;
-            health = 700;
-            AddEnemy();
-
-
-            //  Debug.WriteLine($"counter: {enemyCount}");
-            //  Debug.WriteLine("mybase: Type is {0}", this.GetType());
-        }
-
-      
-    }
+   
 
 }

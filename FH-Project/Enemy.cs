@@ -17,16 +17,20 @@ public abstract class Enemy : Entity, IObserver
     #region Variablen
     
 
-    private static List<Enemy> enemies = new List<Enemy>();
+    public static List<Enemy> enemies { get; private set; } = new List<Enemy>();
     private Player player;
+    protected bool exisits;
+    protected Room room;
+    
 
     #endregion Variablen
 
-    public Enemy(int health, float speed, Vector2 pos, Vector2 velocity, Texture2D textur, Player player) : base(health, speed,pos,velocity, textur)
+    public Enemy(int health, float speed, Vector2 pos, Vector2 velocity, Texture2D textur, Player player) : base(health, speed,pos,velocity)
 	{   
        // AddEnemy(this);
         this.player = player;
         this.player.AddObserver(this);
+        exisits = false;
 
     }
     public void OnNotify(PlayerActions data)
@@ -39,7 +43,7 @@ public abstract class Enemy : Entity, IObserver
             if (enemy.CheckIfDead())
             {
                 enemy.IsDestroyed = true;
-                index =  enemies.IndexOf(enemy);
+                index = enemies.IndexOf(enemy);
                 return;
             }
 
@@ -67,9 +71,15 @@ public abstract class Enemy : Entity, IObserver
             return enemies;
     }
 
-    public  void AddEnemy()
+    public static void AddEnemy(string existingEnemy, int health, float speed, Vector2 pos, Vector2 velocity, Texture2D textur, Player player, Room room)
     {
-        enemies.Add(this);
+        EnemyFactory factory = new EnemyFactory();
+        int count = 0;
+        while(room.EnemyCap < count)
+        {
+            enemies.Add(factory.createEnemy(existingEnemy, health, speed, pos, velocity,textur,player));
+            count++;
+        }
     }
 
     public static void RemoveEnemyAtIndex(int index)
@@ -79,7 +89,7 @@ public abstract class Enemy : Entity, IObserver
         
     }
 
-    public abstract void CheckEnemy(SpriteBatch spriteBatch,Player player);
+   
 
 
 }

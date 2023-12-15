@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Input;
 
 namespace FH_Project;
 /**
@@ -25,6 +26,8 @@ public static class Globals
 
     // The size of the game window. Useful for UI layout and camera adjustments.
     public static Point WindowSize { get; set; }
+
+    public static KeyboardState KeyboardState { get; set; }
 
     // Update method, typically called every frame to update the elapsed time.
     public static void Update(GameTime gt)

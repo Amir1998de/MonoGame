@@ -58,8 +58,8 @@ public class Map : MapEntity
         {
             int breite = zufallsgenerator.Next(minBreite, maxBreite + 1);
             int höhe = zufallsgenerator.Next(minHöhe, maxHöhe + 1);
-            int x = zufallsgenerator.Next(0, 100 - breite); 
-            int y = zufallsgenerator.Next(0, 100 - höhe);
+            int x = zufallsgenerator.Next(0, 400 - breite); 
+            int y = zufallsgenerator.Next(0, 400 - höhe);
 
             Room neuerRaum = new Room(x, y, breite, höhe);
 
@@ -82,18 +82,24 @@ public class Map : MapEntity
         return false;
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public void Draw(SpriteBatch spriteBatch, Player player, int scale)
     {
         for (int y = 0; y < _mapTileSize.Y; y++)
         {
-            for (int x = 0; x < _mapTileSize.X; x++) 
+            for (int x = 0; x < _mapTileSize.X; x++)
                 _tiles[x, y].Draw();
         }
 
-
         foreach (var raum in räume)
         {
-            spriteBatch.DrawRectangle(raum.Bereich, Color.White);
+            // Draw rooms based on the player's position and scale
+            spriteBatch.DrawRectangle(
+                new Rectangle(
+                    (raum.Bereich.X - (int)player.Position.X) * scale,
+                    (raum.Bereich.Y - (int)player.Position.Y) * scale,
+                    raum.Bereich.Width * scale,
+                    raum.Bereich.Height * scale),
+                Color.White);
         }
     }
 }

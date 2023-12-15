@@ -22,18 +22,17 @@ public abstract class Entity : Subject
 
     public Texture2D EntityTexture { get;  set; }
 
-    protected int health;
+    public int Health {  get; set; }
 
     public float Speed { get; set; }
     public bool IsDestroyed { get; set; }
 
-    public Vector2 Postion { get; set; }
+    public Vector2 Position { get; set; }
 
     private int maxHealth;
 
-    public Sprite sprite;
-    private Vector2 _minPos, _maxPos;
-    private float SPEED = 300;
+    public Sprite Sprite {  get; set; }
+    
 
 
 
@@ -42,17 +41,16 @@ public abstract class Entity : Subject
 
     #endregion Variablen
 
-    public Entity(int health, float speed, Vector2 pos, Vector2 velocity, Texture2D entityTexture)
+    public Entity(int health, float speed, Vector2 pos, Vector2 velocity)
 	{
         maxHealth = health;
-        this.health = health;
+        this.Health = health;
         this.Speed = speed;
-        this.Postion = pos;
+        this.Position = pos;
         this.velocity = velocity;
-        this.EntityTexture = entityTexture;
         IsDestroyed = false;
         BaseSpeed = 2;
-        sprite = new Sprite(entityTexture, pos);
+
     }
 
     public static void View(float maxW, float maxH)
@@ -64,7 +62,7 @@ public abstract class Entity : Subject
 
     public bool CheckIfDead()
     {
-        if(health == 0)
+        if(Health == 0)
             return true;
 
         return false;
@@ -72,21 +70,21 @@ public abstract class Entity : Subject
 
     public void AddHealth(int value)
     {
-        health += value;
-        if (health > maxHealth)
-            health = maxHealth;
+        Health += value;
+        if (Health > maxHealth)
+            Health = maxHealth;
     }
 
     public int getHealth()
     {
-        return health;
+        return Health;
     }
 
     public void ReduceHealth(int value)
     {
-        health -= value;
-        if (health < 0)
-            health = 0;
+        Health -= value;
+        if (Health < 0)
+            Health = 0;
     }
 
     
@@ -95,7 +93,7 @@ public abstract class Entity : Subject
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(EntityTexture, Postion, null, Color.White, 0, new Vector2(0, 0), 3, SpriteEffects.None, 0);
+        spriteBatch.Draw(EntityTexture, Position, null, Color.White, 0, new Vector2(0, 0), 3, SpriteEffects.None, 0);
     }
 
     public void Add(Entity entity, SpriteBatch spriteBatch)
@@ -111,20 +109,15 @@ public abstract class Entity : Subject
     public bool CheckCollision(Rectangle playerBounds)
     {
         // *3 weil Skalierung 3
-        Rectangle enemyBounds = new Rectangle((int)Postion.X, (int)Postion.Y, EntityTexture.Width * 3, EntityTexture.Height * 3);
+        Rectangle enemyBounds = new Rectangle((int)Position.X, (int)Position.Y, EntityTexture.Width * 3, EntityTexture.Height * 3);
      
         return playerBounds.Intersects(enemyBounds);
     }
-    public void SetBounds(Point mapSize, Point tileSize)
-    {
-        _minPos = new((-tileSize.X / 2) + sprite.Origin.X, (-tileSize.Y / 2) + sprite.Origin.Y);
-        _maxPos = new(mapSize.X - (tileSize.X / 2) - sprite.Origin.X, mapSize.Y - (tileSize.X / 2) - sprite.Origin.Y);
-    }
 
-    public void Update()
-    {
-        sprite.Position += Game1.Direction * Globals.Time * SPEED;
-        sprite.Position = Vector2.Clamp(sprite.Position, _minPos, _maxPos);
-    }
+
+    
+
+    
+    
 
 }

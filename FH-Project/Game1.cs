@@ -11,11 +11,7 @@ namespace FH_Project;
 public class Game1 : Game
 {
     
-    private float frameIdleTime = 0.2f;
-    private float idleTimer = 0f;
-
-    private float frameRunTime = 0.1f;
-    private float runtimer = 0f;
+   
 
 
 
@@ -23,44 +19,19 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     public static SpriteBatch spriteBatch;
     private KeyboardState keyboardState;
-    private KeyboardState prevKeyboardState;
+    
     public static Viewport viewport;
 
 
-    //Arrays für die jeweiligen Arrays
-    private Texture2D playerTexture;
-    private Texture2D[] playerIdleTexture;
-    private Texture2D[] playerRightTexture;
-    private Texture2D[] playerLeftTexture;
-    private Texture2D[] playerUpTexture;
-    private Texture2D[] playerDownTexture;
+    
     private Player player;
-    //IdleAnimation Player
-    private int currentIdleFrame = 0;
-    private int totalIdleFrames = 4;
-
-    //Für Bewegung nach rechts
-    private int currentRightFrame = 0;
-    private int totalRightFrames = 6;
-
-    //Für Bewegung nach links
-    private int currentLeftFrame = 0;
-    private int totalLeftFrames = 6;
-
-    //Für Bewegung nach Oben
-    private int currentUpFrame = 0;
-    private int totalUpFrames = 6;
-
-    //Für Bewegung nach Unten
-    private int currentDownFrame = 0;
-    private int totalDownFrames = 6;
+    
 
     //Fürs Sprinten
-    private float sprintTimer;
-    private bool coolDownForSprint;
+    
 
     //Fürs Angreiffen
-    private float attackTimer;
+    
 
     //Enemy
     private Texture2D enemyTexture;
@@ -105,7 +76,7 @@ public class Game1 : Game
     {
   
         // Test
-        Globals.WindowSize = new(1024, 768);
+        Globals.WindowSize = new(1280, 720);
         _graphics.PreferredBackBufferWidth = Globals.WindowSize.X;
         _graphics.PreferredBackBufferHeight = Globals.WindowSize.Y;
         _graphics.ApplyChanges();
@@ -113,8 +84,8 @@ public class Game1 : Game
         Globals.Content = Content;
 
         karte = new Map();
-        karte.ErstelleZufälligeKarte(10, 15, 10, 20, 10, 20);
-        coolDownForSprint = false;
+        karte.ErstelleZufälligeKarte(4, 8, 80, 160, 80, 160);
+        
 
         base.Initialize();
     }
@@ -125,10 +96,11 @@ public class Game1 : Game
 
         // Test
         Globals.SpriteBatch = spriteBatch;
+
         //
         GraphicsDevice.LoadPixel();
 
-        playerTexture = Content.Load<Texture2D>("Individual Sprites/adventurer-idle-00");
+        
         enemyTexture = Content.Load<Texture2D>("Enemy/Slime/slime-idle-0");
         swordTexture = Content.Load<Texture2D>("Items/Weapon/SwordT2");
         hammerTexture = Content.Load<Texture2D>("Items/Weapon/HammerT2");
@@ -137,17 +109,7 @@ public class Game1 : Game
         shieldPotionTexture = Content.Load<Texture2D>("Items/Potions/PotionBlue");
         randomPotionTexture = Content.Load<Texture2D>("Items/Potions/PotionGreen");
 
-        playerRightTexture = new Texture2D[totalRightFrames];
-        for (int i = 0; i < totalRightFrames; i++)
-        {
-            playerRightTexture[i] = Content.Load<Texture2D>($"Individual Sprites/adventurer-run-0{i}");
-        }
-
-        playerIdleTexture = new Texture2D[totalIdleFrames];
-        for (int i = 0; i < totalIdleFrames; i++)
-        {
-            playerIdleTexture[i] = Content.Load<Texture2D>($"Individual Sprites/adventurer-idle-0{i}");
-        }
+      
 
         enemyIdleTexture = new Texture2D[enemytotalIdleFrames];
         for (int i = 0; i < enemytotalIdleFrames; i++)
@@ -163,11 +125,12 @@ public class Game1 : Game
         bow = new Bow(100, 5, bowTexture);
 
         // player
-        player = new Player(100, 500, new(0,0), new Vector2(0, 0), playerTexture, sword);
+        player = new Player(100, 200, new(0,0), new Vector2(0, 0), sword);
         player.SetBounds(karte.MapSize, karte.TileSize);
+       
 
         enemyFactory = new EnemyFactory();
-        potion = new HealingPotion(null, healthPotionTexture);
+        //potion = new HealingPotion(player, healthPotionTexture);
 
         enemy = enemyFactory.createEnemy("Slime", 700, 2, new Vector2(viewport.Height / 2, viewport.Width / 3), new Vector2(0, 0), enemyTexture, player);
     }
@@ -175,90 +138,9 @@ public class Game1 : Game
     protected override void Update(GameTime gameTime)
     {
 
-        keyboardState = Keyboard.GetState();
-
-        UpdateIdle(gameTime);
-        UpdateRun(gameTime);
-
-        PlayerAnimation(enemy, enemyIdleTexture, gameTime, idleTimer, frameIdleTime, enemycurrentIdleFrame, enemytotalIdleFrames);
-
-        prevKeyboardState = keyboardState;
-
-        if (!keyboardState.IsKeyDown(Keys.Right) &&
-            !keyboardState.IsKeyDown(Keys.Left) &&
-            !keyboardState.IsKeyDown(Keys.Up) &&
-            !keyboardState.IsKeyDown(Keys.Down)) PlayerAnimation(player,playerIdleTexture, gameTime, idleTimer, frameRunTime, currentIdleFrame, totalIdleFrames);
-      
-
-        if (keyboardState.IsKeyDown(Keys.Left))
-        {
-            
-            PlayerAnimation(player,playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
-            player.MovePlayerLeft();
-        }
-
-        if (keyboardState.IsKeyDown(Keys.Right))
-        {
-
-            PlayerAnimation(player,playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
-            player.MovePlayerRight();
-        }
-
-        if (keyboardState.IsKeyDown(Keys.Up))
-        {
-            
-            PlayerAnimation(player,playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
-            player.MovePlayerUp();
-        }
-
-        if (keyboardState.IsKeyDown(Keys.Down))
-        {
-            
-            PlayerAnimation(player, playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
-            player.MovePlayerDown();
-        }
-
+        Globals.KeyboardState = Keyboard.GetState();
 
         
-
-        if (keyboardState.IsKeyDown(Keys.H)) Inventory.UseItem(potion);
-
-        if (keyboardState.IsKeyDown(Keys.LeftShift) && !coolDownForSprint)
-        {
-            if (sprintTimer <= 0f || sprintTimer <= 3f)
-            {
-                player.Speed = 4;
-                sprintTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            }
-            if(sprintTimer >= 3f) coolDownForSprint = true;
-            
-        }
-        else player.Speed = player.BaseSpeed;
-
-        if (coolDownForSprint)
-        {
-            sprintTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (sprintTimer < 0f)
-            {
-                sprintTimer = 0f;
-                coolDownForSprint = false;
-            }
-        }
-
-
-
-        if (keyboardState.IsKeyDown(Keys.Space) && player.CanAttack())
-        {
-            player.Attack();
-        }
-
-        if (player.IsAttacking && attackTimer >= 0.5f)
-        {
-            player.IsAttacking = false;
-            attackTimer = 0f;
-        }
-
-        if(player.IsAttacking) attackTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
         // Test 
 
@@ -276,12 +158,11 @@ public class Game1 : Game
             _direction.Normalize();
         }
 
-        player.Update();
+        player.Update(gameTime);
 
         CalculateTranslation();
 
-       Debug.WriteLine(enemy.getHealth());
-       Debug.WriteLine(attackTimer);
+       
       //  Debug.WriteLine(_translation);
 
         base.Update(gameTime);
@@ -305,15 +186,15 @@ public class Game1 : Game
 
         // Test
 
-        karte.Draw(spriteBatch);
+        karte.Draw(spriteBatch,player,50);
 
         //player.sprite.Draw();
 
-        potion.Draw();
+        //potion.Draw();
 
         player.Draw(spriteBatch);
 
-        enemy.CheckEnemy(spriteBatch, player);
+        //enemy.CheckEnemy(spriteBatch, player);
 
         spriteBatch.End();
 
@@ -338,40 +219,18 @@ public class Game1 : Game
     private void CalculateTranslation()
     {
        
-        var dx = (Globals.WindowSize.X / 2) - player.sprite.Position.X;
+        var dx = (Globals.WindowSize.X / 2) - player.Sprite.Position.X;
 
         dx = MathHelper.Clamp(dx, - karte.MapSize.X + Globals.WindowSize.X + (karte.TileSize.X / 2) , karte.TileSize.X / 2);
 
-        var dy = (Globals.WindowSize.Y / 2) - player.sprite.Position.Y;
+        var dy = (Globals.WindowSize.Y / 2) - player.Sprite.Position.Y;
 
         dy = MathHelper.Clamp(dy, -karte.MapSize.Y + Globals.WindowSize.Y + (karte.TileSize.Y / 2), karte.TileSize.Y / 2);
 
         _translation = Matrix.CreateTranslation(dx, dy, 0f);
     }
 
-    public void UpdateIdle(GameTime gameTime)
-    {
-        idleTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-        if (idleTimer > frameIdleTime)
-        {
-            currentIdleFrame = (currentIdleFrame + 1) % totalIdleFrames;
-            enemycurrentIdleFrame = (enemycurrentIdleFrame + 1) % enemytotalIdleFrames;
-            idleTimer = 0f;
-        }
-    }
-
-    public void UpdateRun(GameTime gameTime)
-    {
-        runtimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-        if (runtimer > frameRunTime)
-        {
-            currentRightFrame = (currentRightFrame + 1) % totalRightFrames;
-            currentLeftFrame = (currentLeftFrame + 1) % totalLeftFrames;
-            currentUpFrame = (currentUpFrame + 1) % totalUpFrames;
-            currentDownFrame = (currentDownFrame + 1) % totalDownFrames;
-            runtimer = 0f;
-        }
-    }
+    
 
 
 
