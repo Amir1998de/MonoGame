@@ -56,7 +56,9 @@ public class Game1 : Game
     private Texture2D healthPotionTexture;
     private Texture2D shieldPotionTexture;
     private Texture2D randomPotionTexture;
-    private Potion potion;
+    private Potion HealthPotion;
+    private Potion ShieldPotion;
+    private Potion RandomPotion;
 
     private Map karte;
 
@@ -130,7 +132,9 @@ public class Game1 : Game
        
 
         enemyFactory = new EnemyFactory();
-        //potion = new HealingPotion(player, healthPotionTexture);
+        HealthPotion = new HealingPotion(player, healthPotionTexture);
+        ShieldPotion = new ShieldPotion(player, shieldPotionTexture);
+        RandomPotion = new RandomPotion(player, randomPotionTexture);
 
         enemy = enemyFactory.createEnemy("Slime", 700, 2, new Vector2(viewport.Height / 2, viewport.Width / 3), new Vector2(0, 0), enemyTexture, player);
     }

@@ -12,6 +12,7 @@ public class ShieldPotion : Potion
 {
 	public ShieldPotion(Player player, Texture2D texture) : base(player, texture)
 	{
+        id = 2;
         Inventory.AddItem(this);
 	}
 
@@ -19,7 +20,11 @@ public class ShieldPotion : Potion
 
     public override void UseEffect()
     {
-        player.AddShield(wert);
-        Inventory.RemoveItem(this);
+        if (player != null)
+        {
+
+            player.AddShield(wert);
+            Inventory.RemoveItem(this);
+        }
     }
 }

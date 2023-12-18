@@ -15,8 +15,12 @@ public abstract class Potion : Subject ,Item
 	Random random = new Random();
 	protected Player player;
     protected Vector2 pos;
+
+    //Gibt an was für ein Potion (1= Health, 2=Shield, 3=Random)
+    public int id; 
 	public Potion(Player? player, Texture2D texture)
 	{
+        id = 0;
         wert = random.Next(25, 100);
         potionTexture = texture;
         if (player != null)

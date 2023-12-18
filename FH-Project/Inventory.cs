@@ -14,9 +14,23 @@ public class Inventory
 	private static List<Item> items = new List<Item>();
 
 	private Inventory() { }
-	
 
-	public static void UseItem(Item item)
+    //ID gibt an welches Potion es ist
+    public static Item getPotion(int id)
+    {
+        foreach (var item in items)
+        {
+            if (item.GetType().ToString().Equals("FH_Project.HealingPotion") || item.GetType().ToString().Equals("FH_Project.ShieldPotion") || item.GetType().ToString().Equals("FH_Project.RandomPotion"))
+            {
+                Potion potion = (Potion)item;
+                if (potion.id == id) return potion;
+            }
+
+        }
+        throw new NoItemFoundException("This Item does not Exist");
+    }
+
+    public static void UseItem(Item item)
 	{
         if (!items.Contains(item)) throw new NoItemFoundException("This Item does not Exist");
 

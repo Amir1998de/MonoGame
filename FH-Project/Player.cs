@@ -22,6 +22,7 @@ public class Player : Entity
     public Weapon Weapon { get; set; }
     GameTime gameTime;
     private KeyboardState prevKeyboardState;
+    private KeyboardState currentKeyboardState;
 
     //Sprinten
     private float sprintTimer;
@@ -92,7 +93,7 @@ public class Player : Entity
             Health = maxShield;
     }
 
-
+    public int GetShield() { return shield; }
 
     public void ReduceShield(int value)
     {
@@ -168,6 +169,7 @@ public class Player : Entity
         
     }
 
+
     public void Update(GameTime gameTime)
     {
         UpdateIdle(gameTime);
@@ -176,7 +178,7 @@ public class Player : Entity
         
 
 
-        prevKeyboardState = Globals.KeyboardState;
+        
 
         if (!Globals.KeyboardState.IsKeyDown(Keys.Right) &&
             !Globals.KeyboardState.IsKeyDown(Keys.Left) &&
@@ -212,10 +214,17 @@ public class Player : Entity
             MovePlayerDown();
         }
 
+        currentKeyboardState = Globals.KeyboardState;
+        
 
+        if (currentKeyboardState.IsKeyDown(Keys.H) && !prevKeyboardState.IsKeyDown(Keys.H)) Inventory.UseItem(Inventory.getPotion(1));
+        prevKeyboardState = currentKeyboardState;
 
+        if (currentKeyboardState.IsKeyDown(Keys.J) && !prevKeyboardState.IsKeyDown(Keys.J)) Inventory.UseItem(Inventory.getPotion(2));
+        prevKeyboardState = currentKeyboardState;
 
-        if (Globals.KeyboardState.IsKeyDown(Keys.H)) Inventory.UseItem(potion);
+        if (currentKeyboardState.IsKeyDown(Keys.K) && !prevKeyboardState.IsKeyDown(Keys.K)) Inventory.UseItem(Inventory.getPotion(3));
+        prevKeyboardState = currentKeyboardState;
 
         if (Globals.KeyboardState.IsKeyDown(Keys.LeftShift) && !coolDownForSprint)
         {

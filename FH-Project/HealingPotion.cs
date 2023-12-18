@@ -12,13 +12,18 @@ public class HealingPotion : Potion
 {
 	public HealingPotion(Player player, Texture2D texture) : base(player, texture)
 	{
+        id = 1;
         Inventory.AddItem(this);
         
 	}
 
     public override void UseEffect()
     {
-        player.AddHealth(wert);
-        Inventory.RemoveItem(this);
+        if(player!=null)
+        {
+
+            player.AddHealth(wert);
+            Inventory.RemoveItem(this);
+        }
     }
 }
