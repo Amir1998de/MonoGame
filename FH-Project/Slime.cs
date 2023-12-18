@@ -1,5 +1,4 @@
-﻿
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
@@ -10,7 +9,7 @@ class Slime : Enemy
     Random rnd = new Random();
 
 
-    public Slime(int health, float speed, Vector2 pos, Vector2 velocity, Texture2D texture,Player player) : base(health, speed, pos, velocity, texture, player)
+    public Slime(int health, float speed, Vector2 pos, Vector2 velocity, Player player) : base(health, speed, pos, velocity, player)
     {
     }
     public override void Attack()
@@ -18,6 +17,18 @@ class Slime : Enemy
         throw new NotImplementedException();
     }
 
-   
+    public override void LoadContent()
+    {
+        EntityTexture = Globals.Content.Load<Texture2D>("Enemy/Slime/slime-idle-0");
+
+        enemyIdleTexture = new Texture2D[totalIdleFrames];
+        for (int i = 0; i < totalIdleFrames; i++)
+        {
+            enemyIdleTexture[i] = Globals.Content.Load<Texture2D>($"Enemy/Slime/slime-idle-{i}");
+        }
+
+
+    }
+
 
 }

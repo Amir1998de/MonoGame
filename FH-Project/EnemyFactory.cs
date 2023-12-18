@@ -5,19 +5,18 @@ using System.Diagnostics;
 
 namespace FH_Project;
 
- public class EnemyFactory
+public class EnemyFactory
 {
 
     public EnemyFactory()
     {
     }
-    public  Enemy createEnemy(string existingEnemy, int health, float speed, Vector2 pos,Vector2 velocity, Texture2D textur, Player player)
+    public Enemy createEnemy(string existingEnemy, int health, float speed, Vector2 pos, Vector2 velocity, Player player)
     {
         if (existingEnemy.Equals("Slime"))
         {
-            return new Slime(health, speed, pos, velocity, textur, player);
+            return new Slime(health, speed, pos, velocity, player);
         }
         return null;
     }
 }
-

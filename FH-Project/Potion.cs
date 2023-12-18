@@ -8,30 +8,30 @@ using System.Collections.Generic;
 
 namespace FH_Project;
 
-public abstract class Potion : Subject ,Item
+public abstract class Potion : Subject, Item
 {
-	protected int wert;
+    protected int wert;
     protected Texture2D potionTexture;
-	Random random = new Random();
-	protected Player player;
+    Random random = new Random();
+    protected Player player;
     protected Vector2 pos;
 
     //Gibt an was für ein Potion (1= Health, 2=Shield, 3=Random)
-    public int id; 
-	public Potion(Player? player, Texture2D texture)
-	{
-        id = 0;
+    public int id;
+    public Potion(Player? player, Texture2D texture)
+    {
+        int id = 0;
         wert = random.Next(25, 100);
         potionTexture = texture;
         if (player != null)
         {
-		    this.player = player;
+            this.player = player;
         }
         else
         {
-            pos = new Vector2(100,100); 
+            pos = new Vector2(100, 100);
         }
-	}
+    }
 
     public void Draw()
     {
@@ -44,7 +44,7 @@ public abstract class Potion : Subject ,Item
             Globals.SpriteBatch.Draw(potionTexture, pos, null, Color.White, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
         }
     }
-    
+
 
     public abstract void UseEffect();
 

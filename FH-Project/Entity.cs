@@ -14,15 +14,15 @@ public abstract class Entity : Subject
     #region Variablen
 
 
-    protected static float maxWeidth=0;
+    protected static float maxWeidth = 0;
 
-    protected static float maxHeight=0;
+    protected static float maxHeight = 0;
 
     public float BaseSpeed { get; private set; }
 
-    public Texture2D EntityTexture { get;  set; }
+    public Texture2D EntityTexture { get; set; }
 
-    public int Health {  get; set; }
+    public int Health { get; set; }
 
     public float Speed { get; set; }
     public bool IsDestroyed { get; set; }
@@ -31,25 +31,42 @@ public abstract class Entity : Subject
 
     private int maxHealth;
 
-    public Sprite Sprite {  get; set; }
-    
-
-
+    public Sprite Sprite { get; set; }
 
     protected Vector2 velocity;
-   
+
+    //IdleAnimation 
+    protected int currentIdleFrame = 0;
+    protected int totalIdleFrames = 4;
+
+    //Für Bewegung nach rechts
+    protected int currentRightFrame = 0;
+    protected int totalRightFrames = 6;
+
+    //Für Bewegung nach links
+    protected int currentLeftFrame = 0;
+    protected int totalLeftFrames = 6;
+
+    //Für Bewegung nach Oben
+    protected int currentUpFrame = 0;
+    protected int totalUpFrames = 6;
+
+    //Für Bewegung nach Unten
+    protected int currentDownFrame = 0;
+    protected int totalDownFrames = 6;
+
 
     #endregion Variablen
 
     public Entity(int health, float speed, Vector2 pos, Vector2 velocity)
-	{
+    {
         maxHealth = health;
         this.Health = health;
         this.Speed = speed;
         this.Position = pos;
         this.velocity = velocity;
         IsDestroyed = false;
-        BaseSpeed = 2;
+        BaseSpeed = 1f;
 
     }
 
@@ -62,7 +79,7 @@ public abstract class Entity : Subject
 
     public bool CheckIfDead()
     {
-        if(Health == 0)
+        if (Health == 0)
             return true;
 
         return false;
@@ -87,13 +104,13 @@ public abstract class Entity : Subject
             Health = 0;
     }
 
-    
+
 
     public abstract void Attack();
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(EntityTexture, Position, null, Color.White, 0, new Vector2(0, 0), 3, SpriteEffects.None, 0);
+        spriteBatch.Draw(EntityTexture, Position, null, Color.White, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
     }
 
     public void Add(Entity entity, SpriteBatch spriteBatch)
@@ -110,14 +127,14 @@ public abstract class Entity : Subject
     {
         // *3 weil Skalierung 3
         Rectangle enemyBounds = new Rectangle((int)Position.X, (int)Position.Y, EntityTexture.Width * 3, EntityTexture.Height * 3);
-     
+
         return playerBounds.Intersects(enemyBounds);
     }
 
+    public abstract void LoadContent();
 
-    
 
-    
-    
+
+
 
 }

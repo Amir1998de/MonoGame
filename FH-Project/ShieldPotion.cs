@@ -10,13 +10,13 @@ namespace FH_Project;
 
 public class ShieldPotion : Potion
 {
-	public ShieldPotion(Player player, Texture2D texture) : base(player, texture)
-	{
+    public ShieldPotion(Player player, Texture2D texture) : base(player, texture)
+    {
         id = 2;
         Inventory.AddItem(this);
-	}
+    }
 
-    
+
 
     public override void UseEffect()
     {

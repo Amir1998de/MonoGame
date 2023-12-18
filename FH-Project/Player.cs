@@ -16,7 +16,7 @@ public class Player : Entity
 {
 
     #region Variablen
-    public bool IsAttacking {  get; set; }
+    public bool IsAttacking { get; set; }
     protected int shield;
     private int maxShield = 100;
     public Weapon Weapon { get; set; }
@@ -43,25 +43,7 @@ public class Player : Entity
     private Texture2D[] playerUpTexture;
     private Texture2D[] playerDownTexture;
 
-    //IdleAnimation Player
-    private int currentIdleFrame = 0;
-    private int totalIdleFrames = 4;
 
-    //Für Bewegung nach rechts
-    private int currentRightFrame = 0;
-    private int totalRightFrames = 6;
-
-    //Für Bewegung nach links
-    private int currentLeftFrame = 0;
-    private int totalLeftFrames = 6;
-
-    //Für Bewegung nach Oben
-    private int currentUpFrame = 0;
-    private int totalUpFrames = 6;
-
-    //Für Bewegung nach Unten
-    private int currentDownFrame = 0;
-    private int totalDownFrames = 6;
 
     //Attack
     private float attackTimer;
@@ -88,18 +70,19 @@ public class Player : Entity
 
     public void AddShield(int value)
     {
-        shield+= value;
+        shield += value;
         if (Health > maxShield)
             Health = maxShield;
     }
 
     public int GetShield() { return shield; }
 
+
     public void ReduceShield(int value)
     {
-        shield-= value;
-        if (shield< 0)
-            shield= 0;
+        shield -= value;
+        if (shield < 0)
+            shield = 0;
     }
 
     public bool CanAttack()
@@ -123,11 +106,11 @@ public class Player : Entity
         Position = new Vector2(Position.X + Speed, Position.Y);
 
         // Durch 2 weil man unten beim Draw 3 scale hat. 
-        float z = (float) EntityTexture.Width * 3 ;
+        float z = (float)EntityTexture.Width * 3;
 
         /*if (Postion.X + z  > maxWeidth)
             Postion = new Vector2(maxWeidth - z, Postion.Y);*/
-       
+
         Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
     }
 
@@ -166,19 +149,18 @@ public class Player : Entity
 
     public void Animation()
     {
-        
-    }
 
+    }
 
     public void Update(GameTime gameTime)
     {
         UpdateIdle(gameTime);
         UpdateRun(gameTime);
 
-        
 
 
-        
+
+        prevKeyboardState = Globals.KeyboardState;
 
         if (!Globals.KeyboardState.IsKeyDown(Keys.Right) &&
             !Globals.KeyboardState.IsKeyDown(Keys.Left) &&
@@ -214,8 +196,10 @@ public class Player : Entity
             MovePlayerDown();
         }
 
+
+
         currentKeyboardState = Globals.KeyboardState;
-        
+
 
         if (currentKeyboardState.IsKeyDown(Keys.H) && !prevKeyboardState.IsKeyDown(Keys.H)) Inventory.UseItem(Inventory.getPotion(1));
         prevKeyboardState = currentKeyboardState;
@@ -226,11 +210,12 @@ public class Player : Entity
         if (currentKeyboardState.IsKeyDown(Keys.K) && !prevKeyboardState.IsKeyDown(Keys.K)) Inventory.UseItem(Inventory.getPotion(3));
         prevKeyboardState = currentKeyboardState;
 
+
         if (Globals.KeyboardState.IsKeyDown(Keys.LeftShift) && !coolDownForSprint)
         {
             if (sprintTimer <= 0f || sprintTimer <= 3f)
             {
-                Speed = 4;
+                Speed = 2f;
                 sprintTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             if (sprintTimer >= 3f) coolDownForSprint = true;
@@ -276,7 +261,7 @@ public class Player : Entity
         }
     }
 
-    public void LoadContent()
+    public override void LoadContent()
     {
         EntityTexture = Globals.Content.Load<Texture2D>("Individual Sprites/adventurer-idle-00");
 

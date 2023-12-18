@@ -12,26 +12,34 @@ public class Map : MapEntity
 {
     private List<Room> räume;
 
-    private readonly Point _mapTileSize = new(5, 4);
+    private readonly Point _mapTileSize = new(16, 9);
 
     private readonly Sprite[,] _tiles;
     public Point TileSize { get; private set; }
     public Point MapSize { get; private set; }
 
-    
+    List<Texture2D> textures = new(5);
+    Random random = new();
+
+
+
+
 
 
     public Map()
     {
         räume = new List<Room>();
 
+
         _tiles = new Sprite[_mapTileSize.X, _mapTileSize.Y];
 
-        List<Texture2D> textures = new(5);
+
+
+
 
         for (int i = 1; i < 6; i++)
             textures.Add(Globals.Content.Load<Texture2D>($"tile{i}"));
-     
+
 
         TileSize = new(textures[0].Width, textures[0].Height);
         MapSize = new(TileSize.X * _mapTileSize.X, TileSize.Y * _mapTileSize.Y);
@@ -46,29 +54,61 @@ public class Map : MapEntity
                 _tiles[x, y] = new(textures[r], new(x * TileSize.X, y * TileSize.Y));
             }
         }
+
+
+
     }
 
-    public void ErstelleZufälligeKarte(int minRaumAnzahl, int maxRaumAnzahl, int minBreite, int maxBreite, int minHöhe, int maxHöhe)
+
+    public void ErstelleZufälligeKarte(int raumAnzahl, int minRaumBreite, int maxRaumBreite, int minRaumHöhe, int maxRaumHöhe)
     {
         Random zufallsgenerator = new Random();
 
-        int raumAnzahl = zufallsgenerator.Next(minRaumAnzahl, maxRaumAnzahl + 1);
-
         for (int i = 0; i < raumAnzahl; i++)
         {
-            int breite = zufallsgenerator.Next(minBreite, maxBreite + 1);
-            int höhe = zufallsgenerator.Next(minHöhe, maxHöhe + 1);
-            int x = zufallsgenerator.Next(0, 400 - breite); 
-            int y = zufallsgenerator.Next(0, 400 - höhe);
+            int x = 0;
+            int y = 0;
+            int raumBreite = zufallsgenerator.Next(minRaumBreite, maxRaumBreite + 1);
+            int raumHöhe = zufallsgenerator.Next(minRaumHöhe, maxRaumHöhe + 1);
 
-            Room neuerRaum = new Room(x, y, breite, höhe);
-
-            if (!KollisionMitAnderenRäumen(neuerRaum))
+            if (räume.Count > 0)
             {
-                räume.Add(neuerRaum);
+                int richtung = zufallsgenerator.Next(0, 4); // 0: oben, 1: unten, 2: links, 3: rechts
+
+                switch (richtung)
+                {
+                    case 0: // oben
+                        x = räume[i - 1].Bereich.X + (räume[i - 1].Bereich.Width - raumBreite) / 2;
+                        y = räume[i - 1].Bereich.Y - raumHöhe - 1;
+                        break;
+                    case 1: // unten
+                        x = räume[i - 1].Bereich.X + (räume[i - 1].Bereich.Width - raumBreite) / 2;
+                        y = räume[i - 1].Bereich.Bottom + 1;
+                        break;
+                    case 2: // links
+                        x = räume[i - 1].Bereich.X - raumBreite - 1;
+                        y = räume[i - 1].Bereich.Y + (räume[i - 1].Bereich.Height - raumHöhe) / 2;
+                        break;
+                    case 3: // rechts
+                        x = räume[i - 1].Bereich.Right + 1;
+                        y = räume[i - 1].Bereich.Y + (räume[i - 1].Bereich.Height - raumHöhe) / 2;
+                        break;
+                }
             }
+            else
+            {
+                // Erster Raum wird in der Mitte des Bildschirms platziert
+                x = (Globals.WindowSize.X - minRaumBreite) / 2;
+                y = (Globals.WindowSize.Y - minRaumHöhe) / 2;
+            }
+
+
+
+            Room neuerRaum = new Room(x, y, raumBreite, raumHöhe);
+            räume.Add(neuerRaum);
         }
     }
+
 
     private bool KollisionMitAnderenRäumen(Room neuerRaum)
     {
@@ -92,14 +132,8 @@ public class Map : MapEntity
 
         foreach (var raum in räume)
         {
-            // Draw rooms based on the player's position and scale
-            spriteBatch.DrawRectangle(
-                new Rectangle(
-                    (raum.Bereich.X - (int)player.Position.X) * scale,
-                    (raum.Bereich.Y - (int)player.Position.Y) * scale,
-                    raum.Bereich.Width * scale,
-                    raum.Bereich.Height * scale),
-                Color.White);
+            Globals.SpriteBatch.DrawRectangle(new Rectangle(raum.Bereich.X, raum.Bereich.Y, raum.Bereich.Width, raum.Bereich.Height), Color.White);
+
         }
     }
 }

@@ -10,16 +10,16 @@ namespace FH_Project;
 
 public class HealingPotion : Potion
 {
-	public HealingPotion(Player player, Texture2D texture) : base(player, texture)
-	{
+    public HealingPotion(Player player, Texture2D texture) : base(player, texture)
+    {
         id = 1;
         Inventory.AddItem(this);
-        
-	}
+
+    }
 
     public override void UseEffect()
     {
-        if(player!=null)
+        if (player != null)
         {
 
             player.AddHealth(wert);

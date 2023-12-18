@@ -11,17 +11,17 @@ namespace FH_Project;
 public class RandomPotion : Potion
 {
     Random random = new Random();
-	public RandomPotion(Player player, Texture2D texture) : base(player, texture)
-	{
+    public RandomPotion(Player player, Texture2D texture) : base(player, texture)
+    {
         id = 3;
         Inventory.AddItem(this);
-	}
+    }
 
-   
+
 
     public override void UseEffect()
     {
-        if(player!=null)
+        if (player != null)
         {
 
             int i = random.Next(0, 3);
