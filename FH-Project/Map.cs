@@ -33,10 +33,6 @@ public class Map : MapEntity
 
         _tiles = new Sprite[_mapTileSize.X, _mapTileSize.Y];
 
-
-
-
-
         for (int i = 1; i < 6; i++)
             textures.Add(Globals.Content.Load<Texture2D>($"tile{i}"));
 

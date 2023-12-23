@@ -18,5 +18,5 @@ public class EnemyFactory
             return new Slime(health, speed, pos, velocity, player);
         }
         return null;
-    }
+    }    
 }

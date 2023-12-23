@@ -27,7 +27,7 @@ public class Sprite
     public void Draw()
     {
         // Draw the texture with the specified properties.
-          Game1.spriteBatch.Draw(_texture, Position, null, Color.White, 0f, Origin, 1f, SpriteEffects.None, 0f);
+        ScreenManager.spriteBatch.Draw(_texture, Position, null, Color.White, 0f, Origin, 1f, SpriteEffects.None, 0f);
        
        // Texture, Position, null, Color.White, 0, new Vector2(0, 0), 0.125f, SpriteEffects.None, 0
     }

@@ -247,7 +247,7 @@ public class Player : Entity
 
         if (IsAttacking) attackTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-        Sprite.Position += Game1.Direction * Globals.Time * SPEED;
+        Sprite.Position += ScreenManager.Direction * Globals.Time * SPEED;
         Sprite.Position = Vector2.Clamp(Sprite.Position, _minPos, _maxPos);
     }
 
