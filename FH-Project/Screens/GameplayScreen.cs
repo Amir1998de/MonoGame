@@ -85,9 +85,7 @@ internal class GameplayScreen : GameScreen
 
     #region Initialization
 
-    /// <summary>
-    /// Constructor.
-    /// </summary>
+  
     public GameplayScreen()
         {
         TransitionOnTime = TimeSpan.FromSeconds(1.5);
@@ -96,10 +94,7 @@ internal class GameplayScreen : GameScreen
 
     }
 
-    /// <summary>
-    /// Load graphics content for the game.
-    /// </summary>
-    /// 
+  
 
     public override void LoadContent()
         {
@@ -161,11 +156,7 @@ internal class GameplayScreen : GameScreen
 
         #region Update and Draw
 
-        /// <summary>
-        /// Updates the state of the game. This method checks the GameScreen.IsActive
-        /// property, so the game will stop updating when the pause menu is active,
-        /// or if you tab away to a different application.
-        /// </summary>
+
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
                                                        bool coveredByOtherScreen)
         {
@@ -193,10 +184,6 @@ internal class GameplayScreen : GameScreen
 
     }
 
-    /// <summary>
-    /// Lets the game respond to player input. Unlike the Update method,
-    /// this will only be called when the gameplay screen is active.
-    /// </summary>
     public override void HandleInput(InputState input)
         {
             
@@ -211,10 +198,7 @@ internal class GameplayScreen : GameScreen
             KeyboardState keyboardState = input.CurrentKeyboardStates[playerIndex];
             GamePadState gamePadState = input.CurrentGamePadStates[playerIndex];
 
-            // The game pauses either if the user presses the pause button, or if
-            // they unplug the active gamepad. This requires us to keep track of
-            // whether a gamepad was ever plugged in, because we don't want to pause
-            // on PC if they are playing with a keyboard and have no gamepad at all!
+         
             bool gamePadDisconnected = !gamePadState.IsConnected &&
                                        input.GamePadWasConnected[playerIndex];
 
