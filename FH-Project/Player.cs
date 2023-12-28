@@ -215,10 +215,10 @@ public class Player : Entity
         {
             if (sprintTimer <= 0f || sprintTimer <= 3f)
             {
-                Speed = 2f;
+                Speed = 10f;
                 sprintTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
-            if (sprintTimer >= 3f) coolDownForSprint = true;
+            if (sprintTimer >= 1000000f) coolDownForSprint = true;
         }
         else Speed = BaseSpeed;
 

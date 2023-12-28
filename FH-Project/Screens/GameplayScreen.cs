@@ -29,7 +29,7 @@ namespace FH_Project;
 /// put some more interesting gameplay in here!
 /// </summary>
 internal class GameplayScreen : GameScreen
-    {
+{
     #region Fields
     private SoundManagement soundManagement;
     private KeyboardState currentKeyboardState;
@@ -85,25 +85,25 @@ internal class GameplayScreen : GameScreen
 
     #region Initialization
 
-  
+
     public GameplayScreen()
-        {
+    {
         TransitionOnTime = TimeSpan.FromSeconds(1.5);
         TransitionOffTime = TimeSpan.FromSeconds(0.5);
         soundManagement = new SoundManagement();
 
     }
 
-  
+
 
     public override void LoadContent()
-        {
-            if (content == null)
-                content = new ContentManager(ScreenManager.Game.Services, "Content");
+    {
+        if (content == null)
+            content = new ContentManager(ScreenManager.Game.Services, "Content");
 
         Globals.Content = content;
         karte = new Map();
-        karte.ErstelleZufälligeKarte(4, 400, 800, 400, 800);
+        karte.ErstelleZufälligeKarte(4, 4, 8, 3, 6);
 
         spriteBatch = ScreenManager.SpriteBatch;
         viewport = ScreenManager.GraphicsDevice.Viewport;
@@ -141,25 +141,25 @@ internal class GameplayScreen : GameScreen
 
 
         base.LoadContent();
-            ScreenManager.Game.ResetElapsedTime();
-        }
+        ScreenManager.Game.ResetElapsedTime();
+    }
 
-        /// <summary>
-        /// Unload graphics content used by the game.
-        /// </summary>
-        public override void UnloadContent()
-        {
-            content.Unload();
-        }
+    /// <summary>
+    /// Unload graphics content used by the game.
+    /// </summary>
+    public override void UnloadContent()
+    {
+        content.Unload();
+    }
 
-        #endregion Initialization
+    #endregion Initialization
 
-        #region Update and Draw
+    #region Update and Draw
 
 
-        public override void Update(GameTime gameTime, bool otherScreenHasFocus,
-                                                       bool coveredByOtherScreen)
-        {
+    public override void Update(GameTime gameTime, bool otherScreenHasFocus,
+                                                   bool coveredByOtherScreen)
+    {
 
         base.Update(gameTime, otherScreenHasFocus, false);
 
@@ -185,75 +185,75 @@ internal class GameplayScreen : GameScreen
     }
 
     public override void HandleInput(InputState input)
+    {
+
+        if (input == null)
         {
-            
-            if (input == null)
-            {
-                throw new ArgumentNullException(nameof(input));
-            }
-
-            // Look up inputs for the active player profile.
-            int playerIndex = (int)ControllingPlayer.Value;
-
-            KeyboardState keyboardState = input.CurrentKeyboardStates[playerIndex];
-            GamePadState gamePadState = input.CurrentGamePadStates[playerIndex];
-
-         
-            bool gamePadDisconnected = !gamePadState.IsConnected &&
-                                       input.GamePadWasConnected[playerIndex];
-
-            if (input.IsPauseGame(ControllingPlayer) || gamePadDisconnected)
-            {
-                ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
-            }
-            else
-            {
-                // Otherwise move the player position.
-                Vector2 movement = Vector2.Zero;
-
-                if (keyboardState.IsKeyDown(Keys.Left))
-                {
-                    movement.X--;
-                }
-
-                if (keyboardState.IsKeyDown(Keys.Right))
-                {
-                    movement.X++;
-                }
-
-                if (keyboardState.IsKeyDown(Keys.Up))
-                {
-                    movement.Y--;
-                }
-
-                if (keyboardState.IsKeyDown(Keys.Down))
-                {
-                    movement.Y++;
-                }
-
-                Vector2 thumbstick = gamePadState.ThumbSticks.Left;
-
-                movement.X += thumbstick.X;
-                movement.Y -= thumbstick.Y;
-
-                if (movement.Length() > 1)
-                {
-                    movement.Normalize();
-                }
-
-               // playerPosition += movement * 2;
-            }
+            throw new ArgumentNullException(nameof(input));
         }
 
+        // Look up inputs for the active player profile.
+        int playerIndex = (int)ControllingPlayer.Value;
 
-        /// <summary>
-        /// Draws the gameplay screen.
-        /// </summary>
-        public override void Draw(GameTime gameTime)
+        KeyboardState keyboardState = input.CurrentKeyboardStates[playerIndex];
+        GamePadState gamePadState = input.CurrentGamePadStates[playerIndex];
+
+
+        bool gamePadDisconnected = !gamePadState.IsConnected &&
+                                   input.GamePadWasConnected[playerIndex];
+
+        if (input.IsPauseGame(ControllingPlayer) || gamePadDisconnected)
         {
-           
-            ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
-                                               Color.CornflowerBlue, 0, 0);
+            ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
+        }
+        else
+        {
+            // Otherwise move the player position.
+            Vector2 movement = Vector2.Zero;
+
+            if (keyboardState.IsKeyDown(Keys.Left))
+            {
+                movement.X--;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.Right))
+            {
+                movement.X++;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.Up))
+            {
+                movement.Y--;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.Down))
+            {
+                movement.Y++;
+            }
+
+            Vector2 thumbstick = gamePadState.ThumbSticks.Left;
+
+            movement.X += thumbstick.X;
+            movement.Y -= thumbstick.Y;
+
+            if (movement.Length() > 1)
+            {
+                movement.Normalize();
+            }
+
+            // playerPosition += movement * 2;
+        }
+    }
+
+
+    /// <summary>
+    /// Draws the gameplay screen.
+    /// </summary>
+    public override void Draw(GameTime gameTime)
+    {
+
+        ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
+                                           Color.CornflowerBlue, 0, 0);
 
         spriteBatch.Begin(transformMatrix: camera.GetViewMatrix());
 
@@ -278,13 +278,13 @@ internal class GameplayScreen : GameScreen
         spriteBatch.End();
 
         base.Draw(gameTime);
-        }
-        public void DrawScore()
-        {
-        }
-        public void DrawBackground()
-        {
-        }
+    }
+    public void DrawScore()
+    {
+    }
+    public void DrawBackground()
+    {
+    }
 
     #endregion Update and Draw
 

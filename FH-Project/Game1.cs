@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace FH_Project;
 
 
-    public class Game1 : Microsoft.Xna.Framework.Game
+public class Game1 : Microsoft.Xna.Framework.Game
 {
     private GraphicsDeviceManager _graphics;
     private ScreenManager screenManager;
@@ -23,7 +23,7 @@ namespace FH_Project;
         Content.RootDirectory = "Content";
 
         _graphics = new GraphicsDeviceManager(this);
-        
+
         IsMouseVisible = true;
 
         // Create the screen manager component.
@@ -32,9 +32,9 @@ namespace FH_Project;
         Components.Add(screenManager);
 
 
-      // Activate the first screens.
-      screenManager.AddScreen(new BackgroundScreen(), null);
-      screenManager.AddScreen(new MainMenuScreen(), null);
+        // Activate the first screens.
+        screenManager.AddScreen(new BackgroundScreen(), null);
+        screenManager.AddScreen(new MainMenuScreen(), null);
     }
 
 
@@ -42,10 +42,10 @@ namespace FH_Project;
     {
 
         Globals.WindowSize = new(1920, 1080);
-      //  _graphics.PreferredBackBufferWidth = 1920;
-      //  _graphics.PreferredBackBufferHeight = 1080;
-         _graphics.PreferredBackBufferWidth = GraphicsDevice.Adapter.CurrentDisplayMode.Width;
-          _graphics.PreferredBackBufferHeight = GraphicsDevice.Adapter.CurrentDisplayMode.Width;
+        //  _graphics.PreferredBackBufferWidth = 1920;
+        //  _graphics.PreferredBackBufferHeight = 1080;
+        _graphics.PreferredBackBufferWidth = GraphicsDevice.Adapter.CurrentDisplayMode.Width;
+        _graphics.PreferredBackBufferHeight = GraphicsDevice.Adapter.CurrentDisplayMode.Width;
         _graphics.ApplyChanges();
 
 
@@ -61,7 +61,7 @@ namespace FH_Project;
             Content.Load<object>(asset);
         }
 
-       
+
     }
 
     // Draw
@@ -83,5 +83,5 @@ namespace FH_Project;
         }
 
 
-        }
- }
+    }
+}

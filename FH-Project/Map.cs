@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace FH_Project;
 
@@ -18,8 +19,8 @@ public class Map : MapEntity
     public Point TileSize { get; private set; }
     public Point MapSize { get; private set; }
 
-    List<Texture2D> textures = new(5);
-    Random random = new();
+    private List<Texture2D> textures = new(5);
+    private Random random = new();
 
 
 
@@ -30,7 +31,7 @@ public class Map : MapEntity
     {
         räume = new List<Room>();
 
-
+        Debug.WriteLine(_mapTileSize.ToString());
         _tiles = new Sprite[_mapTileSize.X, _mapTileSize.Y];
 
         for (int i = 1; i < 6; i++)
@@ -38,7 +39,7 @@ public class Map : MapEntity
 
 
         TileSize = new(textures[0].Width, textures[0].Height);
-        MapSize = new(TileSize.X * _mapTileSize.X, TileSize.Y * _mapTileSize.Y);
+        
 
         Random random = new();
 
@@ -69,27 +70,44 @@ public class Map : MapEntity
 
             if (räume.Count > 0)
             {
-                int richtung = zufallsgenerator.Next(0, 4); // 0: oben, 1: unten, 2: links, 3: rechts
-
-                switch (richtung)
+                bool intersectsExistingRoom;
+                do
                 {
-                    case 0: // oben
-                        x = räume[i - 1].Bereich.X + (räume[i - 1].Bereich.Width - raumBreite) / 2;
-                        y = räume[i - 1].Bereich.Y - raumHöhe - 1;
-                        break;
-                    case 1: // unten
-                        x = räume[i - 1].Bereich.X + (räume[i - 1].Bereich.Width - raumBreite) / 2;
-                        y = räume[i - 1].Bereich.Bottom + 1;
-                        break;
-                    case 2: // links
-                        x = räume[i - 1].Bereich.X - raumBreite - 1;
-                        y = räume[i - 1].Bereich.Y + (räume[i - 1].Bereich.Height - raumHöhe) / 2;
-                        break;
-                    case 3: // rechts
-                        x = räume[i - 1].Bereich.Right + 1;
-                        y = räume[i - 1].Bereich.Y + (räume[i - 1].Bereich.Height - raumHöhe) / 2;
-                        break;
-                }
+                    intersectsExistingRoom = false;
+
+                    int randDirection = zufallsgenerator.Next(0, 4); // 0: oben, 1: unten, 2: links, 3: rechts
+
+                    switch (randDirection)
+                    {
+                        case 0: // oben
+                            x = räume[i - 1].Bereich.X;
+                            y = räume[i - 1].Bereich.Y - raumHöhe - 1 + (räume[i - 1].TileHeight / 2);
+                            break;
+                        case 1: // unten
+                            x = räume[i - 1].Bereich.X;
+                            y = räume[i - 1].Bereich.Bottom + 1 + (räume[i - 1].TileHeight / 2);
+                            break;
+                        case 2: // links
+                            x = räume[i - 1].Bereich.X - raumBreite - 1 + (räume[i - 1].TileHeight / 2);
+                            y = räume[i - 1].Bereich.Y;
+                            break;
+                        case 3: // rechts
+                            x = räume[i - 1].Bereich.Right + 1 + (räume[i - 1].TileHeight / 2);
+                            y = räume[i - 1].Bereich.Y;
+                            break;
+                    }
+
+                    // Check for intersection with existing rooms based on dimensions
+                    Rectangle newRoomRect = new Rectangle(x, y, raumBreite, raumHöhe);
+                    foreach (var existingRoom in räume)
+                    {
+                        if (newRoomRect.Intersects(existingRoom.Bereich))
+                        {
+                            intersectsExistingRoom = true;
+                            break;
+                        }
+                    }
+                } while (intersectsExistingRoom);
             }
             else
             {
@@ -98,38 +116,35 @@ public class Map : MapEntity
                 y = (Globals.WindowSize.Y - minRaumHöhe) / 2;
             }
 
-
-
             Room neuerRaum = new Room(x, y, raumBreite, raumHöhe);
             räume.Add(neuerRaum);
         }
     }
 
-
-    private bool KollisionMitAnderenRäumen(Room neuerRaum)
+    public Room GetRoomPlayerIsIn(Player player)
     {
-        foreach (var raum in räume)
+        foreach (Room room in räume)
         {
-            if (neuerRaum.ÜberlapptMitAnderemRaum(raum))
-            {
-                return true;
-            }
+            if (room.PlayerIsInRoom(player))
+                return room;
         }
-        return false;
+
+        return null;
     }
 
     public void Draw(SpriteBatch spriteBatch, Player player, int scale)
     {
-        for (int y = 0; y < _mapTileSize.Y; y++)
+        /*for (int y = 0; y < _mapTileSize.Y; y++)
         {
             for (int x = 0; x < _mapTileSize.X; x++)
                 _tiles[x, y].Draw();
-        }
+        }*/
 
         foreach (var raum in räume)
         {
-            Globals.SpriteBatch.DrawRectangle(new Rectangle(raum.Bereich.X, raum.Bereich.Y, raum.Bereich.Width, raum.Bereich.Height), Color.White);
-
+            raum.Draw();
         }
+
+        //räume[0].Draw();
     }
 }
