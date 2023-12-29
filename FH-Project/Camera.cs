@@ -19,23 +19,24 @@ public class Camera
         Rotation = 0.0f;
         this.karte = karte;
         this.player = player;
-    }
+    }   
 
-    public Matrix GetViewMatrix()
+    public Matrix GetViewMatrix(Room currentRoom)
     {
-        float dx = (Globals.WindowSize.X / 7) - player.Position.X;
-        float dy = (Globals.WindowSize.Y / 7) - player.Position.Y;
+        float dx = player.Position.X * Zoom - (Globals.WindowSize.X / 7);
+        float dy = player.Position.Y * Zoom - (Globals.WindowSize.Y / 7);
 
-        // Klemme die Werte, um sicherzustellen, dass die Kamera nicht über den Rand der Karte hinausgeht
-        //dx = MathHelper.Clamp(dx, 0, karte.MapSize.X - Globals.WindowSize.X);
-        //dy = MathHelper.Clamp(dy, 0, karte.MapSize.Y - Globals.WindowSize.Y);
+        // Adjust the camera based on the current room boundaries
+        dx = MathHelper.Clamp(dx, currentRoom.Bereich.Left, currentRoom.Bereich.Right - Globals.WindowSize.X * Zoom);
+        dy = MathHelper.Clamp(dy, currentRoom.Bereich.Top, currentRoom.Bereich.Bottom - Globals.WindowSize.Y * Zoom);
 
-        // Berechne die Transformationsmatrix unter Verwendung von Position und Zoom
-        transformMatrix = Matrix.CreateTranslation(new Vector3(dx, dy, 0.0f)) *
-                          Matrix.CreateRotationZ(Rotation) *
-                          Matrix.CreateScale(new Vector3(Zoom, Zoom, 1.0f));
+        // Calculate the transformation matrix using position and zoom
+        transformMatrix = Matrix.CreateTranslation(new Vector3(-dx, -dy, 0.0f)) *
+                            Matrix.CreateRotationZ(Rotation) *
+                            Matrix.CreateScale(new Vector3(Zoom, Zoom, 1.0f));
 
         return transformMatrix;
+
 
     }
 }

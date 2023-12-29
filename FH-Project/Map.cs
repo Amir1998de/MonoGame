@@ -11,7 +11,7 @@ namespace FH_Project;
 
 public class Map : MapEntity
 {
-    private List<Room> räume;
+    private static List<Room> räume;
 
     private readonly Point _mapTileSize = new(16, 9);
 
@@ -121,7 +121,7 @@ public class Map : MapEntity
         }
     }
 
-    public Room GetRoomPlayerIsIn(Player player)
+    public static Room GetRoomPlayerIsIn(Player player)
     {
         foreach (Room room in räume)
         {

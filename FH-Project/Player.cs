@@ -95,8 +95,10 @@ public class Player : Entity
     {
         Position = new Vector2(Position.X - Speed, Position.Y);
 
-        /*if (Postion.X < -)
-            Postion = new Vector2(0, Postion.Y);*/
+        float z = (float)EntityTexture.Width;
+
+        if (Position.X - z  < Map.GetRoomPlayerIsIn(this).Bereich.Left)
+            Position = new Vector2(Map.GetRoomPlayerIsIn(this).Bereich.Left + z, Position.Y);
 
         Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
     }
@@ -106,10 +108,10 @@ public class Player : Entity
         Position = new Vector2(Position.X + Speed, Position.Y);
 
         // Durch 2 weil man unten beim Draw 3 scale hat. 
-        float z = (float)EntityTexture.Width * 3;
+        float z = (float)EntityTexture.Width;
 
-        /*if (Postion.X + z  > maxWeidth)
-            Postion = new Vector2(maxWeidth - z, Postion.Y);*/
+        /*if (Position.X + z > Map.GetRoomPlayerIsIn(this).Bereich.Right)
+            Position = new Vector2(Map.GetRoomPlayerIsIn(this).Bereich.Right - z, Position.Y);*/
 
         Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
     }
@@ -118,10 +120,10 @@ public class Player : Entity
     {
         Position = new Vector2(Position.X, Position.Y - Speed);
 
+        float z = (float)EntityTexture.Height;
 
-
-        /*if (Postion.Y < 0)
-            Postion = new Vector2(Postion.X, 0);*/
+        if (Position.Y - z < Map.GetRoomPlayerIsIn(this).Bereich.Top)
+            Position = new Vector2(Position.X, Map.GetRoomPlayerIsIn(this).Bereich.Top + z);
 
         Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
 
@@ -132,10 +134,10 @@ public class Player : Entity
         Position = new Vector2(Position.X, Position.Y + Speed);
 
         // Durch 2 weil man unten beim Draw 3 scale hat. 
-        float z = (float)EntityTexture.Height * 3;
+        float z = (float)EntityTexture.Height;
 
-        /*if (Postion.Y  + z > maxHeight)
-            Postion = new Vector2(Postion.X , maxHeight -z);*/
+        if (Position.Y + z >  Map.GetRoomPlayerIsIn(this).Bereich.Bottom)
+            Position = new Vector2(Position.X, Map.GetRoomPlayerIsIn(this).Bereich.Bottom - z);
 
         Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
     }

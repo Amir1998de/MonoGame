@@ -122,7 +122,7 @@ internal class GameplayScreen : GameScreen
         bow = new Bow(100, 5, bowTexture);
 
         player = new Player(100, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword);
-        player.SetBounds(karte.MapSize, karte.TileSize);
+        //player.SetBounds(karte.MapSize, karte.TileSize);
 
         camera = new Camera(karte, player);
         camera.Position = player.Position;
@@ -192,57 +192,8 @@ internal class GameplayScreen : GameScreen
             throw new ArgumentNullException(nameof(input));
         }
 
-        // Look up inputs for the active player profile.
-        int playerIndex = (int)ControllingPlayer.Value;
+        
 
-        KeyboardState keyboardState = input.CurrentKeyboardStates[playerIndex];
-        GamePadState gamePadState = input.CurrentGamePadStates[playerIndex];
-
-
-        bool gamePadDisconnected = !gamePadState.IsConnected &&
-                                   input.GamePadWasConnected[playerIndex];
-
-        if (input.IsPauseGame(ControllingPlayer) || gamePadDisconnected)
-        {
-            ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
-        }
-        else
-        {
-            // Otherwise move the player position.
-            Vector2 movement = Vector2.Zero;
-
-            if (keyboardState.IsKeyDown(Keys.Left))
-            {
-                movement.X--;
-            }
-
-            if (keyboardState.IsKeyDown(Keys.Right))
-            {
-                movement.X++;
-            }
-
-            if (keyboardState.IsKeyDown(Keys.Up))
-            {
-                movement.Y--;
-            }
-
-            if (keyboardState.IsKeyDown(Keys.Down))
-            {
-                movement.Y++;
-            }
-
-            Vector2 thumbstick = gamePadState.ThumbSticks.Left;
-
-            movement.X += thumbstick.X;
-            movement.Y -= thumbstick.Y;
-
-            if (movement.Length() > 1)
-            {
-                movement.Normalize();
-            }
-
-            // playerPosition += movement * 2;
-        }
     }
 
 
@@ -255,7 +206,7 @@ internal class GameplayScreen : GameScreen
         ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
                                            Color.CornflowerBlue, 0, 0);
 
-        spriteBatch.Begin(transformMatrix: camera.GetViewMatrix());
+        spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(Map.GetRoomPlayerIsIn(player)));
 
         if (Keyboard.GetState().IsKeyDown(Keys.Space))
         {
