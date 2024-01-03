@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace FH_Project;
 
@@ -24,9 +25,13 @@ public class Room : MapEntity
 
     public int EnemyCap { get; set; }
 
+    public RoomDirections Directions { get;  set; }
+    public RoomDirections ReverseDircetion { get; set; }
+    
+
     public Room(int x, int y, int breite, int höhe)
     {
-        EnemyCap = 2;
+        EnemyCap = random.Next(1,3);
 
         tileSize = new Point(breite, höhe);
 
@@ -55,19 +60,28 @@ public class Room : MapEntity
         }
     }
 
-
-    public static void DrawEnemyInRoom(SpriteBatch spriteBatch)
+    public void CreateEnemyInRoom()
     {
-        Enemy.enemies.ForEach(enemy =>
+        int count = 0;
+        while (EnemyCap >= count)
         {
-            enemy.Draw(spriteBatch);
-        });
+            int x = random.Next(Bereich.Left, Bereich.Right);
+            int y = random.Next(Bereich.Top, Bereich.Bottom);
+
+            Vector2 pos = new Vector2(x, y);
+
+            Enemy.AddEnemy("Slime", 500, 2, pos, new Vector2(0, 0));
+            count++;
+        }
     }
 
-    public bool PlayerIsInRoom(Player player)
+
+    public bool PlayerIsInRoom()
     {
-        return Bereich.Contains(player.Position.X, player.Position.Y);
+        return Bereich.Contains(Globals.Player.Position.X, Globals.Player.Position.Y);
     }
+
+
 
     public void Draw()
     {
@@ -77,11 +91,6 @@ public class Room : MapEntity
                 tiles[x, y].Draw();
         }
         //Globals.SpriteBatch.DrawRectangle(Bereich, Color.White);
-    }
-
-    public bool ÜberlapptMitAnderemRaum(Room andererRaum)
-    {
-        return Bereich.Intersects(andererRaum.Bereich);
     }
 }
 

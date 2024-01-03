@@ -102,11 +102,6 @@ internal class GameplayScreen : GameScreen
             content = new ContentManager(ScreenManager.Game.Services, "Content");
 
         Globals.Content = content;
-        karte = new Map();
-        karte.ErstelleZufälligeKarte(4, 4, 8, 3, 6);
-
-        spriteBatch = ScreenManager.SpriteBatch;
-        viewport = ScreenManager.GraphicsDevice.Viewport;
 
         swordTexture = content.Load<Texture2D>("Items/Weapon/SwordT2");
         hammerTexture = content.Load<Texture2D>("Items/Weapon/HammerT2");
@@ -114,26 +109,38 @@ internal class GameplayScreen : GameScreen
         healthPotionTexture = content.Load<Texture2D>("Items/Potions/PotionRed");
         shieldPotionTexture = content.Load<Texture2D>("Items/Potions/PotionBlue");
         randomPotionTexture = content.Load<Texture2D>("Items/Potions/PotionGreen");
-
-        Entity.View(viewport.Width, viewport.Height);
+        SpriteFont font = Globals.Content.Load<SpriteFont>("Verdana");
 
         sword = new Sword(100, 5, swordTexture);
         hammer = new Hammer(100, 5, hammerTexture);
         bow = new Bow(100, 5, bowTexture);
 
-        player = new Player(100, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword);
+        Globals.Player = new Player(100, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword);
+
+        karte = new Map();
+        karte.ErstelleZufälligeKarte(4, 4, 8, 3, 6);
+        karte.DrawEnemyInRoom();
+
+
+        spriteBatch = ScreenManager.SpriteBatch;
+        viewport = ScreenManager.GraphicsDevice.Viewport;
+
+
+        Entity.View(viewport.Width, viewport.Height);
+
+
         //player.SetBounds(karte.MapSize, karte.TileSize);
 
-        camera = new Camera(karte, player);
-        camera.Position = player.Position;
-        camera.Zoom = 1f;
+        camera = new Camera(karte);
+        camera.Position = Globals.Player.Position;
+        camera.Zoom = 0.6f;
 
 
 
         enemyFactory = new EnemyFactory();
         //potion = new HealingPotion(player, healthPotionTexture);
 
-        enemy = enemyFactory.createEnemy("Slime", 700, 2, new Vector2(viewport.Height / 2, viewport.Width / 3), new Vector2(0, 0), player);
+        //enemy = enemyFactory.createEnemy("Slime", 700, 2, new Vector2(viewport.Height / 2, viewport.Width / 3), new Vector2(0, 0));
         HealthPotion = new HealingPotion(player, healthPotionTexture);
         ShieldPotion = new ShieldPotion(player, shieldPotionTexture);
         RandomPotion = new RandomPotion(player, randomPotionTexture);
@@ -178,7 +185,7 @@ internal class GameplayScreen : GameScreen
 
 
         Globals.Update(gameTime);
-        player.Update(gameTime);
+        Globals.Player.Update(gameTime);
         //CalculateTranslation();
 
 
@@ -192,7 +199,59 @@ internal class GameplayScreen : GameScreen
             throw new ArgumentNullException(nameof(input));
         }
 
-        
+        int playerIndex = (int)ControllingPlayer.Value;
+
+        KeyboardState keyboardState = input.CurrentKeyboardStates[playerIndex];
+        GamePadState gamePadState = input.CurrentGamePadStates[playerIndex];
+
+        // The game pauses either if the user presses the pause button, or if
+        // they unplug the active gamepad. This requires us to keep track of
+        // whether a gamepad was ever plugged in, because we don't want to pause
+        // on PC if they are playing with a keyboard and have no gamepad at all!
+        bool gamePadDisconnected = !gamePadState.IsConnected &&
+                                   input.GamePadWasConnected[playerIndex];
+
+        if (input.IsPauseGame(ControllingPlayer) || gamePadDisconnected)
+        {
+            ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
+        }
+        else
+        {
+            // Otherwise move the player position.
+            Vector2 movement = Vector2.Zero;
+
+            if (keyboardState.IsKeyDown(Keys.Left))
+            {
+                movement.X--;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.Right))
+            {
+                movement.X++;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.Up))
+            {
+                movement.Y--;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.Down))
+            {
+                movement.Y++;
+            }
+
+            Vector2 thumbstick = gamePadState.ThumbSticks.Left;
+
+            movement.X += thumbstick.X;
+            movement.Y -= thumbstick.Y;
+
+            if (movement.Length() > 1)
+            {
+                movement.Normalize();
+            }
+
+            Globals.Player.Position += movement * 2;
+        }
 
     }
 
@@ -206,23 +265,26 @@ internal class GameplayScreen : GameScreen
         ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
                                            Color.CornflowerBlue, 0, 0);
 
-        spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(Map.GetRoomPlayerIsIn(player)));
+        spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(Map.GetRoomPlayerIsIn()));
 
         if (Keyboard.GetState().IsKeyDown(Keys.Space))
         {
-            player.Weapon.Draw(spriteBatch);
+            Globals.Player.Weapon.Draw(spriteBatch);
 
         }
 
         // Test
 
-        karte.Draw(spriteBatch, player, 50);
+        karte.Draw();
 
         //player.sprite.Draw();
 
         //potion.Draw();
 
-        player.Draw(spriteBatch);
+        Globals.Player.Draw();
+        Enemy.DrawAll();
+
+        karte.DrawEnemyCounter(10,10,camera);
 
         //enemy.CheckEnemy(spriteBatch, player);
 

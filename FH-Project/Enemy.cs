@@ -19,22 +19,21 @@ public abstract class Enemy : Entity, IObserver
 
 
     public static List<Enemy> enemies { get; private set; } = new List<Enemy>();
-    private Player player;
     protected bool exisits;
     protected Room room;
 
     protected Texture2D enemyTexture;
     protected Texture2D[] enemyIdleTexture;
-
+    private int enemiesToDefeat;
 
     #endregion Variablen
 
-    public Enemy(int health, float speed, Vector2 pos, Vector2 velocity, Player player) : base(health, speed, pos, velocity)
+    public Enemy(int health, float speed, Vector2 pos, Vector2 velocity) : base(health, speed, pos, velocity)
     {
         LoadContent();
         // AddEnemy(this);
-        this.player = player;
-        this.player.AddObserver(this);
+        enemiesToDefeat = enemies.Count;
+        Globals.Player.AddObserver(this);
         exisits = false;
 
     }
@@ -53,9 +52,9 @@ public abstract class Enemy : Entity, IObserver
             }
 
             // /8 weil Scalierung der Waffe auf 0.125
-            if (CheckCollision(new Rectangle((int)player.Weapon.Position.X, (int)player.Weapon.Position.Y, player.Weapon.Texture.Width, player.Weapon.Texture.Height)))
+            if (CheckCollision(new Rectangle((int)Globals.Player.Weapon.Position.X, (int)Globals.Player.Weapon.Position.Y, Globals.Player.Weapon.Texture.Width, Globals.Player.Weapon.Texture.Height)))
             {
-                ReduceHealth(player.Weapon.Damage);
+                ReduceHealth(Globals.Player.Weapon.Damage);
             }
         });
         if (index != -1)
@@ -76,23 +75,23 @@ public abstract class Enemy : Entity, IObserver
             return enemies;
     }
 
-    public static void AddEnemy(string existingEnemy, int health, float speed, Vector2 pos, Vector2 velocity, Player player, Room room)
+    public static void DrawAll()
+    {
+        enemies.ForEach(enemy => enemy.Draw());
+    }
+
+    public static void AddEnemy(string existingEnemy, int health, float speed, Vector2 pos, Vector2 velocity)
     {
         EnemyFactory factory = new EnemyFactory();
-        int count = 0;
-        while (room.EnemyCap < count)
-        {
-            enemies.Add(factory.createEnemy(existingEnemy, health, speed, pos, velocity, player));
-            count++;
-        }
+        enemies.Add(factory.createEnemy(existingEnemy, health, speed, pos, velocity));    
     }
 
     public static void RemoveEnemyAtIndex(int index)
     {
-
         enemies.RemoveAt(index);
-
     }
+
+    
 
 
 }

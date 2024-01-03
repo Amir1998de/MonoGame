@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
+
 namespace FH_Project;
 
 public class Map : MapEntity
@@ -22,10 +23,7 @@ public class Map : MapEntity
     private List<Texture2D> textures = new(5);
     private Random random = new();
 
-
-
-
-
+    
 
     public Map()
     {
@@ -38,10 +36,7 @@ public class Map : MapEntity
             textures.Add(Globals.Content.Load<Texture2D>($"tile{i}"));
 
 
-        TileSize = new(textures[0].Width, textures[0].Height);
-        
-
-        Random random = new();
+        TileSize = new(textures[0].Width, textures[0].Height); 
 
         for (int y = 0; y < _mapTileSize.Y; y++)
         {
@@ -67,6 +62,7 @@ public class Map : MapEntity
             int y = 0;
             int raumBreite = zufallsgenerator.Next(minRaumBreite, maxRaumBreite + 1);
             int raumHöhe = zufallsgenerator.Next(minRaumHöhe, maxRaumHöhe + 1);
+            RoomDirections directions = RoomDirections.START;
 
             if (räume.Count > 0)
             {
@@ -75,25 +71,34 @@ public class Map : MapEntity
                 {
                     intersectsExistingRoom = false;
 
+
                     int randDirection = zufallsgenerator.Next(0, 4); // 0: oben, 1: unten, 2: links, 3: rechts
 
                     switch (randDirection)
                     {
                         case 0: // oben
                             x = räume[i - 1].Bereich.X;
-                            y = räume[i - 1].Bereich.Y - raumHöhe - 1 + (räume[i - 1].TileHeight / 2);
+                            y = räume[i - 1].Bereich.Y - raumHöhe + (räume[i - 1].TileHeight / 2);
+                            räume[i - 1].Directions = RoomDirections.UP;
+                            räume[i - 1].ReverseDircetion = RoomDirections.DOWN;
                             break;
                         case 1: // unten
                             x = räume[i - 1].Bereich.X;
-                            y = räume[i - 1].Bereich.Bottom + 1 + (räume[i - 1].TileHeight / 2);
+                            y = räume[i - 1].Bereich.Bottom + (räume[i - 1].TileHeight / 2);
+                            räume[i - 1].Directions = RoomDirections.DOWN;
+                            räume[i - 1].ReverseDircetion = RoomDirections.UP;
                             break;
                         case 2: // links
-                            x = räume[i - 1].Bereich.X - raumBreite - 1 + (räume[i - 1].TileHeight / 2);
+                            x = räume[i - 1].Bereich.X - raumBreite + (räume[i - 1].TileHeight / 2);
                             y = räume[i - 1].Bereich.Y;
+                            räume[i - 1].Directions = RoomDirections.LEFT;
+                            räume[i - 1].ReverseDircetion = RoomDirections.RIGHT;
                             break;
                         case 3: // rechts
-                            x = räume[i - 1].Bereich.Right + 1 + (räume[i - 1].TileHeight / 2);
+                            x = räume[i - 1].Bereich.Right + (räume[i - 1].TileHeight / 2);
                             y = räume[i - 1].Bereich.Y;
+                            räume[i - 1].Directions = RoomDirections.RIGHT;
+                            räume[i - 1].ReverseDircetion = RoomDirections.LEFT;
                             break;
                     }
 
@@ -121,18 +126,27 @@ public class Map : MapEntity
         }
     }
 
-    public static Room GetRoomPlayerIsIn(Player player)
+    public static Room GetRoomPlayerIsIn()
     {
         foreach (Room room in räume)
         {
-            if (room.PlayerIsInRoom(player))
+            if (room.PlayerIsInRoom())
                 return room;
         }
 
         return null;
     }
 
-    public void Draw(SpriteBatch spriteBatch, Player player, int scale)
+    public void DrawEnemyInRoom()
+    {
+        räume.ForEach(room =>
+        {
+            room.CreateEnemyInRoom();
+        });
+        
+    }
+
+    public void Draw()
     {
         /*for (int y = 0; y < _mapTileSize.Y; y++)
         {
@@ -147,4 +161,22 @@ public class Map : MapEntity
 
         //räume[0].Draw();
     }
+
+
+    public void DrawEnemyCounter(float x, float y, Camera camera)
+    {
+        SpriteFont font = Globals.Content.Load<SpriteFont>("Verdana");
+
+        // Erhalte die kamerabezogene Position für den Score
+        Vector2 cameraAdjustedPosition = new Vector2(x, y) + camera.Position;
+
+        string enemyCountString = "Enemies: " + Enemy.enemies.Count.ToString();
+
+        // Measure the size of the string to determine where to draw it
+        Vector2 stringSize = font.MeasureString(enemyCountString);
+
+        // Draw the string at the upper-right corner of the screen
+        Globals.SpriteBatch.DrawString(font, enemyCountString, cameraAdjustedPosition, Color.Red);
+    }
+
 }

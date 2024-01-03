@@ -9,7 +9,7 @@ class Slime : Enemy
     Random rnd = new Random();
 
 
-    public Slime(int health, float speed, Vector2 pos, Vector2 velocity, Player player) : base(health, speed, pos, velocity, player)
+    public Slime(int health, float speed, Vector2 pos, Vector2 velocity) : base(health, speed, pos, velocity)
     {
     }
     public override void Attack()

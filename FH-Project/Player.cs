@@ -94,11 +94,14 @@ public class Player : Entity
     public void MovePlayerLeft()
     {
         Position = new Vector2(Position.X - Speed, Position.Y);
+        Room roomPlayerisIn = Map.GetRoomPlayerIsIn();
+        bool directionPlayerCanGo = !roomPlayerisIn.Directions.Equals(RoomDirections.LEFT) && !roomPlayerisIn.ReverseDircetion.Equals(RoomDirections.RIGHT) ? true : false;
+
 
         float z = (float)EntityTexture.Width;
 
-        if (Position.X - z  < Map.GetRoomPlayerIsIn(this).Bereich.Left)
-            Position = new Vector2(Map.GetRoomPlayerIsIn(this).Bereich.Left + z, Position.Y);
+        if (Position.X - z  < roomPlayerisIn.Bereich.Left && directionPlayerCanGo)
+            Position = new Vector2(roomPlayerisIn.Bereich.Left + z, Position.Y);
 
         Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
     }
@@ -106,12 +109,15 @@ public class Player : Entity
     public void MovePlayerRight()
     {
         Position = new Vector2(Position.X + Speed, Position.Y);
+        Room roomPlayerisIn = Map.GetRoomPlayerIsIn();
+        bool directionPlayerCanGo = !roomPlayerisIn.Directions.Equals(RoomDirections.RIGHT) && !roomPlayerisIn.ReverseDircetion.Equals(RoomDirections.LEFT) ? true : false;
+
 
         // Durch 2 weil man unten beim Draw 3 scale hat. 
         float z = (float)EntityTexture.Width;
 
-        /*if (Position.X + z > Map.GetRoomPlayerIsIn(this).Bereich.Right)
-            Position = new Vector2(Map.GetRoomPlayerIsIn(this).Bereich.Right - z, Position.Y);*/
+        if (Position.X + z > roomPlayerisIn.Bereich.Right && directionPlayerCanGo)
+            Position = new Vector2(roomPlayerisIn.Bereich.Right - z, Position.Y);
 
         Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
     }
@@ -119,11 +125,15 @@ public class Player : Entity
     public void MovePlayerUp()
     {
         Position = new Vector2(Position.X, Position.Y - Speed);
+        Room roomPlayerisIn = Map.GetRoomPlayerIsIn();
+        bool directionPlayerCanGo = !roomPlayerisIn.Directions.Equals(RoomDirections.UP) && !roomPlayerisIn.ReverseDircetion.Equals(RoomDirections.DOWN) ? true: false;
+
+
 
         float z = (float)EntityTexture.Height;
 
-        if (Position.Y - z < Map.GetRoomPlayerIsIn(this).Bereich.Top)
-            Position = new Vector2(Position.X, Map.GetRoomPlayerIsIn(this).Bereich.Top + z);
+        if (Position.Y - z < roomPlayerisIn.Bereich.Top && directionPlayerCanGo)
+            Position = new Vector2(Position.X, roomPlayerisIn.Bereich.Top + z);
 
         Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
 
@@ -132,12 +142,14 @@ public class Player : Entity
     public void MovePlayerDown()
     {
         Position = new Vector2(Position.X, Position.Y + Speed);
+        Room roomPlayerisIn = Map.GetRoomPlayerIsIn();
+        bool directionPlayerCanGo = !roomPlayerisIn.Directions.Equals(RoomDirections.DOWN) && !roomPlayerisIn.ReverseDircetion.Equals(RoomDirections.UP) ? true : false;
 
         // Durch 2 weil man unten beim Draw 3 scale hat. 
         float z = (float)EntityTexture.Height;
 
-        if (Position.Y + z >  Map.GetRoomPlayerIsIn(this).Bereich.Bottom)
-            Position = new Vector2(Position.X, Map.GetRoomPlayerIsIn(this).Bereich.Bottom - z);
+        if (Position.Y + z > roomPlayerisIn.Bereich.Bottom && directionPlayerCanGo)
+            Position = new Vector2(Position.X, roomPlayerisIn.Bereich.Bottom - z);
 
         Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
     }

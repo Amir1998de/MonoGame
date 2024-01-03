@@ -108,9 +108,9 @@ public abstract class Entity : Subject
 
     public abstract void Attack();
 
-    public void Draw(SpriteBatch spriteBatch)
+    public void Draw()
     {
-        spriteBatch.Draw(EntityTexture, Position, null, Color.White, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+        Globals.SpriteBatch.Draw(EntityTexture, Position, null, Color.White, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
     }
 
     public void Add(Entity entity, SpriteBatch spriteBatch)
