@@ -137,6 +137,16 @@ public class Map : MapEntity
         return null;
     }
 
+    public static Room GetRoomEnemyIsIn(Enemy enemy)
+    {
+        foreach (Room room in räume)
+        {
+            if (room.EnemiesAreInRoom(enemy))
+                return room;
+        }
+        return null;
+    }
+
     public void DrawEnemyInRoom()
     {
         räume.ForEach(room =>

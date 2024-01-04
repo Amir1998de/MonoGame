@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection.Metadata;
 
 
@@ -17,6 +18,9 @@ public class Player : Entity
 
     #region Variablen
     public bool IsAttacking { get; set; }
+    public bool CanGetHit { get; set; }
+    private float invincibilityFrames;
+
     protected int shield;
     private int maxShield = 100;
     public Weapon Weapon { get; set; }
@@ -65,7 +69,7 @@ public class Player : Entity
         Weapon = weapon;
         Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
         coolDownForSprint = false;
-
+        CanGetHit = true;
     }
 
     public void AddShield(int value)
@@ -90,6 +94,7 @@ public class Player : Entity
         return !(IsAttacking);
     }
 
+    
 
     public void MovePlayerLeft()
     {
@@ -229,10 +234,10 @@ public class Player : Entity
         {
             if (sprintTimer <= 0f || sprintTimer <= 3f)
             {
-                Speed = 10f;
+                Speed = 5f;
                 sprintTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
-            if (sprintTimer >= 1000000f) coolDownForSprint = true;
+            if (sprintTimer >= 3f) coolDownForSprint = true;
         }
         else Speed = BaseSpeed;
 
@@ -246,12 +251,17 @@ public class Player : Entity
             }
         }
 
+        if (CheckIfDead())
+        {
+            
+        }
 
-
-        if (Globals.KeyboardState.IsKeyDown(Keys.Space) && CanAttack())
+        if (Globals.KeyboardState.IsKeyDown(Keys.Space) && !IsAttacking)
         {
             Attack();
         }
+
+        //Debug.WriteLine(IsAttacking);
 
         if (IsAttacking && attackTimer >= 0.5f)
         {
@@ -260,9 +270,20 @@ public class Player : Entity
         }
 
         if (IsAttacking) attackTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        if(!CanGetHit) invincibilityFrames += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+        //Debug.WriteLine("Attack Timer: " + attackTimer);
+
+        if(invincibilityFrames >= 3)
+        {
+            CanGetHit = true;
+            invincibilityFrames = 0;
+        }
 
         Sprite.Position += ScreenManager.Direction * Globals.Time * SPEED;
         Sprite.Position = Vector2.Clamp(Sprite.Position, _minPos, _maxPos);
+
+
     }
 
     public void UpdateIdle(GameTime gameTime)

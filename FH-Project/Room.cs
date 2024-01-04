@@ -70,7 +70,7 @@ public class Room : MapEntity
 
             Vector2 pos = new Vector2(x, y);
 
-            Enemy.AddEnemy("Slime", 500, 2, pos, new Vector2(0, 0));
+            Enemy.AddEnemy("Slime", 3, 2, pos, new Vector2(0, 0));
             count++;
         }
     }
@@ -81,7 +81,11 @@ public class Room : MapEntity
         return Bereich.Contains(Globals.Player.Position.X, Globals.Player.Position.Y);
     }
 
+    public bool EnemiesAreInRoom(Enemy enemy)
+    {
+        return Bereich.Contains(enemy.Position.X, enemy.Position.Y);
 
+    }
 
     public void Draw()
     {

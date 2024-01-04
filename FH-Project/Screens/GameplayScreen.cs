@@ -20,6 +20,7 @@ using GameStateManagement.Fachlogik;
 using System;
 using System.Threading;
 using System.Reflection.Metadata;
+using System.Reflection.Metadata.Ecma335;
 #endregion Using Statements
 
 namespace FH_Project;
@@ -109,13 +110,13 @@ internal class GameplayScreen : GameScreen
         healthPotionTexture = content.Load<Texture2D>("Items/Potions/PotionRed");
         shieldPotionTexture = content.Load<Texture2D>("Items/Potions/PotionBlue");
         randomPotionTexture = content.Load<Texture2D>("Items/Potions/PotionGreen");
-        SpriteFont font = Globals.Content.Load<SpriteFont>("Verdana");
+        //SpriteFont font = Globals.Content.Load<SpriteFont>("Verdana");
 
-        sword = new Sword(100, 5, swordTexture);
+        sword = new Sword(1, 5, swordTexture);
         hammer = new Hammer(100, 5, hammerTexture);
         bow = new Bow(100, 5, bowTexture);
 
-        Globals.Player = new Player(100, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword);
+        Globals.Player = new Player(3, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword);
 
         karte = new Map();
         karte.ErstelleZufälligeKarte(4, 4, 8, 3, 6);
@@ -133,7 +134,7 @@ internal class GameplayScreen : GameScreen
 
         camera = new Camera(karte);
         camera.Position = Globals.Player.Position;
-        camera.Zoom = 0.6f;
+        camera.Zoom = 1f;
 
 
 
@@ -183,7 +184,11 @@ internal class GameplayScreen : GameScreen
 
         if (_direction != Microsoft.Xna.Framework.Vector2.Zero) _direction.Normalize();
 
-        Enemy.GetEnemies().ForEach(enemy => enemy.ChasePlayer(200f));
+
+
+        Enemy.GetEnemies().ForEach(enemy => enemy.Update(gameTime));
+
+        
 
 
         Globals.Update(gameTime);
@@ -294,16 +299,10 @@ internal class GameplayScreen : GameScreen
 
         base.Draw(gameTime);
     }
-    public void DrawScore()
-    {
-    }
-    public void DrawBackground()
-    {
-    }
 
     #endregion Update and Draw
 
-    private void CalculateTranslation()
+    /*private void CalculateTranslation()
     {
 
         var dx = (Globals.WindowSize.X / 2) - player.Position.X;
@@ -313,5 +312,5 @@ internal class GameplayScreen : GameScreen
         dy = MathHelper.Clamp(dy, 0, karte.MapSize.Y - Globals.WindowSize.Y);
 
         _translation = Matrix.CreateTranslation(dx, dy, 0f) * Matrix.CreateScale(1f);
-    }
+    }*/
 }
