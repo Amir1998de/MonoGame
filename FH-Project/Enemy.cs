@@ -91,7 +91,22 @@ public abstract class Enemy : Entity, IObserver
         enemies.RemoveAt(index);
     }
 
-    
+    public void ChasePlayer(float chaseRadius)
+    {
+        if (Globals.Player != null)
+        {
+            float distanceToPlayer = Vector2.Distance(Position, Globals.Player.Position);
+
+            if (distanceToPlayer <= chaseRadius)
+            {
+                Vector2 direction = Vector2.Normalize(Globals.Player.Position - Position);
+
+                Position += direction * Speed;
+            }
+        }
+    }
+
+
 
 
 }

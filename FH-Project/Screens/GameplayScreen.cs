@@ -183,6 +183,8 @@ internal class GameplayScreen : GameScreen
 
         if (_direction != Microsoft.Xna.Framework.Vector2.Zero) _direction.Normalize();
 
+        Enemy.GetEnemies().ForEach(enemy => enemy.ChasePlayer(200f));
+
 
         Globals.Update(gameTime);
         Globals.Player.Update(gameTime);

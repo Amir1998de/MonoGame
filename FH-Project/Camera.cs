@@ -43,8 +43,8 @@ public class Camera
         dx = MathHelper.Clamp(dx, currentRoom.Bereich.Left, currentRoom.Bereich.Right - Globals.WindowSize.X * Zoom);
         dy = MathHelper.Clamp(dy, currentRoom.Bereich.Top, currentRoom.Bereich.Bottom - Globals.WindowSize.Y * Zoom);
 
-        dx = MathHelper.Lerp(dx, targetDx, lerpFactor);
-        dy = MathHelper.Lerp(dy, targetDy, lerpFactor);
+        //dx = MathHelper.Lerp(dx, targetDx, lerpFactor);
+        //dy = MathHelper.Lerp(dy, targetDy, lerpFactor);
 
 
         // Calculate the transformation matrix using position and zoom
