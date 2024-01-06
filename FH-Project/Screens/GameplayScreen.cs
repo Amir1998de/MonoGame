@@ -21,6 +21,7 @@ using System;
 using System.Threading;
 using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
+using System.Diagnostics;
 #endregion Using Statements
 
 namespace FH_Project;
@@ -73,8 +74,6 @@ internal class GameplayScreen : GameScreen
     private Potion ShieldPotion;
     private Potion RandomPotion;
 
-    private Map karte;
-
     private Camera camera;
 
     private Matrix _translation;
@@ -118,9 +117,8 @@ internal class GameplayScreen : GameScreen
 
         Globals.Player = new Player(3, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword);
 
-        karte = new Map();
-        karte.ErstelleZufälligeKarte(4, 4, 8, 3, 6);
-        karte.DrawEnemyInRoom();
+        Globals.Map = new Map();
+        Globals.Map.GenerateMap(20, 4, 8, 3, 6);
 
 
         spriteBatch = ScreenManager.SpriteBatch;
@@ -132,7 +130,7 @@ internal class GameplayScreen : GameScreen
 
         //player.SetBounds(karte.MapSize, karte.TileSize);
 
-        camera = new Camera(karte);
+        camera = new Camera(Globals.Map);
         camera.Position = Globals.Player.Position;
         camera.Zoom = 1f;
 
@@ -176,7 +174,7 @@ internal class GameplayScreen : GameScreen
 
 
         _direction = Vector2.Zero;
-
+        //Debug.WriteLine(Map.GetRoomPlayerIsIn().WallCollision());
         if (keyboardState.IsKeyDown(Keys.Up)) _direction.Y--;
         if (keyboardState.IsKeyDown(Keys.Down)) _direction.Y++;
         if (keyboardState.IsKeyDown(Keys.Left)) _direction.X--;
@@ -282,7 +280,7 @@ internal class GameplayScreen : GameScreen
 
         // Test
 
-        karte.Draw();
+        Globals.Map.Draw();
 
         //player.sprite.Draw();
 
@@ -291,7 +289,7 @@ internal class GameplayScreen : GameScreen
         Globals.Player.Draw();
         Enemy.DrawAll();
 
-        karte.DrawEnemyCounter(10,10,camera);
+        Globals.Map.DrawEnemyCounter(10,10,camera);
 
         //enemy.CheckEnemy(spriteBatch, player);
 

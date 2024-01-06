@@ -20,23 +20,29 @@ public class Map : MapEntity
     public Point TileSize { get; private set; }
     public Point MapSize { get; private set; }
 
-    private List<Texture2D> textures = new(5);
+    private List<Texture2D> textures = new(6);
+
     private Random random = new();
 
     
+
+
+
 
     public Map()
     {
         räume = new List<Room>();
 
-        Debug.WriteLine(_mapTileSize.ToString());
+
         _tiles = new Sprite[_mapTileSize.X, _mapTileSize.Y];
 
         for (int i = 1; i < 6; i++)
             textures.Add(Globals.Content.Load<Texture2D>($"tile{i}"));
 
 
-        TileSize = new(textures[0].Width, textures[0].Height); 
+
+
+        TileSize = new(textures[0].Width, textures[0].Height);
 
         for (int y = 0; y < _mapTileSize.Y; y++)
         {
@@ -52,6 +58,8 @@ public class Map : MapEntity
     }
 
 
+
+
     public void ErstelleZufälligeKarte(int raumAnzahl, int minRaumBreite, int maxRaumBreite, int minRaumHöhe, int maxRaumHöhe)
     {
         Random zufallsgenerator = new Random();
@@ -60,6 +68,7 @@ public class Map : MapEntity
         {
             int x = 0;
             int y = 0;
+
             int raumBreite = zufallsgenerator.Next(minRaumBreite, maxRaumBreite + 1);
             int raumHöhe = zufallsgenerator.Next(minRaumHöhe, maxRaumHöhe + 1);
             RoomDirections directions = RoomDirections.START;
@@ -84,9 +93,10 @@ public class Map : MapEntity
                             break;
                         case 1: // unten
                             x = räume[i - 1].Bereich.X;
-                            y = räume[i - 1].Bereich.Bottom + (räume[i - 1].TileHeight / 2);
+                            y = räume[i - 1].Korridore[1].Bereich.Bottom + (räume[i - 1].Korridore[1].TileWidth / 2);
                             räume[i - 1].Directions = RoomDirections.DOWN;
                             räume[i - 1].ReverseDircetion = RoomDirections.UP;
+                            räume[i - 1].WhichKorridor = räume[i - 1].Korridore[1];
                             break;
                         case 2: // links
                             x = räume[i - 1].Bereich.X - raumBreite + (räume[i - 1].TileHeight / 2);
@@ -95,10 +105,11 @@ public class Map : MapEntity
                             räume[i - 1].ReverseDircetion = RoomDirections.RIGHT;
                             break;
                         case 3: // rechts
-                            x = räume[i - 1].Bereich.Right + (räume[i - 1].TileHeight / 2);
+                            x = räume[i - 1].Korridore[3].Bereich.Right + (räume[i - 1].Korridore[3].TileWidth / 2);
                             y = räume[i - 1].Bereich.Y;
                             räume[i - 1].Directions = RoomDirections.RIGHT;
                             räume[i - 1].ReverseDircetion = RoomDirections.LEFT;
+                            räume[i - 1]. WhichKorridor = räume[i - 1].Korridore[3];
                             break;
                     }
 
@@ -113,6 +124,7 @@ public class Map : MapEntity
                         }
                     }
                 } while (intersectsExistingRoom);
+                räume[i - 1].Korridore.RemoveAll(item => item != räume[i - 1].WhichKorridor);
             }
             else
             {
@@ -121,9 +133,57 @@ public class Map : MapEntity
                 y = (Globals.WindowSize.Y - minRaumHöhe) / 2;
             }
 
-            Room neuerRaum = new Room(x, y, raumBreite, raumHöhe);
+            Room neuerRaum = new Room(x, y, raumBreite, raumHöhe, false);
+            CreateCorrdior(neuerRaum);
             räume.Add(neuerRaum);
+
         }
+
+
+    }
+
+    public void CreateCorrdior(Room room)
+    {
+        int randDirection = random.Next(0, 4);
+        Room corrdior = new(0, 0, 0, 0,true);
+        int x = 0;
+        int y = 0;
+
+
+        x = room.Bereich.Center.X;
+        y = room.Bereich.Y - room.TileHeight / 2;
+        corrdior = new(x, y, 1, 1, true);
+        corrdior.Directions = RoomDirections.UP;
+        room.Korridore.Add(corrdior);
+
+        x = room.Bereich.Center.X;
+        y = room.Bereich.Bottom + room.TileHeight / 2;
+        corrdior = new(x, y, 1, 1, true);
+        corrdior.Directions = RoomDirections.DOWN;
+        room.Korridore.Add(corrdior);
+
+        x = room.Bereich.X - room.TileWidth / 2;
+        y = room.Bereich.Center.Y;
+        corrdior = new(x, y, 1, 1, true);
+        corrdior.Directions = RoomDirections.LEFT;
+        room.Korridore.Add(corrdior);
+
+        x = room.Bereich.Right + room.TileWidth / 2;
+        y = room.Bereich.Center.Y;
+        corrdior = new(x, y, 1, 1, true);
+        corrdior.Directions = RoomDirections.RIGHT;
+        room.Korridore.Add(corrdior);
+
+        /*x = room.Bereich.Left - room.TileHeight / 2;
+        y = room.Bereich.Center.Y;*/
+
+
+
+
+
+
+
+
     }
 
     public static Room GetRoomPlayerIsIn()
@@ -132,9 +192,24 @@ public class Map : MapEntity
         {
             if (room.PlayerIsInRoom())
                 return room;
+            if (!room.IsKorridor && room.WhichKorridor != null && room.WhichKorridor.Bereich.Contains(Globals.Player.PlayerBounds))
+            {
+                return room.WhichKorridor;
+            }
+
         }
 
         return null;
+    }
+
+    public static bool CheckWallCollison()
+    {
+        foreach (Room room in räume)
+        {
+            if (room.WallCollision())
+                return true;
+        }
+        return false;
     }
 
     public static Room GetRoomEnemyIsIn(Enemy enemy)
@@ -153,7 +228,14 @@ public class Map : MapEntity
         {
             room.CreateEnemyInRoom();
         });
-        
+
+    }
+
+    public bool isCorrdior(Vector2 playerPosition)
+    {
+
+
+        return false;
     }
 
     public void Draw()
@@ -167,9 +249,17 @@ public class Map : MapEntity
         foreach (var raum in räume)
         {
             raum.Draw();
+
         }
 
+
+
+
+
+
         //räume[0].Draw();
+        //räume[1].Draw();
+        //räume[2].Draw();
     }
 
 
@@ -189,4 +279,9 @@ public class Map : MapEntity
         Globals.SpriteBatch.DrawString(font, enemyCountString, cameraAdjustedPosition, Color.Red);
     }
 
+    public void GenerateMap(int roomCount, int minRoomWidth, int maxRoomWidth, int minRoomHeight, int maxRoomHeight)
+    {
+        ErstelleZufälligeKarte(roomCount, minRoomWidth, maxRoomWidth, minRoomHeight, maxRoomHeight);
+        DrawEnemyInRoom();
+    }
 }

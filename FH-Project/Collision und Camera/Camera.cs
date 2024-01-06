@@ -18,12 +18,12 @@ public class Camera
         Zoom = 1.0f;
         Rotation = 0.0f;
         this.karte = karte;
-        
-    }   
+
+    }
 
     public Matrix GetViewMatrix(Room currentRoom)
     {
-        
+
 
         float dx = Globals.Player.Position.X * Zoom - (Globals.WindowSize.X / 7);
         float dy = Globals.Player.Position.Y * Zoom - (Globals.WindowSize.Y / 7);
@@ -32,19 +32,19 @@ public class Camera
         float lerpFactor = 1f;
 
         // Calculate the target position for the camera
-        float targetDx = Globals.Player.Position.X * Zoom - (Globals.WindowSize.X / 7);
-        float targetDy = Globals.Player.Position.Y * Zoom - (Globals.WindowSize.Y / 7);
+        float targetDx = Globals.Player.Position.X * Zoom - (Globals.WindowSize.X / 5);
+        float targetDy = Globals.Player.Position.Y * Zoom - (Globals.WindowSize.Y / 5);
 
         // Lerp to the target position
 
         // Adjust the camera based on the current room boundaries
 
 
-        dx = MathHelper.Clamp(dx, currentRoom.Bereich.Left, currentRoom.Bereich.Right - Globals.WindowSize.X * Zoom);
-        dy = MathHelper.Clamp(dy, currentRoom.Bereich.Top, currentRoom.Bereich.Bottom - Globals.WindowSize.Y * Zoom);
+        //dx = MathHelper.Clamp(dx, currentRoom.Bereich.Left, currentRoom.Bereich.Right - Globals.WindowSize.X * Zoom);
+        //dy = MathHelper.Clamp(dy, currentRoom.Bereich.Top, currentRoom.Bereich.Bottom - Globals.WindowSize.Y * Zoom);
 
-        //dx = MathHelper.Lerp(dx, targetDx, lerpFactor);
-        //dy = MathHelper.Lerp(dy, targetDy, lerpFactor);
+        dx = MathHelper.Lerp(dx, targetDx, lerpFactor);
+        dy = MathHelper.Lerp(dy, targetDy, lerpFactor);
 
 
         // Calculate the transformation matrix using position and zoom

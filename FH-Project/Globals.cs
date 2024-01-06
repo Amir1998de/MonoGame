@@ -29,12 +29,15 @@ public static class Globals
 
     public static KeyboardState KeyboardState { get; set; }
 
-    public static Player Player {  get; set; }
+    public static Player Player { get; set; }
+
+    public static Map Map { get; set; }
     // Update method, typically called every frame to update the elapsed time.
     public static void Update(GameTime gt)
     {
         // Update the Time property with the time elapsed since the last frame.
         Time = (float)gt.ElapsedGameTime.TotalSeconds;
     }
-}
 
+    
+}

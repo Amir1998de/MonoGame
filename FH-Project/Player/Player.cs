@@ -1,5 +1,4 @@
-﻿using FH_Project;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -57,6 +56,8 @@ public class Player : Entity
     private float SPEED = 300;
 
     private Potion potion;
+    public Rectangle PlayerBounds { get; set; }
+    private Room KorridorPlayerIsIn;
 
 
     #endregion Variablen
@@ -92,7 +93,7 @@ public class Player : Entity
 
     public bool CanAttack()
     {
-        return !IsAttacking;
+        return !(IsAttacking);
     }
 
 
@@ -101,47 +102,103 @@ public class Player : Entity
     {
         Position = new Vector2(Position.X - Speed, Position.Y);
         Room roomPlayerisIn = Map.GetRoomPlayerIsIn();
-        bool directionPlayerCanGo = !roomPlayerisIn.Directions.Equals(RoomDirections.LEFT) && !roomPlayerisIn.ReverseDircetion.Equals(RoomDirections.RIGHT) ? true : false;
+
+        if (roomPlayerisIn != null)
+        {
+            float z = (float)EntityTexture.Height / 5;
+
+            if (roomPlayerisIn.WhichKorridor != null)
+            {
+                float distanceToPlayer = Vector2.Distance(new Vector2(roomPlayerisIn.WhichKorridor.Bereich.X, roomPlayerisIn.WhichKorridor.Bereich.Y), Globals.Player.Position);
+
+                if (distanceToPlayer <= 200 && roomPlayerisIn.GetEnemiesInRoomCount() <= 0)
+                {
+                    // Hier kannst du spezifische Aktionen ausführen, wenn der Spieler in der Nähe des Korridors ist und die Tab-Taste gedrückt wird.
+                }
+                else if (Position.X - z < roomPlayerisIn.Bereich.Left)
+                    Position = new Vector2(roomPlayerisIn.Bereich.Left + z, Position.Y);
+
+                Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
+            }
+            else
+            {
+                return;
+            }
+        }
+        else
+        {
+            return;
+        }
 
 
-        float z = EntityTexture.Width;
-
-        if (Position.X - z < roomPlayerisIn.Bereich.Left && directionPlayerCanGo)
-            Position = new Vector2(roomPlayerisIn.Bereich.Left + z, Position.Y);
-
-        Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
     }
 
     public void MovePlayerRight()
     {
         Position = new Vector2(Position.X + Speed, Position.Y);
         Room roomPlayerisIn = Map.GetRoomPlayerIsIn();
-        bool directionPlayerCanGo = !roomPlayerisIn.Directions.Equals(RoomDirections.RIGHT) && !roomPlayerisIn.ReverseDircetion.Equals(RoomDirections.LEFT) ? true : false;
 
+        if (roomPlayerisIn != null)
+        {
+            float z = (float)EntityTexture.Height * 3;
 
-        // Durch 2 weil man unten beim Draw 3 scale hat. 
-        float z = EntityTexture.Width;
+            if (roomPlayerisIn.WhichKorridor != null)
+            {
+                float distanceToPlayer = Vector2.Distance(new Vector2(roomPlayerisIn.WhichKorridor.Bereich.X, roomPlayerisIn.WhichKorridor.Bereich.Y), Globals.Player.Position);
 
-        if (Position.X + z > roomPlayerisIn.Bereich.Right && directionPlayerCanGo)
-            Position = new Vector2(roomPlayerisIn.Bereich.Right - z, Position.Y);
+                if (distanceToPlayer <= 200 && roomPlayerisIn.GetEnemiesInRoomCount() <= 0)
+                {
+                    // Hier kannst du spezifische Aktionen ausführen, wenn der Spieler in der Nähe des Korridors ist und die Tab-Taste gedrückt wird.
+                }
+                else if (Position.X + z > roomPlayerisIn.Bereich.Right)
+                    Position = new Vector2(roomPlayerisIn.Bereich.Right - z, Position.Y);
 
-        Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
+                Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
+            }
+            else
+            {
+                return;
+            }
+        }
+        else
+        {
+            return;
+        }
     }
 
     public void MovePlayerUp()
     {
+        //bool directionPlayerCanGo = !roomPlayerisIn.Directions.Equals(RoomDirections.UP) && !roomPlayerisIn.ReverseDircetion.Equals(RoomDirections.DOWN) ? true: false;
+
         Position = new Vector2(Position.X, Position.Y - Speed);
         Room roomPlayerisIn = Map.GetRoomPlayerIsIn();
-        bool directionPlayerCanGo = !roomPlayerisIn.Directions.Equals(RoomDirections.UP) && !roomPlayerisIn.ReverseDircetion.Equals(RoomDirections.DOWN) ? true : false;
 
+        if (roomPlayerisIn != null)
+        {
+            float z = (float)EntityTexture.Height / 5;
 
+            if (roomPlayerisIn.WhichKorridor != null)
+            {
+                float distanceToPlayer = Vector2.Distance(new Vector2(roomPlayerisIn.WhichKorridor.Bereich.X, roomPlayerisIn.WhichKorridor.Bereich.Y), Globals.Player.Position);
 
-        float z = EntityTexture.Height;
+                if (distanceToPlayer <= 200 && roomPlayerisIn.GetEnemiesInRoomCount() <= 0)
+                {
+                    // Hier kannst du spezifische Aktionen ausführen, wenn der Spieler in der Nähe des Korridors ist und die Tab-Taste gedrückt wird.
+                }
+                else if (Position.Y - z < roomPlayerisIn.Bereich.Top)
+                    Position = new Vector2(Position.X, roomPlayerisIn.Bereich.Top + z);
 
-        if (Position.Y - z < roomPlayerisIn.Bereich.Top && directionPlayerCanGo)
-            Position = new Vector2(Position.X, roomPlayerisIn.Bereich.Top + z);
-
-        Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
+                Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
+            }
+            else
+            {
+                return;
+            }
+        }
+        else
+        {
+            return;
+        }
 
     }
 
@@ -149,16 +206,43 @@ public class Player : Entity
     {
         Position = new Vector2(Position.X, Position.Y + Speed);
         Room roomPlayerisIn = Map.GetRoomPlayerIsIn();
-        bool directionPlayerCanGo = !roomPlayerisIn.Directions.Equals(RoomDirections.DOWN) && !roomPlayerisIn.ReverseDircetion.Equals(RoomDirections.UP) ? true : false;
+        
 
-        // Durch 2 weil man unten beim Draw 3 scale hat. 
-        float z = EntityTexture.Height;
+        if (KorridorPlayerIsIn == null) KorridorPlayerIsIn = roomPlayerisIn.WhichKorridor;
 
-        if (Position.Y + z > roomPlayerisIn.Bereich.Bottom && directionPlayerCanGo)
-            Position = new Vector2(Position.X, roomPlayerisIn.Bereich.Bottom - z);
+        if (roomPlayerisIn != null)
+        {
+            float z = (float)EntityTexture.Height* 3;
 
-        Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
+            if (roomPlayerisIn.WhichKorridor != null)
+            {
+                float distanceToPlayer = Vector2.Distance(new Vector2(roomPlayerisIn.WhichKorridor.Bereich.X, roomPlayerisIn.WhichKorridor.Bereich.Y), Globals.Player.Position);
+
+                if (distanceToPlayer <= 200 && roomPlayerisIn.GetEnemiesInRoomCount() <= 0)
+                {
+                    if(!KorridorPlayerIsIn.Equals(roomPlayerisIn.WhichKorridor))
+                        KorridorPlayerIsIn = roomPlayerisIn.WhichKorridor;
+                }
+                else if (Position.Y + z > roomPlayerisIn.Bereich.Bottom)
+                {
+                    
+                    if (Position.Y + z > roomPlayerisIn.Bereich.Bottom)
+                        Position = new Vector2(Position.X, roomPlayerisIn.Bereich.Bottom - z);
+                }
+
+                Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
+            }
+            else
+            {
+                return;
+            }
+        }
+        else
+        {
+            return;
+        }
     }
+
 
     public override void Attack()
     {
@@ -284,6 +368,9 @@ public class Player : Entity
         Sprite.Position += ScreenManager.Direction * Globals.Time * SPEED;
         Sprite.Position = Vector2.Clamp(Sprite.Position, _minPos, _maxPos);
 
+        PlayerBounds = new Rectangle((int)Position.X, (int)Position.Y, EntityTexture.Width, EntityTexture.Height);
+
+
 
     }
 
@@ -343,9 +430,11 @@ public class Player : Entity
 
     public void SetBounds(Point mapSize, Point tileSize)
     {
-        _minPos = new(-tileSize.X / 2 + Sprite.Origin.X, -tileSize.Y / 2 + Sprite.Origin.Y);
-        _maxPos = new(mapSize.X - tileSize.X / 2 - Sprite.Origin.X, mapSize.Y - tileSize.X / 2 - Sprite.Origin.Y);
+        _minPos = new((-tileSize.X / 2) + Sprite.Origin.X, (-tileSize.Y / 2) + Sprite.Origin.Y);
+        _maxPos = new(mapSize.X - (tileSize.X / 2) - Sprite.Origin.X, mapSize.Y - (tileSize.X / 2) - Sprite.Origin.Y);
     }
+
+
 
 
 

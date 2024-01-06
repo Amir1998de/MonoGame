@@ -92,10 +92,6 @@ public abstract class Entity : Subject
             Health = maxHealth;
     }
 
-    public int getHealth()
-    {
-        return Health;
-    }
 
     public void ReduceHealth(int value)
     {

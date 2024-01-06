@@ -82,10 +82,12 @@ public abstract class Enemy : Entity, IObserver
         enemies.ForEach(enemy => enemy.Draw());
     }
 
-    public static void AddEnemy(string existingEnemy, int health, float speed, Vector2 pos, Vector2 velocity)
+    public static Enemy AddEnemy(string existingEnemy, int health, float speed, Vector2 pos, Vector2 velocity)
     {
         EnemyFactory factory = new EnemyFactory();
-        enemies.Add(factory.createEnemy(existingEnemy, health, speed, pos, velocity));
+        Enemy enemy = factory.createEnemy(existingEnemy, health, speed, pos, velocity);
+        enemies.Add(enemy);
+        return enemy;
     }
 
     public static void RemoveEnemyAtIndex(int index)
@@ -131,7 +133,7 @@ public abstract class Enemy : Entity, IObserver
                 Globals.Player.CanGetHit = false;
             }
 
-            Debug.WriteLine("HIT! " + GetHashCode().ToString() + "\n " + Globals.Player.Health);
+            Debug.WriteLine("HIT! " + this.GetHashCode().ToString() + "\n " + Globals.Player.Health);
         }
     }
 
@@ -153,7 +155,7 @@ public abstract class Enemy : Entity, IObserver
 
         // Überprüfen Sie, ob die neue Position innerhalb der Raumgrenzen liegt
 
-        enemies.ForEach(enemy =>
+        /*enemies.ForEach(enemy =>
         {
             try
             {
@@ -162,9 +164,9 @@ public abstract class Enemy : Entity, IObserver
                     Position = newPosition;
                 }
             }
-            catch (NullReferenceException e) { }
-
-        });
+            catch(NullReferenceException e){}
+            
+        });*/
 
 
     }
