@@ -12,6 +12,6 @@ public enum PlayerActions
     USEDHEALTHPOTION,
     USEDSHIELDPOTION,
     USEDRANDOMPOTION
-    
+
 }
 

@@ -6,12 +6,16 @@ using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 
+namespace FH_Project;
 
-namespace FH_Projekt;
-
-public class CommonEnemy
+public class Enemydrops : Item
 {
-	public CommonEnemy()
-	{
-	}
+    public Enemydrops()
+    {
+    }
+
+    public void UseEffect()
+    {
+        throw new NotImplementedException();
+    }
 }

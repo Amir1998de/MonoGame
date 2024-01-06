@@ -8,13 +8,7 @@ using System.Collections.Generic;
 
 namespace FH_Project;
 
-public class Sword : Weapon
+public interface Item
 {
-	public Sword(int damage, int speed, Texture2D texture) : base(damage, speed, texture) {}
-
-
-    public override void UseEffect()
-    {
-        throw new NotImplementedException();
-    }
+    public void UseEffect();
 }

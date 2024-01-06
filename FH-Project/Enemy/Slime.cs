@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
+using FH_Project;
 
 namespace FH_Project;
 class Slime : Enemy

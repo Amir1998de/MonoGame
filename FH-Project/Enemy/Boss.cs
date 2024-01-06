@@ -8,15 +8,9 @@ using System.Collections.Generic;
 
 namespace FH_Project;
 
-public class Hammer : Weapon
+public class Boss
 {
-	public Hammer(int damage, int speed, Texture2D texture) : base(damage, speed, texture)
-	{
-	}
-
-
-    public override void UseEffect()
+    public Boss()
     {
-        throw new NotImplementedException();
     }
 }

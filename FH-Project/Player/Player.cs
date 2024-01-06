@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FH_Project;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -91,10 +92,10 @@ public class Player : Entity
 
     public bool CanAttack()
     {
-        return !(IsAttacking);
+        return !IsAttacking;
     }
 
-    
+
 
     public void MovePlayerLeft()
     {
@@ -103,9 +104,9 @@ public class Player : Entity
         bool directionPlayerCanGo = !roomPlayerisIn.Directions.Equals(RoomDirections.LEFT) && !roomPlayerisIn.ReverseDircetion.Equals(RoomDirections.RIGHT) ? true : false;
 
 
-        float z = (float)EntityTexture.Width;
+        float z = EntityTexture.Width;
 
-        if (Position.X - z  < roomPlayerisIn.Bereich.Left && directionPlayerCanGo)
+        if (Position.X - z < roomPlayerisIn.Bereich.Left && directionPlayerCanGo)
             Position = new Vector2(roomPlayerisIn.Bereich.Left + z, Position.Y);
 
         Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
@@ -119,7 +120,7 @@ public class Player : Entity
 
 
         // Durch 2 weil man unten beim Draw 3 scale hat. 
-        float z = (float)EntityTexture.Width;
+        float z = EntityTexture.Width;
 
         if (Position.X + z > roomPlayerisIn.Bereich.Right && directionPlayerCanGo)
             Position = new Vector2(roomPlayerisIn.Bereich.Right - z, Position.Y);
@@ -131,11 +132,11 @@ public class Player : Entity
     {
         Position = new Vector2(Position.X, Position.Y - Speed);
         Room roomPlayerisIn = Map.GetRoomPlayerIsIn();
-        bool directionPlayerCanGo = !roomPlayerisIn.Directions.Equals(RoomDirections.UP) && !roomPlayerisIn.ReverseDircetion.Equals(RoomDirections.DOWN) ? true: false;
+        bool directionPlayerCanGo = !roomPlayerisIn.Directions.Equals(RoomDirections.UP) && !roomPlayerisIn.ReverseDircetion.Equals(RoomDirections.DOWN) ? true : false;
 
 
 
-        float z = (float)EntityTexture.Height;
+        float z = EntityTexture.Height;
 
         if (Position.Y - z < roomPlayerisIn.Bereich.Top && directionPlayerCanGo)
             Position = new Vector2(Position.X, roomPlayerisIn.Bereich.Top + z);
@@ -151,7 +152,7 @@ public class Player : Entity
         bool directionPlayerCanGo = !roomPlayerisIn.Directions.Equals(RoomDirections.DOWN) && !roomPlayerisIn.ReverseDircetion.Equals(RoomDirections.UP) ? true : false;
 
         // Durch 2 weil man unten beim Draw 3 scale hat. 
-        float z = (float)EntityTexture.Height;
+        float z = EntityTexture.Height;
 
         if (Position.Y + z > roomPlayerisIn.Bereich.Bottom && directionPlayerCanGo)
             Position = new Vector2(Position.X, roomPlayerisIn.Bereich.Bottom - z);
@@ -253,7 +254,7 @@ public class Player : Entity
 
         if (CheckIfDead())
         {
-            
+
         }
 
         if (Globals.KeyboardState.IsKeyDown(Keys.Space) && !IsAttacking)
@@ -270,11 +271,11 @@ public class Player : Entity
         }
 
         if (IsAttacking) attackTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-        if(!CanGetHit) invincibilityFrames += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        if (!CanGetHit) invincibilityFrames += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
         //Debug.WriteLine("Attack Timer: " + attackTimer);
 
-        if(invincibilityFrames >= 3)
+        if (invincibilityFrames >= 3)
         {
             CanGetHit = true;
             invincibilityFrames = 0;
@@ -342,8 +343,8 @@ public class Player : Entity
 
     public void SetBounds(Point mapSize, Point tileSize)
     {
-        _minPos = new((-tileSize.X / 2) + Sprite.Origin.X, (-tileSize.Y / 2) + Sprite.Origin.Y);
-        _maxPos = new(mapSize.X - (tileSize.X / 2) - Sprite.Origin.X, mapSize.Y - (tileSize.X / 2) - Sprite.Origin.Y);
+        _minPos = new(-tileSize.X / 2 + Sprite.Origin.X, -tileSize.Y / 2 + Sprite.Origin.Y);
+        _maxPos = new(mapSize.X - tileSize.X / 2 - Sprite.Origin.X, mapSize.Y - tileSize.X / 2 - Sprite.Origin.Y);
     }
 
 

@@ -18,7 +18,7 @@ public abstract class Potion : Subject, Item
 
     //Gibt an was für ein Potion (1= Health, 2=Shield, 3=Random)
     public int id;
-    public Potion(Player? player, Texture2D texture)
+    public Potion(Player player, Texture2D texture)
     {
         int id = 0;
         wert = random.Next(25, 100);

@@ -8,15 +8,9 @@ using System.Collections.Generic;
 
 namespace FH_Project;
 
-public class Bow : Weapon
+public class Ability
 {
-	public Bow(int damage, int speed, Texture2D texture): base(damage, speed, texture)
-	{
-	}
-
-
-    public override void UseEffect()
+    public Ability()
     {
-        throw new NotImplementedException();
     }
 }

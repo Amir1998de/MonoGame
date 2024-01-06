@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace FH_Project;
 
-    public class ScreenManager : DrawableGameComponent
+public class ScreenManager : DrawableGameComponent
 {
     #region Fields
 

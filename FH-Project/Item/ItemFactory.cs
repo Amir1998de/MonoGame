@@ -8,9 +8,9 @@ using System.Collections.Generic;
 
 namespace FH_Project;
 
-public class Boss
+public class ItemFactory
 {
-	public Boss()
-	{
-	}
+    public ItemFactory()
+    {
+    }
 }

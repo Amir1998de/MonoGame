@@ -8,7 +8,7 @@ namespace FH_Project;
 
 class NoItemFoundException : Exception
 {
-    public NoItemFoundException() { }   
+    public NoItemFoundException() { }
 
     public NoItemFoundException(string message) : base(message) { }
 

@@ -8,7 +8,15 @@ using System.Collections.Generic;
 
 namespace FH_Project;
 
-public interface Item
+public class Hammer : Weapon
 {
-	public void UseEffect();
+    public Hammer(int damage, int speed, Texture2D texture) : base(damage, speed, texture)
+    {
+    }
+
+
+    public override void UseEffect()
+    {
+        throw new NotImplementedException();
+    }
 }

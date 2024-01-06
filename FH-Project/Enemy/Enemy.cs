@@ -48,15 +48,15 @@ public abstract class Enemy : Entity, IObserver
         if (!(data == PlayerActions.ATTACK)) return;
 
         int index = -1;
-        
 
-            // /8 weil Scalierung der Waffe auf 0.125
+
+        // /8 weil Scalierung der Waffe auf 0.125
         if (CheckCollision(new Rectangle((int)Globals.Player.Weapon.Position.X, (int)Globals.Player.Weapon.Position.Y, Globals.Player.Weapon.Texture.Width, Globals.Player.Weapon.Texture.Height)))
         {
             ReduceHealth(Globals.Player.Weapon.Damage);
-            Debug.WriteLine(GetHashCode()+" "+Health);
+            Debug.WriteLine(GetHashCode() + " " + Health);
         }
-        
+
         if (CheckIfDead())
         {
             IsDestroyed = true;
@@ -65,7 +65,7 @@ public abstract class Enemy : Entity, IObserver
                 RemoveEnemyAtIndex(index);
             return;
         }
-       
+
 
     }
 
@@ -85,7 +85,7 @@ public abstract class Enemy : Entity, IObserver
     public static void AddEnemy(string existingEnemy, int health, float speed, Vector2 pos, Vector2 velocity)
     {
         EnemyFactory factory = new EnemyFactory();
-        enemies.Add(factory.createEnemy(existingEnemy, health, speed, pos, velocity));    
+        enemies.Add(factory.createEnemy(existingEnemy, health, speed, pos, velocity));
     }
 
     public static void RemoveEnemyAtIndex(int index)
@@ -95,7 +95,7 @@ public abstract class Enemy : Entity, IObserver
 
     public void Update(GameTime gameTime)
     {
-        
+
 
         if (Globals.Player != null)
         {
@@ -123,7 +123,7 @@ public abstract class Enemy : Entity, IObserver
         }
 
 
-        if(CollisionHandler.CollisionEntitys(Globals.Player, this))
+        if (CollisionHandler.CollisionEntitys(Globals.Player, this))
         {
             if (Globals.Player.CanGetHit)
             {
@@ -131,7 +131,7 @@ public abstract class Enemy : Entity, IObserver
                 Globals.Player.CanGetHit = false;
             }
 
-            Debug.WriteLine("HIT! " + this.GetHashCode().ToString() + "\n "+ Globals.Player.Health);
+            Debug.WriteLine("HIT! " + GetHashCode().ToString() + "\n " + Globals.Player.Health);
         }
     }
 
@@ -144,8 +144,8 @@ public abstract class Enemy : Entity, IObserver
 
     public void WanderRandomly(Vector2 randomDirection)
     {
-        
-       
+
+
         randomDirection.Normalize();
 
         // Neue Position basierend auf zufälliger Richtung und Wander-Geschwindigkeit berechnen
@@ -162,11 +162,11 @@ public abstract class Enemy : Entity, IObserver
                     Position = newPosition;
                 }
             }
-            catch(NullReferenceException e){}
-            
+            catch (NullReferenceException e) { }
+
         });
 
-       
+
     }
 
 }

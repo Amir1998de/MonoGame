@@ -8,13 +8,14 @@ using System.Collections.Generic;
 
 namespace FH_Project;
 
-public class Enemydrops : Item
+public class Bow : Weapon
 {
-	public Enemydrops()
-	{
-	}
+    public Bow(int damage, int speed, Texture2D texture) : base(damage, speed, texture)
+    {
+    }
 
-    public void UseEffect()
+
+    public override void UseEffect()
     {
         throw new NotImplementedException();
     }

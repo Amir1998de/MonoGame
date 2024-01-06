@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FH_Project;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using System.Diagnostics;
@@ -18,5 +19,5 @@ public class EnemyFactory
             return new Slime(health, speed, pos, velocity);
         }
         return null;
-    }    
+    }
 }

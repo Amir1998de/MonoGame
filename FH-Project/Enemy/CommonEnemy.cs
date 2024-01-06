@@ -6,11 +6,12 @@ using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 
-namespace FH_Projekt;
 
-public class Ability
+namespace FH_Project;
+
+public class CommonEnemy
 {
-	public Ability()
-	{
-	}
+    public CommonEnemy()
+    {
+    }
 }
