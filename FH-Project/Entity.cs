@@ -54,11 +54,12 @@ public abstract class Entity : Subject
     //Für Bewegung nach Unten
     protected int currentDownFrame = 0;
     protected int totalDownFrames = 6;
+    protected int scale;
 
 
     #endregion Variablen
 
-    public Entity(int health, float speed, Vector2 pos, Vector2 velocity)
+    public Entity(int health, float speed, Vector2 pos, Vector2 velocity, int scale)
     {
         maxHealth = health;
         this.Health = health;
@@ -67,6 +68,7 @@ public abstract class Entity : Subject
         this.velocity = velocity;
         IsDestroyed = false;
         BaseSpeed = 1f;
+        this.scale = scale;
 
     }
 
@@ -102,11 +104,11 @@ public abstract class Entity : Subject
 
 
 
-    public abstract void Attack();
+    public abstract void Attack(GameTime gameTime);
 
-    public void Draw()
+    public virtual void Draw()
     {
-        Globals.SpriteBatch.Draw(EntityTexture, Position, null, Color.White, 0, new Vector2(0, 0), 3, SpriteEffects.None, 0);
+        Globals.SpriteBatch.Draw(EntityTexture, Position, null, Color.White, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
     }
 
     public void Add(Entity entity, SpriteBatch spriteBatch)

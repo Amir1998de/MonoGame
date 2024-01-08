@@ -63,7 +63,7 @@ public class Player : Entity
     #endregion Variablen
 
 
-    public Player(int health, float speed, Vector2 postion, Vector2 velocity, Weapon weapon) : base(health, speed, postion, velocity)
+    public Player(int health, float speed, Vector2 postion, Vector2 velocity, Weapon weapon, int scale) : base(health, speed, postion, velocity, scale)
     {
         LoadContent();
         IsAttacking = false;
@@ -244,7 +244,7 @@ public class Player : Entity
     }
 
 
-    public override void Attack()
+    public override void Attack(GameTime gameTime)
     {
         IsAttacking = true;
         GetNotified(PlayerActions.ATTACK);
@@ -305,7 +305,11 @@ public class Player : Entity
         currentKeyboardState = Globals.KeyboardState;
 
 
-        if (currentKeyboardState.IsKeyDown(Keys.H) && !prevKeyboardState.IsKeyDown(Keys.H)) Inventory.UseItem(Inventory.getPotion(1));
+        if (currentKeyboardState.IsKeyDown(Keys.H) && !prevKeyboardState.IsKeyDown(Keys.H))
+        {
+            Inventory.UseItem(Inventory.getPotion(1));
+            
+        }
         prevKeyboardState = currentKeyboardState;
 
         if (currentKeyboardState.IsKeyDown(Keys.J) && !prevKeyboardState.IsKeyDown(Keys.J)) Inventory.UseItem(Inventory.getPotion(2));
@@ -343,7 +347,7 @@ public class Player : Entity
 
         if (Globals.KeyboardState.IsKeyDown(Keys.Space) && !IsAttacking)
         {
-            Attack();
+            Attack(gameTime);
         }
 
         //Debug.WriteLine(IsAttacking);

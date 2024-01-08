@@ -8,12 +8,12 @@ using System.Collections.Generic;
 
 namespace FH_Project;
 
-public class Inventory
+public static class Inventory
 {
     private const int SPACE = 20;
     private static List<Item> items = new List<Item>();
 
-    private Inventory() { }
+    
 
     //ID gibt an welches Potion es ist
     public static Item getPotion(int id)
@@ -35,6 +35,7 @@ public class Inventory
         if (!items.Contains(item)) throw new NoItemFoundException("This Item does not Exist");
 
         items.Find(i => i.Equals(item)).UseEffect();
+
     }
 
     public static void AddItem(Item item)

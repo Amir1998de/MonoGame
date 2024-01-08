@@ -21,7 +21,7 @@ public abstract class Potion : Subject, Item
     public Potion(Player player, Texture2D texture)
     {
         int id = 0;
-        wert = random.Next(25, 100);
+        wert = 1;
         potionTexture = texture;
         if (player != null)
         {

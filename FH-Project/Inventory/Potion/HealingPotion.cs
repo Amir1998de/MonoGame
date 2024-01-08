@@ -17,13 +17,31 @@ public class HealingPotion : Potion
 
     }
 
+    public override bool Equals(object obj)
+    {
+        return obj is HealingPotion potion &&
+               base.Equals(obj) &&
+               wert == potion.wert &&
+               EqualityComparer<Texture2D>.Default.Equals(potionTexture, potion.potionTexture) &&
+               EqualityComparer<Player>.Default.Equals(player, potion.player) &&
+               pos.Equals(potion.pos) &&
+               id == potion.id;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(base.GetHashCode(), wert, potionTexture, player, pos, id);
+    }
+
     public override void UseEffect()
     {
-        if (player != null)
+        if (Globals.Player != null)
         {
 
-            player.AddHealth(wert);
+            Globals.Player.AddHealth(wert);
             Inventory.RemoveItem(this);
         }
     }
+
+    
 }

@@ -55,7 +55,7 @@ public class Room : MapEntity
 
         
 
-        EnemyCap = random.Next(1, 3);
+        EnemyCap = random.Next(3, 6);
 
         for (int i = 1; i < 6; i++)
             textures.Add(Globals.Content.Load<Texture2D>($"tile{i}"));
@@ -104,7 +104,32 @@ public class Room : MapEntity
 
             Vector2 pos = new Vector2(x, y);
 
-            enemiesInRoom.Add(Enemy.AddEnemy("Slime", 3, 2, pos, new Vector2(0, 0)));
+            // Array mit den Werten des MonsterType-Enums
+            MonsterType[] monsterTypes = (MonsterType[])Enum.GetValues(typeof(MonsterType));
+
+            // Zufälligen Index auswählen
+            int randomIndex = random.Next(monsterTypes.Length);
+
+            // Gewählten MonsterType-Wert
+            MonsterType selectedMonsterType = monsterTypes[randomIndex];
+
+            // Je nach ausgewähltem MonsterType Monster erstellen
+            
+            switch (selectedMonsterType)
+            {
+                case MonsterType.SLIME:
+                    enemiesInRoom.Add(Enemy.AddEnemy("Slime", 3, 2, pos, new Vector2(0, 0),300f,3));
+                    break;
+                case MonsterType.SKELETON:
+                    float chaseRadius = Math.Max(Bereich.Width, Bereich.Height);
+                    enemiesInRoom.Add(Enemy.AddEnemy("Skeleton", 2, 0.3f, pos, new Vector2(0, 0), 1000,3));
+                    break;
+                case MonsterType.GOLEM:
+                    // Hier entsprechenden Code für GOLEM hinzufügen
+                    break;
+                    // Weitere MonsterType-Werte können nach Bedarf hinzugefügt werden
+            }
+
             count++;
         }
     }
@@ -153,6 +178,9 @@ public class Room : MapEntity
 
 
     }
+
+
+    
 
     public bool WallCollision()
     {

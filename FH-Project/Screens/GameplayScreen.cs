@@ -35,6 +35,7 @@ internal class GameplayScreen : GameScreen
     #region Fields
     private SoundManagement soundManagement;
     private KeyboardState currentKeyboardState;
+    
 
 
     private ContentManager content;
@@ -109,13 +110,14 @@ internal class GameplayScreen : GameScreen
         healthPotionTexture = content.Load<Texture2D>("Items/Potions/PotionRed");
         shieldPotionTexture = content.Load<Texture2D>("Items/Potions/PotionBlue");
         randomPotionTexture = content.Load<Texture2D>("Items/Potions/PotionGreen");
+        Arrow.ArrowTexture = content.Load<Texture2D>("Enemy/Slime/slime-idle-0");
         //SpriteFont font = Globals.Content.Load<SpriteFont>("Verdana");
 
         sword = new Sword(1, 5, swordTexture);
         hammer = new Hammer(100, 5, hammerTexture);
         bow = new Bow(100, 5, bowTexture);
 
-        Globals.Player = new Player(3, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword);
+        Globals.Player = new Player(3, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword, 3);
 
         Globals.Map = new Map();
         Globals.Map.GenerateMap(20, 4, 8, 3, 6);
@@ -290,6 +292,7 @@ internal class GameplayScreen : GameScreen
         Enemy.DrawAll();
 
         Globals.Map.DrawEnemyCounter(10,10,camera);
+        Globals.Map.DrawEnemyRoomCounter(140,10,camera);
 
         //enemy.CheckEnemy(spriteBatch, player);
 

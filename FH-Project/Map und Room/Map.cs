@@ -262,6 +262,23 @@ public class Map : MapEntity
         //räume[2].Draw();
     }
 
+    public void DrawEnemyRoomCounter(float x, float y, Camera camera)
+    {
+        SpriteFont font = Globals.Content.Load<SpriteFont>("Verdana");
+        Room roomPlayerIsIn = GetRoomPlayerIsIn();
+        string enemyCountString = "";
+
+        // Erhalte die kamerabezogene Position für den Score
+        Vector2 cameraAdjustedPosition = new Vector2(x, y) + camera.Position;
+
+        if(roomPlayerIsIn != null)  enemyCountString = "Enemies To Defeat: " + roomPlayerIsIn.GetEnemiesInRoomCount().ToString();
+
+        // Measure the size of the string to determine where to draw it
+        Vector2 stringSize = font.MeasureString(enemyCountString);
+
+        // Draw the string at the upper-right corner of the screen
+        Globals.SpriteBatch.DrawString(font, enemyCountString, cameraAdjustedPosition, Color.Red);
+    }
 
     public void DrawEnemyCounter(float x, float y, Camera camera)
     {

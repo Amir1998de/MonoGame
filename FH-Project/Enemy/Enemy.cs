@@ -21,26 +21,29 @@ public abstract class Enemy : Entity, IObserver
 
     public static List<Enemy> enemies { get; private set; } = new List<Enemy>();
     protected bool exisits;
-    private float chaseRadius;
+    protected float chaseRadius;
 
     protected Texture2D enemyTexture;
     protected Texture2D[] enemyIdleTexture;
     private float randomDirectionTimer;
     private int enemiesToDefeat;
-    private int damage;
+    protected int damage;
     private Random random;
+    protected Rectangle enemyBounds;
+   
 
     #endregion Variablen
 
-    public Enemy(int health, float speed, Vector2 pos, Vector2 velocity) : base(health, speed, pos, velocity)
+    public Enemy(int health, float speed, Vector2 pos, Vector2 velocity, float chaseRadius ,int scale) : base(health, speed, pos, velocity, scale)
     {
         LoadContent();
         random = new();
+        enemyBounds = new((int)Position.X,(int)Position.Y,EntityTexture.Width,EntityTexture.Height);
         // AddEnemy(this);
         enemiesToDefeat = enemies.Count;
         Globals.Player.AddObserver(this);
         exisits = false;
-        chaseRadius = 300f;
+        this.chaseRadius = chaseRadius;
         damage = 1;
     }
     public void OnNotify(PlayerActions data)
@@ -51,10 +54,11 @@ public abstract class Enemy : Entity, IObserver
 
 
         // /8 weil Scalierung der Waffe auf 0.125
+        //Debug.WriteLine("test");
         if (CheckCollision(new Rectangle((int)Globals.Player.Weapon.Position.X, (int)Globals.Player.Weapon.Position.Y, Globals.Player.Weapon.Texture.Width, Globals.Player.Weapon.Texture.Height)))
-        {
-            ReduceHealth(Globals.Player.Weapon.Damage);
-            Debug.WriteLine(GetHashCode() + " " + Health);
+        { 
+              ReduceHealth(Globals.Player.Weapon.Damage);
+             Debug.WriteLine(GetHashCode() + " " + Health);
         }
 
         if (CheckIfDead())
@@ -82,10 +86,10 @@ public abstract class Enemy : Entity, IObserver
         enemies.ForEach(enemy => enemy.Draw());
     }
 
-    public static Enemy AddEnemy(string existingEnemy, int health, float speed, Vector2 pos, Vector2 velocity)
+    public static Enemy AddEnemy(string existingEnemy, int health, float speed, Vector2 pos, Vector2 velocity, float chaseRadius, int scale)
     {
         EnemyFactory factory = new EnemyFactory();
-        Enemy enemy = factory.createEnemy(existingEnemy, health, speed, pos, velocity);
+        Enemy enemy = factory.createEnemy(existingEnemy, health, speed, pos, velocity, chaseRadius, scale);
         enemies.Add(enemy);
         return enemy;
     }
@@ -104,13 +108,13 @@ public abstract class Enemy : Entity, IObserver
             float distanceToPlayer = Vector2.Distance(Position, Globals.Player.Position);
 
             // Überprüfen Sie, ob der Spieler in der Nähe ist
-            if (distanceToPlayer <= chaseRadius)
+            if (distanceToPlayer <= chaseRadius && Map.GetRoomPlayerIsIn().Bereich.Intersects(enemyBounds))
             {
-                ChasePlayer(chaseRadius);
+                ChasePlayer();
             }
             else
             {
-                if (randomDirectionTimer > 1f)
+                /*if (randomDirectionTimer > 1f)
                 {
                     randomDirectionTimer = 0f;
                     Vector2 randomDirection = new Vector2((float)random.NextDouble() * 2 - 1, (float)random.NextDouble() * 2 - 1);
@@ -120,28 +124,23 @@ public abstract class Enemy : Entity, IObserver
                 if (randomDirectionTimer <= 1f)
                 {
                     randomDirectionTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                }
+                }*/
             }
         }
 
-
-        if (CollisionHandler.CollisionEntitys(Globals.Player, this))
-        {
-            if (Globals.Player.CanGetHit)
-            {
-                Globals.Player.ReduceHealth(damage);
-                Globals.Player.CanGetHit = false;
-            }
-
-            Debug.WriteLine("HIT! " + this.GetHashCode().ToString() + "\n " + Globals.Player.Health);
-        }
+        Attack(gameTime);
+        enemyBounds.X = (int)Position.X;
+        enemyBounds.Y = (int)Position.Y;
     }
 
-    public void ChasePlayer(float chaseRadius)
+    public void ChasePlayer()
     {
         Vector2 direction = Vector2.Normalize(Globals.Player.Position - Position);
         Position += direction * Speed;
     }
+
+    
+
 
 
     public void WanderRandomly(Vector2 randomDirection)

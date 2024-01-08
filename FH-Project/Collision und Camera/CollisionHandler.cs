@@ -26,11 +26,9 @@ public static class CollisionHandler
         Rectangle enityRectangle = new Rectangle((int)entity.Position.X, (int)entity.Position.Y, entity.EntityTexture.Width, entity.EntityTexture.Height);
 
 
-        Debug.WriteLine($"Entity Rectangle: {enityRectangle}");
-        Debug.WriteLine($"Texture Rectangle: {textureRectangle}");
-
+      
         bool collision = enityRectangle.Intersects(textureRectangle);
-        Debug.WriteLine($"Collision: {collision}");
+        
 
         return collision;
 
