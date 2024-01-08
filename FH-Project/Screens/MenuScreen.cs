@@ -88,11 +88,6 @@ internal abstract class MenuScreen : GameScreen
                 }
             }
 
-            // Accept or cancel the menu? We pass in our ControllingPlayer, which may
-            // either be null (to accept input from any player) or a specific index.
-            // If we pass a null controlling player, the InputState helper returns to
-            // us which player actually provided the input. We pass that through to
-            // OnSelectEntry and OnCancel, so they can tell which player triggered them.
             PlayerIndex playerIndex;
 
             if (input.IsMenuSelect(ControllingPlayer, out playerIndex))
@@ -118,7 +113,8 @@ internal abstract class MenuScreen : GameScreen
         /// </summary>
         protected virtual void OnCancel(PlayerIndex playerIndex)
         {
-            ExitScreen();
+        GameplayScreen.isPasue = false;
+        ExitScreen();
         }
 
         /// <summary>
@@ -126,7 +122,9 @@ internal abstract class MenuScreen : GameScreen
         /// </summary>
         protected void OnCancel(object sender, PlayerIndexEventArgs e)
         {
+        GameplayScreen.isPasue = false;
             OnCancel(e.PlayerIndex);
+            
         }
 
         #endregion Handle Input

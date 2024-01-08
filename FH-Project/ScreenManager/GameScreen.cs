@@ -47,11 +47,7 @@ public abstract class GameScreen
     /// </summary>
     public float TransitionPosition { get; protected set; } = 1;
 
-    /// <summary>
-    /// Gets the current alpha of the screen transition, ranging
-    /// from 1 (fully active, no transition) to 0 (transitioned
-    /// fully off to nothing).
-    /// </summary>
+
     public float TransitionAlpha
     {
         get { return 1f - TransitionPosition; }
@@ -62,14 +58,7 @@ public abstract class GameScreen
     /// </summary>
     public ScreenState ScreenState { get; protected set; } = ScreenState.TransitionOn;
 
-    /// <summary>
-    /// There are two possible reasons why a screen might be transitioning
-    /// off. It could be temporarily going away to make room for another
-    /// screen that is on top of it, or it could be going away for good.
-    /// This property indicates whether the screen is exiting for real:
-    /// if set, the screen will automatically remove itself as soon as the
-    /// transition finishes.
-    /// </summary>
+
     public bool IsExiting { get; protected internal set; }
 
     /// <summary>
@@ -87,28 +76,13 @@ public abstract class GameScreen
 
     private bool otherScreenHasFocus;
 
-    /// <summary>
-    /// Gets the manager that this screen belongs to.
-    /// </summary>
+
     public ScreenManager ScreenManager { get; internal set; }
 
-    /// <summary>
-    /// Gets the index of the player who is currently controlling this screen,
-    /// or null if it is accepting input from any player. This is used to lock
-    /// the game to a specific player profile. The main menu responds to input
-    /// from any connected gamepad, but whichever player makes a selection from
-    /// this menu is given control over all subsequent screens, so other gamepads
-    /// are inactive until the controlling player returns to the main menu.
-    /// </summary>
+
     public PlayerIndex? ControllingPlayer { get; internal set; }
 
-    /// <summary>
-    /// Gets the gestures the screen is interested in. Screens should be as specific
-    /// as possible with gestures to increase the accuracy of the gesture engine.
-    /// For example, most menus only need Tap or perhaps Tap and VerticalDrag to operate.
-    /// These gestures are handled by the ScreenManager when screens change and
-    /// all gestures are placed in the InputState passed to the HandleInput method.
-    /// </summary>
+
     public GestureType EnabledGestures
     {
         get { return enabledGestures; }
@@ -116,9 +90,7 @@ public abstract class GameScreen
         {
             enabledGestures = value;
 
-            // the screen manager handles this during screen changes, but
-            // if this screen is active and the gesture types are changing,
-            // we have to update the TouchPanel ourself.
+    
             if (ScreenState == ScreenState.Active)
             {
                 TouchPanel.EnabledGestures = value;
@@ -146,11 +118,7 @@ public abstract class GameScreen
 
     #region Update and Draw
 
-    /// <summary>
-    /// Allows the screen to run logic, such as updating the transition position.
-    /// Unlike HandleInput, this method is called regardless of whether the screen
-    /// is active, hidden, or in the middle of a transition.
-    /// </summary>
+
     public virtual void Update(GameTime gameTime, bool otherScreenHasFocus,
                                                   bool coveredByOtherScreen)
     {

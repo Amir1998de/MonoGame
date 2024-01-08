@@ -1,11 +1,5 @@
 #region File Description
 
-//-----------------------------------------------------------------------------
-// GameplayScreen.cs
-//
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
 
 #endregion File Description
 
@@ -25,18 +19,13 @@ using System.Diagnostics;
 #endregion Using Statements
 
 namespace FH_Project;
-/// <summary>
-/// This screen implements the actual game logic. It is just a
-/// placeholder to get the idea across: you'll probably want to
-/// put some more interesting gameplay in here!
-/// </summary>
+
 internal class GameplayScreen : GameScreen
 {
     #region Fields
     private SoundManagement soundManagement;
     private KeyboardState currentKeyboardState;
-    
-
+    public static bool isPasue = false;
 
     private ContentManager content;
     private SpriteFont gameFont;
@@ -164,40 +153,68 @@ internal class GameplayScreen : GameScreen
 
     #region Update and Draw
 
-
+    // update 
     public override void Update(GameTime gameTime, bool otherScreenHasFocus,
                                                    bool coveredByOtherScreen)
     {
+        if (!isPasue)
+        {
+            base.Update(gameTime, otherScreenHasFocus, false);
 
-        base.Update(gameTime, otherScreenHasFocus, false);
-
-        // update 
-        Globals.KeyboardState = Keyboard.GetState();
-
-
-        _direction = Vector2.Zero;
-        //Debug.WriteLine(Map.GetRoomPlayerIsIn().WallCollision());
-        if (keyboardState.IsKeyDown(Keys.Up)) _direction.Y--;
-        if (keyboardState.IsKeyDown(Keys.Down)) _direction.Y++;
-        if (keyboardState.IsKeyDown(Keys.Left)) _direction.X--;
-        if (keyboardState.IsKeyDown(Keys.Right)) _direction.X++;
-
-        if (_direction != Microsoft.Xna.Framework.Vector2.Zero) _direction.Normalize();
+            // update 
+            Globals.KeyboardState = Keyboard.GetState();
 
 
+            _direction = Vector2.Zero;
+            //Debug.WriteLine(Map.GetRoomPlayerIsIn().WallCollision());
+            if (keyboardState.IsKeyDown(Keys.Up)) _direction.Y--;
+            if (keyboardState.IsKeyDown(Keys.Down)) _direction.Y++;
+            if (keyboardState.IsKeyDown(Keys.Left)) _direction.X--;
+            if (keyboardState.IsKeyDown(Keys.Right)) _direction.X++;
 
-        Enemy.GetEnemies().ForEach(enemy => enemy.Update(gameTime));
+            if (_direction != Microsoft.Xna.Framework.Vector2.Zero) _direction.Normalize();
+
+            Enemy.GetEnemies().ForEach(enemy => enemy.Update(gameTime));
+
+            Globals.Update(gameTime);
+            Globals.Player.Update(gameTime);
+        }
 
         
-
-
-        Globals.Update(gameTime);
-        Globals.Player.Update(gameTime);
-        //CalculateTranslation();
-
-
     }
 
+    // Draw
+    public override void Draw(GameTime gameTime)
+    {
+
+        ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
+                                           Color.CornflowerBlue, 0, 0);
+
+        spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(Map.GetRoomPlayerIsIn()));
+
+        if (Keyboard.GetState().IsKeyDown(Keys.Space))
+        {
+            Globals.Player.Weapon.Draw(spriteBatch);
+
+        }
+        Globals.Map.Draw();
+
+        //player.sprite.Draw();
+
+        //potion.Draw();
+
+        Globals.Player.Draw();
+        Enemy.DrawAll();
+
+        Globals.Map.DrawEnemyCounter(10, 10, camera);
+        Globals.Map.DrawEnemyRoomCounter(140, 10, camera);
+
+        //enemy.CheckEnemy(spriteBatch, player);
+
+        spriteBatch.End();
+
+        base.Draw(gameTime);
+    }
     public override void HandleInput(InputState input)
     {
 
@@ -211,16 +228,14 @@ internal class GameplayScreen : GameScreen
         KeyboardState keyboardState = input.CurrentKeyboardStates[playerIndex];
         GamePadState gamePadState = input.CurrentGamePadStates[playerIndex];
 
-        // The game pauses either if the user presses the pause button, or if
-        // they unplug the active gamepad. This requires us to keep track of
-        // whether a gamepad was ever plugged in, because we don't want to pause
-        // on PC if they are playing with a keyboard and have no gamepad at all!
         bool gamePadDisconnected = !gamePadState.IsConnected &&
                                    input.GamePadWasConnected[playerIndex];
 
         if (input.IsPauseGame(ControllingPlayer) || gamePadDisconnected)
         {
+            isPasue = true;
             ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
+            Debug.WriteLine("Pause");
         }
         else
         {
@@ -266,52 +281,9 @@ internal class GameplayScreen : GameScreen
     /// <summary>
     /// Draws the gameplay screen.
     /// </summary>
-    public override void Draw(GameTime gameTime)
-    {
 
-        ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
-                                           Color.CornflowerBlue, 0, 0);
-
-        spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(Map.GetRoomPlayerIsIn()));
-
-        if (Keyboard.GetState().IsKeyDown(Keys.Space))
-        {
-            Globals.Player.Weapon.Draw(spriteBatch);
-
-        }
-
-        // Test
-
-        Globals.Map.Draw();
-
-        //player.sprite.Draw();
-
-        //potion.Draw();
-
-        Globals.Player.Draw();
-        Enemy.DrawAll();
-
-        Globals.Map.DrawEnemyCounter(10,10,camera);
-        Globals.Map.DrawEnemyRoomCounter(140,10,camera);
-
-        //enemy.CheckEnemy(spriteBatch, player);
-
-        spriteBatch.End();
-
-        base.Draw(gameTime);
-    }
 
     #endregion Update and Draw
 
-    /*private void CalculateTranslation()
-    {
 
-        var dx = (Globals.WindowSize.X / 2) - player.Position.X;
-        var dy = (Globals.WindowSize.Y / 2) - player.Position.Y;
-
-        dx = MathHelper.Clamp(dx, 0, karte.MapSize.X - Globals.WindowSize.X);
-        dy = MathHelper.Clamp(dy, 0, karte.MapSize.Y - Globals.WindowSize.Y);
-
-        _translation = Matrix.CreateTranslation(dx, dy, 0f) * Matrix.CreateScale(1f);
-    }*/
 }
