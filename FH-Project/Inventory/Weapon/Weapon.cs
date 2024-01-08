@@ -27,10 +27,12 @@ public abstract class Weapon : Item
 
     public Texture2D Texture { get; set; }
 
+    //1=primary Weapon , 2=Bow
+    public int ID { get; set; }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public virtual void Draw()
     {
-        spriteBatch.Draw(Texture, Position, null, Color.White, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+        Globals.SpriteBatch.Draw(Texture, Position, null, Color.White, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
     }
     public abstract void UseEffect();
 }

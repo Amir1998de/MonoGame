@@ -30,6 +30,23 @@ public static class Inventory
         throw new NoItemFoundException("This Item does not Exist");
     }
 
+    public static void changeWeapon(int id)
+    {
+        foreach(var item in items)
+        {
+            if (item.GetType().ToString().Equals("FH_Project.Sword") || item.GetType().ToString().Equals("FH_Project.Bow") || item.GetType().ToString().Equals("FH_Project.Hammer"))
+            {
+                Weapon weapon = (Weapon)item;
+                if(weapon.ID==id)
+                {
+                    Globals.Player.Weapon= weapon;
+                    return;
+                }
+            }
+
+        }
+    }
+
     public static void UseItem(Item item)
     {
         if (!items.Contains(item)) throw new NoItemFoundException("This Item does not Exist");

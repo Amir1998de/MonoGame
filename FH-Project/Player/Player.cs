@@ -264,7 +264,6 @@ public class Player : Entity
 
 
 
-        prevKeyboardState = Globals.KeyboardState;
 
         if (!Globals.KeyboardState.IsKeyDown(Keys.Right) &&
             !Globals.KeyboardState.IsKeyDown(Keys.Left) &&
@@ -300,9 +299,13 @@ public class Player : Entity
             MovePlayerDown();
         }
 
+        
 
 
+
+        prevKeyboardState = currentKeyboardState;
         currentKeyboardState = Globals.KeyboardState;
+      
 
 
         if (currentKeyboardState.IsKeyDown(Keys.H) && !prevKeyboardState.IsKeyDown(Keys.H))
@@ -310,13 +313,22 @@ public class Player : Entity
             Inventory.UseItem(Inventory.getPotion(1));
             
         }
-        prevKeyboardState = currentKeyboardState;
+        
 
-        if (currentKeyboardState.IsKeyDown(Keys.J) && !prevKeyboardState.IsKeyDown(Keys.J)) Inventory.UseItem(Inventory.getPotion(2));
-        prevKeyboardState = currentKeyboardState;
+        if (currentKeyboardState.IsKeyDown(Keys.J) && !prevKeyboardState.IsKeyDown(Keys.J)) 
+            Inventory.UseItem(Inventory.getPotion(2));
+        
 
-        if (currentKeyboardState.IsKeyDown(Keys.K) && !prevKeyboardState.IsKeyDown(Keys.K)) Inventory.UseItem(Inventory.getPotion(3));
-        prevKeyboardState = currentKeyboardState;
+        if (currentKeyboardState.IsKeyDown(Keys.K) && !prevKeyboardState.IsKeyDown(Keys.K)) 
+            Inventory.UseItem(Inventory.getPotion(3));
+        
+
+        if (currentKeyboardState.IsKeyDown(Keys.L) && !prevKeyboardState.IsKeyDown(Keys.L)) 
+            Inventory.changeWeapon(1);
+
+        if (currentKeyboardState.IsKeyDown(Keys.O) && !prevKeyboardState.IsKeyDown(Keys.O))
+            Inventory.changeWeapon(2);
+
 
 
         if (Globals.KeyboardState.IsKeyDown(Keys.LeftShift) && !coolDownForSprint)

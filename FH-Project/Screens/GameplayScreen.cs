@@ -103,6 +103,7 @@ internal class GameplayScreen : GameScreen
             content = new ContentManager(ScreenManager.Game.Services, "Content");
 
         Globals.Content = content;
+        Globals.MouseState = Mouse.GetState();
 
         swordTexture = content.Load<Texture2D>("Items/Weapon/SwordT2");
         hammerTexture = content.Load<Texture2D>("Items/Weapon/HammerT2");
@@ -117,7 +118,7 @@ internal class GameplayScreen : GameScreen
         hammer = new Hammer(100, 5, hammerTexture);
         bow = new Bow(100, 5, bowTexture);
 
-        Globals.Player = new Player(3, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword, 3);
+        Globals.Player = new Player(3, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), bow, 3);
 
         Globals.Map = new Map();
         Globals.Map.GenerateMap(20, 4, 8, 3, 6);
@@ -276,8 +277,16 @@ internal class GameplayScreen : GameScreen
 
         if (Keyboard.GetState().IsKeyDown(Keys.Space))
         {
-            Globals.Player.Weapon.Draw(spriteBatch);
+            Globals.Player.Weapon.Draw();
 
+        }
+
+        if (Globals.MouseState.LeftButton == ButtonState.Pressed)
+        {
+            if (Globals.Player.Weapon.GetType().ToString().Equals("FH_Project.Bow"))
+            {
+                Globals.Player.Weapon.Draw();
+            }
         }
 
         // Test

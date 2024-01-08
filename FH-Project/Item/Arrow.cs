@@ -39,6 +39,16 @@ public class Arrow
             {
                 IsActive = false;
             }
+            /*
+            foreach(var enemy in Enemy.enemies)
+            {
+                if(CollisionHandler.CollisionWithEnviorment(ArrowBounds,enemy))
+                {
+                    IsActive = false;
+                    break;
+                }
+            }
+            */
             elapsedLifetime += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (elapsedLifetime >= lifetime)
             {

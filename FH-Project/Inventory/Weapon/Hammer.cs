@@ -12,6 +12,7 @@ public class Hammer : Weapon
 {
     public Hammer(int damage, int speed, Texture2D texture) : base(damage, speed, texture)
     {
+        ID = 1;
     }
 
 

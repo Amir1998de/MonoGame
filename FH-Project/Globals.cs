@@ -29,6 +29,9 @@ public static class Globals
 
     public static KeyboardState KeyboardState { get; set; }
 
+    public static MouseState MouseState { get; set; }
+
+
     public static Player Player { get; set; }
 
     public static Map Map { get; set; }

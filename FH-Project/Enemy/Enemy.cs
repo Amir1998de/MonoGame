@@ -108,23 +108,28 @@ public abstract class Enemy : Entity, IObserver
             float distanceToPlayer = Vector2.Distance(Position, Globals.Player.Position);
 
             // Überprüfen Sie, ob der Spieler in der Nähe ist
-            if (distanceToPlayer <= chaseRadius && Map.GetRoomPlayerIsIn().Bereich.Intersects(enemyBounds))
+            Room roomPlayerIsIn = Map.GetRoomPlayerIsIn();
+            if(roomPlayerIsIn != null && roomPlayerIsIn.Korridore != null)
             {
-                ChasePlayer();
-            }
-            else
-            {
-                /*if (randomDirectionTimer > 1f)
-                {
-                    randomDirectionTimer = 0f;
-                    Vector2 randomDirection = new Vector2((float)random.NextDouble() * 2 - 1, (float)random.NextDouble() * 2 - 1);
-                    WanderRandomly(randomDirection);
-                }
 
-                if (randomDirectionTimer <= 1f)
+                if (distanceToPlayer <= chaseRadius && Map.GetRoomPlayerIsIn().Bereich.Intersects(enemyBounds))
                 {
-                    randomDirectionTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                }*/
+                    ChasePlayer();
+                }
+                else
+                {
+                    /*if (randomDirectionTimer > 1f)
+                    {
+                        randomDirectionTimer = 0f;
+                        Vector2 randomDirection = new Vector2((float)random.NextDouble() * 2 - 1, (float)random.NextDouble() * 2 - 1);
+                        WanderRandomly(randomDirection);
+                    }
+
+                    if (randomDirectionTimer <= 1f)
+                    {
+                        randomDirectionTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    }*/
+                }
             }
         }
 
