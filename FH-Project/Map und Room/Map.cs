@@ -23,8 +23,10 @@ public class Map : MapEntity
     private List<Texture2D> textures = new(6);
 
     private Random random = new();
+    public int Ebenen { get; private set; }
+    public int Count { get; private set; }
+    private Homebase homebase = new Homebase(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2, 8, 8, false);
 
-    
 
 
 
@@ -32,7 +34,8 @@ public class Map : MapEntity
     public Map()
     {
         räume = new List<Room>();
-
+        Ebenen = 2;
+        Count = 1;
 
         _tiles = new Sprite[_mapTileSize.X, _mapTileSize.Y];
 
@@ -109,7 +112,7 @@ public class Map : MapEntity
                             y = räume[i - 1].Bereich.Y;
                             räume[i - 1].Directions = RoomDirections.RIGHT;
                             räume[i - 1].ReverseDircetion = RoomDirections.LEFT;
-                            räume[i - 1]. WhichKorridor = räume[i - 1].Korridore[3];
+                            räume[i - 1].WhichKorridor = räume[i - 1].Korridore[3];
                             break;
                     }
 
@@ -138,6 +141,10 @@ public class Map : MapEntity
             räume.Add(neuerRaum);
 
         }
+        räume[räume.Count - 1].Korridore.RemoveRange(0, 2);
+        räume[räume.Count - 1].WhichKorridor = räume[räume.Count - 1].Korridore[0];
+
+
 
 
     }
@@ -145,7 +152,7 @@ public class Map : MapEntity
     public void CreateCorrdior(Room room)
     {
         int randDirection = random.Next(0, 4);
-        Room corrdior = new(0, 0, 0, 0,true);
+        Room corrdior = new(0, 0, 0, 0, true);
         int x = 0;
         int y = 0;
 
@@ -186,6 +193,30 @@ public class Map : MapEntity
 
     }
 
+
+    public void Update(GameTime gameTime)
+    {
+        if (Enemy.enemies.Count <= 0)
+        {
+            if (Ebenen > Count && homebase.AreWeDone)
+            {
+
+                GenerateMap(1, 4, 8, 3, 6);
+                Globals.Player.Position = new Vector2(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2);
+                Count++;
+            }
+
+        }
+
+        if (Ebenen <= Count)
+        {
+            räume.Clear();
+            Enemy.enemies.Clear();
+            homebase.Shop();
+            Count = 0;
+        }
+    }
+
     public static Room GetRoomPlayerIsIn()
     {
         foreach (Room room in räume)
@@ -200,16 +231,6 @@ public class Map : MapEntity
         }
 
         return null;
-    }
-
-    public static bool CheckWallCollison()
-    {
-        foreach (Room room in räume)
-        {
-            if (room.WallCollision())
-                return true;
-        }
-        return false;
     }
 
     public static Room GetRoomEnemyIsIn(Enemy enemy)
@@ -251,7 +272,7 @@ public class Map : MapEntity
             raum.Draw();
 
         }
-
+        if (Ebenen <= Count || !homebase.AreWeDone) homebase.Draw();
 
 
 
@@ -269,9 +290,9 @@ public class Map : MapEntity
         string enemyCountString = "";
 
         // Erhalte die kamerabezogene Position für den Score
-        Vector2 cameraAdjustedPosition = new Vector2(x, y) + camera.Position;
+        Vector2 cameraAdjustedPosition = new Vector2(x, y) + Camera.Position;
 
-        if(roomPlayerIsIn != null)  enemyCountString = "Enemies To Defeat: " + roomPlayerIsIn.GetEnemiesInRoomCount().ToString();
+        if (roomPlayerIsIn != null) enemyCountString = "Enemies To Defeat: " + roomPlayerIsIn.GetEnemiesInRoomCount().ToString();
 
         // Measure the size of the string to determine where to draw it
         Vector2 stringSize = font.MeasureString(enemyCountString);
@@ -285,7 +306,7 @@ public class Map : MapEntity
         SpriteFont font = Globals.Content.Load<SpriteFont>("Verdana");
 
         // Erhalte die kamerabezogene Position für den Score
-        Vector2 cameraAdjustedPosition = new Vector2(x, y) + camera.Position;
+        Vector2 cameraAdjustedPosition = new Vector2(x, y) + Camera.Position;
 
         string enemyCountString = "Enemies: " + Enemy.enemies.Count.ToString();
 
@@ -298,7 +319,13 @@ public class Map : MapEntity
 
     public void GenerateMap(int roomCount, int minRoomWidth, int maxRoomWidth, int minRoomHeight, int maxRoomHeight)
     {
+        if (räume.Count > 0)
+        {
+            räume.Clear();
+        }
         ErstelleZufälligeKarte(roomCount, minRoomWidth, maxRoomWidth, minRoomHeight, maxRoomHeight);
+
+
         DrawEnemyInRoom();
     }
 }

@@ -30,15 +30,15 @@ public abstract class Enemy : Entity, IObserver
     protected int damage;
     private Random random;
     protected Rectangle enemyBounds;
-   
+
 
     #endregion Variablen
 
-    public Enemy(int health, float speed, Vector2 pos, Vector2 velocity, float chaseRadius ,int scale) : base(health, speed, pos, velocity, scale)
+    public Enemy(int health, float speed, Vector2 pos, Vector2 velocity, float chaseRadius, int scale) : base(health, speed, pos, velocity, scale)
     {
         LoadContent();
         random = new();
-        enemyBounds = new((int)Position.X,(int)Position.Y,EntityTexture.Width,EntityTexture.Height);
+        enemyBounds = new((int)Position.X, (int)Position.Y, EntityTexture.Width, EntityTexture.Height);
         // AddEnemy(this);
         enemiesToDefeat = enemies.Count;
         Globals.Player.AddObserver(this);
@@ -56,9 +56,9 @@ public abstract class Enemy : Entity, IObserver
         // /8 weil Scalierung der Waffe auf 0.125
         //Debug.WriteLine("test");
         if (CheckCollision(new Rectangle((int)Globals.Player.Weapon.Position.X, (int)Globals.Player.Weapon.Position.Y, Globals.Player.Weapon.Texture.Width, Globals.Player.Weapon.Texture.Height)))
-        { 
-              ReduceHealth(Globals.Player.Weapon.Damage);
-             Debug.WriteLine(GetHashCode() + " " + Health);
+        {
+            ReduceHealth(Globals.Player.Weapon.Damage);
+            Debug.WriteLine(GetHashCode() + " " + Health);
         }
 
         if (CheckIfDead())
@@ -108,29 +108,30 @@ public abstract class Enemy : Entity, IObserver
             float distanceToPlayer = Vector2.Distance(Position, Globals.Player.Position);
 
             // Überprüfen Sie, ob der Spieler in der Nähe ist
-            Room roomPlayerIsIn = Map.GetRoomPlayerIsIn();
-            if(roomPlayerIsIn != null && roomPlayerIsIn.Korridore != null)
+            Room roomPlayerIsin = Map.GetRoomPlayerIsIn();
+            if (roomPlayerIsin != null && roomPlayerIsin.WhichKorridor != null)
             {
 
-                if (distanceToPlayer <= chaseRadius && Map.GetRoomPlayerIsIn().Bereich.Intersects(enemyBounds))
-                {
+                if (distanceToPlayer <= chaseRadius && roomPlayerIsin.Bereich.Intersects(enemyBounds))
                     ChasePlayer();
-                }
                 else
                 {
                     /*if (randomDirectionTimer > 1f)
-                    {
-                        randomDirectionTimer = 0f;
-                        Vector2 randomDirection = new Vector2((float)random.NextDouble() * 2 - 1, (float)random.NextDouble() * 2 - 1);
-                        WanderRandomly(randomDirection);
-                    }
-
-                    if (randomDirectionTimer <= 1f)
-                    {
-                        randomDirectionTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    }*/
+                {
+                    randomDirectionTimer = 0f;
+                    Vector2 randomDirection = new Vector2((float)random.NextDouble() * 2 - 1, (float)random.NextDouble() * 2 - 1);
+                    WanderRandomly(randomDirection);
                 }
+
+                if (randomDirectionTimer <= 1f)
+                {
+                    randomDirectionTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                }*/
+                }
+
             }
+
+
         }
 
         Attack(gameTime);
@@ -144,7 +145,7 @@ public abstract class Enemy : Entity, IObserver
         Position += direction * Speed;
     }
 
-    
+
 
 
 

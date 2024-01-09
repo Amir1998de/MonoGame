@@ -1,17 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
+﻿using FH_Project;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection.Metadata;
-
-
-namespace FH_Project;
-
-
+using Microsoft.Xna.Framework;
 
 public class Player : Entity
 {
@@ -90,7 +80,6 @@ public class Player : Entity
         if (shield < 0)
             shield = 0;
     }
-
     public bool CanAttack()
     {
         return !(IsAttacking);
@@ -129,8 +118,6 @@ public class Player : Entity
         {
             return;
         }
-
-
     }
 
     public void MovePlayerRight()
@@ -199,20 +186,19 @@ public class Player : Entity
         {
             return;
         }
-
     }
 
     public void MovePlayerDown()
     {
         Position = new Vector2(Position.X, Position.Y + Speed);
         Room roomPlayerisIn = Map.GetRoomPlayerIsIn();
-        
 
-        if (KorridorPlayerIsIn == null) KorridorPlayerIsIn = roomPlayerisIn.WhichKorridor;
+
 
         if (roomPlayerisIn != null)
         {
-            float z = (float)EntityTexture.Height* 3;
+            if (KorridorPlayerIsIn == null) KorridorPlayerIsIn = roomPlayerisIn.WhichKorridor;
+            float z = (float)EntityTexture.Height * 3;
 
             if (roomPlayerisIn.WhichKorridor != null)
             {
@@ -220,12 +206,12 @@ public class Player : Entity
 
                 if (distanceToPlayer <= 200 && roomPlayerisIn.GetEnemiesInRoomCount() <= 0)
                 {
-                    if(!KorridorPlayerIsIn.Equals(roomPlayerisIn.WhichKorridor))
+                    if (!KorridorPlayerIsIn.Equals(roomPlayerisIn.WhichKorridor))
                         KorridorPlayerIsIn = roomPlayerisIn.WhichKorridor;
                 }
                 else if (Position.Y + z > roomPlayerisIn.Bereich.Bottom)
                 {
-                    
+
                     if (Position.Y + z > roomPlayerisIn.Bereich.Bottom)
                         Position = new Vector2(Position.X, roomPlayerisIn.Bereich.Bottom - z);
                 }
@@ -264,6 +250,7 @@ public class Player : Entity
 
 
 
+        prevKeyboardState = Globals.KeyboardState;
 
         if (!Globals.KeyboardState.IsKeyDown(Keys.Right) &&
             !Globals.KeyboardState.IsKeyDown(Keys.Left) &&
@@ -299,31 +286,29 @@ public class Player : Entity
             MovePlayerDown();
         }
 
-        
-
 
 
         prevKeyboardState = currentKeyboardState;
         currentKeyboardState = Globals.KeyboardState;
-      
+
 
 
         if (currentKeyboardState.IsKeyDown(Keys.H) && !prevKeyboardState.IsKeyDown(Keys.H))
         {
             Inventory.UseItem(Inventory.getPotion(1));
-            
+
         }
-        
 
-        if (currentKeyboardState.IsKeyDown(Keys.J) && !prevKeyboardState.IsKeyDown(Keys.J)) 
+
+        if (currentKeyboardState.IsKeyDown(Keys.J) && !prevKeyboardState.IsKeyDown(Keys.J))
             Inventory.UseItem(Inventory.getPotion(2));
-        
 
-        if (currentKeyboardState.IsKeyDown(Keys.K) && !prevKeyboardState.IsKeyDown(Keys.K)) 
+
+        if (currentKeyboardState.IsKeyDown(Keys.K) && !prevKeyboardState.IsKeyDown(Keys.K))
             Inventory.UseItem(Inventory.getPotion(3));
-        
 
-        if (currentKeyboardState.IsKeyDown(Keys.L) && !prevKeyboardState.IsKeyDown(Keys.L)) 
+
+        if (currentKeyboardState.IsKeyDown(Keys.L) && !prevKeyboardState.IsKeyDown(Keys.L))
             Inventory.changeWeapon(1);
 
         if (currentKeyboardState.IsKeyDown(Keys.O) && !prevKeyboardState.IsKeyDown(Keys.O))

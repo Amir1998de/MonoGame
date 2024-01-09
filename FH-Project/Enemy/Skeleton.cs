@@ -23,34 +23,38 @@ public class Skeleton : Enemy
     public override void Attack(GameTime gameTime)
     {
         int index = -1;
-        if(arrows.Count > 0)
+        if (arrows.Count > 0)
         {
             arrows.ForEach(arrow =>
             {
                 arrow.Update(gameTime);
 
-                if(!arrow.IsActive) index = arrows.IndexOf(arrow);
+                if (!arrow.IsActive) index = arrows.IndexOf(arrow);
+                Room room = Map.GetRoomEnemyIsIn(this);
 
-                if (!Map.GetRoomEnemyIsIn(this).Bereich.Intersects(arrow.ArrowBounds))
-                    arrow.SetToFalse();
-                
+                if (room != null)
+                {
+                    if (!room.Bereich.Intersects(arrow.ArrowBounds))
+                        arrow.SetToFalse();
+                }
+
 
             });
-            if(index != -1)
+            if (index != -1)
                 arrows.RemoveAt(index);
         }
 
-        
+
 
         if (gameTime.TotalGameTime - lastAttackTime > attackCooldown)
         {
             float distanceToPlayer = Vector2.Distance(Position, Globals.Player.Position);
-            if(distanceToPlayer <= chaseRadius)
+            if (distanceToPlayer <= chaseRadius)
             {
                 // Pfeil in Richtung des Spielers schießen
                 Vector2 directionToPlayer = Vector2.Normalize(Globals.Player.Position - Position);
                 Vector2 arrowVelocity = directionToPlayer * 10; // Setze ArrowSpeed als gewünschte Geschwindigkeit des Pfeils
-                Arrow arrow = new Arrow(Position, arrowVelocity,10); // Annahme: Arrow ist eine Klasse für Pfeile
+                Arrow arrow = new Arrow(Position, arrowVelocity, 10); // Annahme: Arrow ist eine Klasse für Pfeile
                 arrows.Add(arrow); // Annahme: Arrows ist eine Liste für alle Pfeile im Spiel
 
                 // Aktualisiere die Zeit des letzten Angriffs
@@ -71,9 +75,9 @@ public class Skeleton : Enemy
 
         Globals.SpriteBatch.Draw(EntityTexture, Position, null, Color.White, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
         DrawArrow();
-       
+
     }
-    
+
 
     public override void LoadContent()
     {
@@ -88,4 +92,3 @@ public class Skeleton : Enemy
 
     }
 }
-

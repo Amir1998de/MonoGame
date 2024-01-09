@@ -64,6 +64,9 @@ internal class GameplayScreen : GameScreen
     private Potion ShieldPotion;
     private Potion RandomPotion;
 
+    private SpriteFont font;
+
+
     private Camera camera;
 
     private Matrix _translation;
@@ -92,6 +95,7 @@ internal class GameplayScreen : GameScreen
             content = new ContentManager(ScreenManager.Game.Services, "Content");
 
         Globals.Content = content;
+        Globals.MouseState = Mouse.GetState();
 
         swordTexture = content.Load<Texture2D>("Items/Weapon/SwordT2");
         hammerTexture = content.Load<Texture2D>("Items/Weapon/HammerT2");
@@ -100,7 +104,7 @@ internal class GameplayScreen : GameScreen
         shieldPotionTexture = content.Load<Texture2D>("Items/Potions/PotionBlue");
         randomPotionTexture = content.Load<Texture2D>("Items/Potions/PotionGreen");
         Arrow.ArrowTexture = content.Load<Texture2D>("Enemy/Slime/slime-idle-0");
-        //SpriteFont font = Globals.Content.Load<SpriteFont>("Verdana");
+        font = Globals.Content.Load<SpriteFont>("Verdana");
 
         sword = new Sword(1, 5, swordTexture);
         hammer = new Hammer(100, 5, hammerTexture);
@@ -109,7 +113,7 @@ internal class GameplayScreen : GameScreen
         Globals.Player = new Player(3, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword, 3);
 
         Globals.Map = new Map();
-        Globals.Map.GenerateMap(20, 4, 8, 3, 6);
+        Globals.Map.GenerateMap(1, 4, 8, 3, 6);
 
 
         spriteBatch = ScreenManager.SpriteBatch;
@@ -122,7 +126,7 @@ internal class GameplayScreen : GameScreen
         //player.SetBounds(karte.MapSize, karte.TileSize);
 
         camera = new Camera(Globals.Map);
-        camera.Position = Globals.Player.Position;
+        Camera.Position = Globals.Player.Position;
         camera.Zoom = 1f;
 
 
@@ -173,6 +177,8 @@ internal class GameplayScreen : GameScreen
             if (keyboardState.IsKeyDown(Keys.Right)) _direction.X++;
 
             if (_direction != Microsoft.Xna.Framework.Vector2.Zero) _direction.Normalize();
+            Globals.Map.Update(gameTime);
+
 
             Enemy.GetEnemies().ForEach(enemy => enemy.Update(gameTime));
 
@@ -180,7 +186,7 @@ internal class GameplayScreen : GameScreen
             Globals.Player.Update(gameTime);
         }
 
-        
+
     }
 
     // Draw
@@ -193,22 +199,25 @@ internal class GameplayScreen : GameScreen
         spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(Map.GetRoomPlayerIsIn()));
 
         Globals.Map.Draw();
+
         if (Keyboard.GetState().IsKeyDown(Keys.Space))
         {
             Globals.Player.Weapon.Draw();
+
         }
 
-        if(Globals.MouseState.LeftButton==ButtonState.Pressed)
+        if (Globals.MouseState.LeftButton == ButtonState.Pressed)
         {
-            if(Globals.Player.Weapon.GetType().ToString().Equals("FH_Projekt.Bow"))
+            if (Globals.Player.Weapon.GetType().ToString().Equals("FH_Project.Bow"))
             {
-                Globals.Player.Draw();
+                Globals.Player.Weapon.Draw();
             }
         }
 
         //player.sprite.Draw();
 
         //potion.Draw();
+        spriteBatch.DrawString(font, Globals.Map.Count.ToString(), new Vector2(400, 10) + Camera.Position, Color.Red);
 
         Globals.Player.Draw();
         Enemy.DrawAll();

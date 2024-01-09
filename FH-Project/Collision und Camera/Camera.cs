@@ -6,10 +6,10 @@ public class Camera
 {
     private Matrix transformMatrix;
 
-    public Vector2 Position { get; set; }
+    public static Vector2 Position { get; set; }
     public float Zoom { get; set; }
     public float Rotation { get; set; }
-    private Map karte;
+    
 
 
     public Camera(Map karte)
@@ -17,8 +17,7 @@ public class Camera
         Position = Vector2.Zero;
         Zoom = 1.0f;
         Rotation = 0.0f;
-        this.karte = karte;
-
+       
     }
 
     public Matrix GetViewMatrix(Room currentRoom)

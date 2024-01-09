@@ -15,8 +15,8 @@ public class Room : MapEntity
 {
     public Rectangle Bereich { get; set; }
 
-    private readonly Sprite[,] tiles;
-    private readonly Point tileSize = new(4, 3);
+    protected readonly Sprite[,] tiles;
+    protected readonly Point tileSize = new(4, 3);
     private List<Texture2D> textures = new List<Texture2D>();
     private Random random = new Random();
     public int MaxWidth { get; private set; }
@@ -33,18 +33,11 @@ public class Room : MapEntity
     public List<Room> Korridore { get; set; }
     Texture2D roomTexture = Globals.Content.Load<Texture2D>("tile1");
 
-    public Rectangle TopLeft { get; set; }
-    public Rectangle TopRight { get; set; }
-    public Rectangle BottomLeft { get; set; }
-
-    public Rectangle BottomRight { get; set; }
-
-    private List<Rectangle> walls = new(4);
     public Room WhichKorridor { get; set; }
 
     public bool IsKorridor { get; private set; }
     private List<Enemy> enemiesInRoom = new List<Enemy>();
-    
+
 
 
     public Room(int x, int y, int breite, int höhe, bool isKorridor)
@@ -53,7 +46,7 @@ public class Room : MapEntity
 
         IsKorridor = isKorridor;
 
-        
+
 
         EnemyCap = random.Next(3, 6);
 
@@ -73,14 +66,7 @@ public class Room : MapEntity
 
         Bereich = new Rectangle(x - TileWidth / 2, y - TileHeight / 2, MaxWidth, MaxHeight);
 
-        TopLeft = new Rectangle(Bereich.Left - roomTexture.Width / 2, Bereich.Top - roomTexture.Height, roomTexture.Width / 2, Bereich.Height + roomTexture.Height);
-        TopRight = new Rectangle(Bereich.Right, Bereich.Top - roomTexture.Height, roomTexture.Width / 2, Bereich.Height + roomTexture.Height);
-        BottomLeft = new Rectangle(Bereich.Left - roomTexture.Width, Bereich.Bottom, Bereich.Width + roomTexture.Width, roomTexture.Height / 2);
-        BottomRight = new Rectangle(Bereich.Right, Bereich.Bottom, roomTexture.Width, roomTexture.Height / 2);
-        CollisionWrapper.CollisionWrappers.Add(TopLeft);
-        CollisionWrapper.CollisionWrappers.Add(TopRight);
-        CollisionWrapper.CollisionWrappers.Add(BottomLeft);
-        CollisionWrapper.CollisionWrappers.Add(BottomRight);
+
 
 
         // Anzahl der Tiles in x- und y-Richtung
@@ -96,6 +82,7 @@ public class Room : MapEntity
 
     public void CreateEnemyInRoom()
     {
+
         int count = 0;
         while (EnemyCap >= count)
         {
@@ -114,15 +101,15 @@ public class Room : MapEntity
             MonsterType selectedMonsterType = monsterTypes[randomIndex];
 
             // Je nach ausgewähltem MonsterType Monster erstellen
-            
+
             switch (selectedMonsterType)
             {
                 case MonsterType.SLIME:
-                    enemiesInRoom.Add(Enemy.AddEnemy("Slime", 3, 2, pos, new Vector2(0, 0),300f,3));
+                    enemiesInRoom.Add(Enemy.AddEnemy("Slime", 3, 2, pos, new Vector2(0, 0), 300f, 3));
                     break;
                 case MonsterType.SKELETON:
                     float chaseRadius = Math.Max(Bereich.Width, Bereich.Height);
-                    enemiesInRoom.Add(Enemy.AddEnemy("Skeleton", 2, 0.3f, pos, new Vector2(0, 0), 1000,3));
+                    enemiesInRoom.Add(Enemy.AddEnemy("Skeleton", 2, 0.3f, pos, new Vector2(0, 0), 1000, 3));
                     break;
                 case MonsterType.GOLEM:
                     // Hier entsprechenden Code für GOLEM hinzufügen
@@ -142,12 +129,12 @@ public class Room : MapEntity
         {
             if (!Enemy.enemies.Contains(enemy)) index = enemiesInRoom.IndexOf(enemy);
         }
-        if(index != -1)
+        if (index != -1)
             enemiesInRoom.RemoveAt(index);
-        
+
         return enemiesInRoom.Count;
     }
-    
+
 
 
     public bool PlayerIsInRoom()
@@ -161,7 +148,7 @@ public class Room : MapEntity
 
     }
 
-    public void Draw()
+    public virtual void Draw()
     {
         for (int y = 0; y < tileSize.Y; y++)
         {
@@ -180,46 +167,10 @@ public class Room : MapEntity
     }
 
 
-    
-
-    public bool WallCollision()
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            return CollisionHandler.CollisionWithEnviorment(walls[i], Globals.Player);
-        }
-
-        return false;
-    }
 
 
-    private void DrawRoomTexture()
-    {
-        // Hier können Sie Ihre eigene Logik für das Zeichnen der Textur um den Raum herum implementieren
-        // Zum Beispiel können Sie dies mit Hilfe von SpriteBatch und der entsprechenden Texture2D tun
-
-        // Nehmen wir an, Sie haben eine Texture2D mit dem Namen "roomTexture"
-        // Laden Sie Ihre gewünschte Texture2D hier
-
-        // Zeichnen Sie die Textur um den Raum herum
-        TopLeft = new Rectangle(Bereich.Left - roomTexture.Width / 2, Bereich.Top - roomTexture.Height, roomTexture.Width / 2, Bereich.Height + roomTexture.Height);
-        TopRight = new Rectangle(Bereich.Right, Bereich.Top - roomTexture.Height, roomTexture.Width / 2, Bereich.Height + roomTexture.Height);
-        BottomLeft = new Rectangle(Bereich.Left - roomTexture.Width, Bereich.Bottom, Bereich.Width + roomTexture.Width, roomTexture.Height / 2);
-        BottomRight = new Rectangle(Bereich.Right, Bereich.Bottom, roomTexture.Width, roomTexture.Height / 2);
-        /*
-         * 
-         * foreach (Room korridor in Korridore)
-        {
-            if (TopLeft.Intersects(korridor.Bereich)) return;
-            if (TopRight.Intersects(korridor.Bereich)) return;
-            if (BottomLeft.Intersects(korridor.Bereich)) return;
-            if (BottomRight.Intersects(korridor.Bereich)) return;
-        }*/
 
 
-        Globals.SpriteBatch.Draw(roomTexture, TopLeft, Color.White);
-        Globals.SpriteBatch.Draw(roomTexture, TopRight, Color.White);
-        Globals.SpriteBatch.Draw(roomTexture, BottomLeft, Color.White);
-        Globals.SpriteBatch.Draw(roomTexture, BottomRight, Color.White);
-    }
+
+
 }
