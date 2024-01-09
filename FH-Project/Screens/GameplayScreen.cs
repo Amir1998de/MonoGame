@@ -192,12 +192,19 @@ internal class GameplayScreen : GameScreen
 
         spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(Map.GetRoomPlayerIsIn()));
 
+        Globals.Map.Draw();
         if (Keyboard.GetState().IsKeyDown(Keys.Space))
         {
-            Globals.Player.Weapon.Draw(spriteBatch);
-
+            Globals.Player.Weapon.Draw();
         }
-        Globals.Map.Draw();
+
+        if(Globals.MouseState.LeftButton==ButtonState.Pressed)
+        {
+            if(Globals.Player.Weapon.GetType().ToString().Equals("FH_Projekt.Bow"))
+            {
+                Globals.Player.Draw();
+            }
+        }
 
         //player.sprite.Draw();
 
