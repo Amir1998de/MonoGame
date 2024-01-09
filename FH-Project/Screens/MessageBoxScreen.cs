@@ -52,8 +52,8 @@ internal class MessageBoxScreen : GameScreen
         /// </summary>
         public MessageBoxScreen(string message, bool includeUsageText)
         {
-            const string usageText = "\nA button, Space, Enter = ok" +
-                                     "\nB button, Esc = cancel";
+            const string usageText = "\n   Enter  =  ok" +
+                                     "\n   Esc    =  cancel";
 
             if (includeUsageText)
                 this.message = message + usageText;
