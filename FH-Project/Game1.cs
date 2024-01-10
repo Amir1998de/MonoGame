@@ -11,6 +11,7 @@ public class Game1 : Microsoft.Xna.Framework.Game
 {
     private GraphicsDeviceManager _graphics;
     private ScreenManager screenManager;
+    public static int tileNr = 1;
 
 
     private static readonly string[] preloadAssets =

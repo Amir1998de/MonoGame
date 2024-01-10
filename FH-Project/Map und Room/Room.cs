@@ -46,12 +46,15 @@ public class Room : MapEntity
 
         IsKorridor = isKorridor;
 
-
-
         EnemyCap = random.Next(3, 6);
 
-        for (int i = 1; i < 6; i++)
-            textures.Add(Globals.Content.Load<Texture2D>($"tile{i}"));
+        if (Game1.tileNr > 4)
+            Game1.tileNr = 1;
+
+        for (int i = 1; i < 4; i++)
+            textures.Add(Globals.Content.Load<Texture2D>($"{Game1.tileNr}tile{i}"));
+
+        Game1.tileNr++;
 
 
         TileWidth = textures[0].Width;

@@ -187,11 +187,7 @@ public class InputState
                IsNewButtonPress(Buttons.LeftThumbstickUp, controllingPlayer, out playerIndex);
     }
 
-    /// <summary>
-    /// Checks for a "menu down" input action.
-    /// The controllingPlayer parameter specifies which player to read
-    /// input for. If this is null, it will accept input from any player.
-    /// </summary>
+
     public bool IsMenuDown(PlayerIndex? controllingPlayer)
     {
         PlayerIndex playerIndex;
@@ -201,11 +197,6 @@ public class InputState
                IsNewButtonPress(Buttons.LeftThumbstickDown, controllingPlayer, out playerIndex);
     }
 
-    /// <summary>
-    /// Checks for a "pause the game" input action.
-    /// The controllingPlayer parameter specifies which player to read
-    /// input for. If this is null, it will accept input from any player.
-    /// </summary>
     public bool IsPauseGame(PlayerIndex? controllingPlayer)
     {
         PlayerIndex playerIndex;
