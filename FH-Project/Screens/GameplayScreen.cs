@@ -113,7 +113,7 @@ internal class GameplayScreen : GameScreen
         Globals.Player = new Player(3, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword, 3);
 
         Globals.Map = new Map();
-        Globals.Map.GenerateMap(1, 4, 8, 3, 6);
+        Globals.Map.GenerateMap(5, 2, 4, 3, 6);
 
 
         spriteBatch = ScreenManager.SpriteBatch;
@@ -121,7 +121,6 @@ internal class GameplayScreen : GameScreen
 
 
         Entity.View(viewport.Width, viewport.Height);
-
 
         //player.SetBounds(karte.MapSize, karte.TileSize);
 
@@ -138,7 +137,7 @@ internal class GameplayScreen : GameScreen
         HealthPotion = new HealingPotion(player, healthPotionTexture);
         ShieldPotion = new ShieldPotion(player, shieldPotionTexture);
         RandomPotion = new RandomPotion(player, randomPotionTexture);
-
+        
 
 
         base.LoadContent();
@@ -182,8 +181,8 @@ internal class GameplayScreen : GameScreen
 
             Enemy.GetEnemies().ForEach(enemy => enemy.Update(gameTime));
 
-            Globals.Update(gameTime);
             Globals.Player.Update(gameTime);
+            Globals.Update(gameTime);
         }
 
 

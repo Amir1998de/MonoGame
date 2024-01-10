@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace FH_Project;
 public class Arrow
 {
+
     public static Texture2D ArrowTexture;
     public Vector2 Position { get; private set; }
     public Vector2 Velocity { get; private set; }
@@ -37,6 +38,7 @@ public class Arrow
             
             if (CollisionHandler.CollisionWithEnviorment(ArrowBounds, Globals.Player))
             {
+                Globals.Player.ReduceHealth(1);
                 IsActive = false;
             }
             /*

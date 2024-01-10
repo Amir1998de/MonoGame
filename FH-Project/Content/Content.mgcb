@@ -13,25 +13,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin ../../../gamestatemanagement-main/GameStateManagement/GameStateManagement/Content/gradient.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../../../gamestatemanagement-main/GameStateManagement/GameStateManagement/Content/gradient.png;gradient.png
-
-#begin ../../../gamestatemanagement-main/GameStateManagement/GameStateManagement/Content/menufont.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:../../../gamestatemanagement-main/GameStateManagement/GameStateManagement/Content/menufont.spritefont;menufont.spritefont
-
 #begin 1tile1.png
 /importer:TextureImporter
 /processor:TextureProcessor

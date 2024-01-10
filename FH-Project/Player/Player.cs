@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
+using System.Diagnostics;
 
 public class Player : Entity
 {
@@ -21,6 +22,7 @@ public class Player : Entity
     //Sprinten
     private float sprintTimer;
     private bool coolDownForSprint;
+    public float Sprint { get; set; }
 
 
     private float frameIdleTime = 0.2f;
@@ -62,6 +64,7 @@ public class Player : Entity
         Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
         coolDownForSprint = false;
         CanGetHit = true;
+        Sprint = 5f;
     }
 
     public void AddShield(int value)
@@ -258,28 +261,28 @@ public class Player : Entity
             !Globals.KeyboardState.IsKeyDown(Keys.Down)) PlayerAnimation(playerIdleTexture, gameTime, idleTimer, frameRunTime, currentIdleFrame, totalIdleFrames);
 
 
-        if (Globals.KeyboardState.IsKeyDown(Keys.Left))
+        if (Globals.KeyboardState.IsKeyDown(Keys.A))
         {
 
             PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
             MovePlayerLeft();
         }
 
-        if (Globals.KeyboardState.IsKeyDown(Keys.Right))
+        if (Globals.KeyboardState.IsKeyDown(Keys.D))
         {
 
             PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
             MovePlayerRight();
         }
 
-        if (Globals.KeyboardState.IsKeyDown(Keys.Up))
+        if (Globals.KeyboardState.IsKeyDown(Keys.W))
         {
 
             PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
             MovePlayerUp();
         }
 
-        if (Globals.KeyboardState.IsKeyDown(Keys.Down))
+        if (Globals.KeyboardState.IsKeyDown(Keys.S))
         {
 
             PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
@@ -320,7 +323,7 @@ public class Player : Entity
         {
             if (sprintTimer <= 0f || sprintTimer <= 3f)
             {
-                Speed = 5f;
+                Speed = Sprint;
                 sprintTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
             if (sprintTimer >= 3f) coolDownForSprint = true;
@@ -339,7 +342,7 @@ public class Player : Entity
 
         if (CheckIfDead())
         {
-
+            Debug.WriteLine("dsad");
         }
 
         if (Globals.KeyboardState.IsKeyDown(Keys.Space) && !IsAttacking)

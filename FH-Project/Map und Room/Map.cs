@@ -31,10 +31,11 @@ public class Map : MapEntity
 
 
 
+
     public Map()
     {
         räume = new List<Room>();
-        Ebenen = 2;
+        Ebenen = 1;
         Count = 1;
 
         _tiles = new Sprite[_mapTileSize.X, _mapTileSize.Y];
@@ -201,7 +202,7 @@ public class Map : MapEntity
             if (Ebenen > Count && homebase.AreWeDone)
             {
 
-                GenerateMap(1, 4, 8, 3, 6);
+                GenerateMap(5, 2, 4, 3, 6);
                 Globals.Player.Position = new Vector2(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2);
                 Count++;
             }
@@ -210,11 +211,24 @@ public class Map : MapEntity
 
         if (Ebenen <= Count)
         {
+            homebase = new Homebase(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2, 8, 8, false);
+            homebase.AreWeDone = false;
             räume.Clear();
             Enemy.enemies.Clear();
-            homebase.Shop();
+            homebase.LoadContent();
+        }
+
+        if (!homebase.AreWeDone)
+        {
+
+            homebase.Update();
+
+            homebase.HandleInput();
+
             Count = 0;
         }
+
+
     }
 
     public static Room GetRoomPlayerIsIn()

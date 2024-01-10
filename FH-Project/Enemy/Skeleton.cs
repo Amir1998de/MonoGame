@@ -81,7 +81,7 @@ public class Skeleton : Enemy
 
     public override void LoadContent()
     {
-        EntityTexture = Globals.Content.Load<Texture2D>("Enemy/Slime/slime-idle-0");
+        EntityTexture = Globals.Content.Load<Texture2D>("skull_v2_1");
 
         /*enemyIdleTexture = new Texture2D[totalIdleFrames];
         for (int i = 1; i <= totalIdleFrames; i++)

@@ -46,7 +46,10 @@ public class Room : MapEntity
 
         IsKorridor = isKorridor;
 
+        
         EnemyCap = random.Next(3, 6);
+
+        //EnemyCap = 0;
 
         if (Game1.tileNr > 4)
             Game1.tileNr = 1;

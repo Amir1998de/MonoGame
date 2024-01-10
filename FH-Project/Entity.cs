@@ -1,4 +1,5 @@
-﻿using FH_Projekt;
+﻿
+using FH_Projekt;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,7 +19,7 @@ public abstract class Entity : Subject
 
     protected static float maxHeight = 0;
 
-    public float BaseSpeed { get; private set; }
+    public float BaseSpeed { get; set; }
 
     public Texture2D EntityTexture { get; set; }
 
@@ -29,7 +30,7 @@ public abstract class Entity : Subject
 
     public Vector2 Position { get; set; }
 
-    private int maxHealth;
+    public int MaxHealth { get; set; }
 
     public Sprite Sprite { get; set; }
 
@@ -61,13 +62,13 @@ public abstract class Entity : Subject
 
     public Entity(int health, float speed, Vector2 pos, Vector2 velocity, int scale)
     {
-        maxHealth = health;
+        MaxHealth = health;
         this.Health = health;
         this.Speed = speed;
         this.Position = pos;
         this.velocity = velocity;
         IsDestroyed = false;
-        BaseSpeed = 1f;
+        BaseSpeed = 2f;
         this.scale = scale;
 
     }
@@ -90,8 +91,8 @@ public abstract class Entity : Subject
     public void AddHealth(int value)
     {
         Health += value;
-        if (Health > maxHealth)
-            Health = maxHealth;
+        if (Health > MaxHealth)
+            Health = MaxHealth;
     }
 
 
