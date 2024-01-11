@@ -182,6 +182,7 @@ internal class GameplayScreen : GameScreen
             Enemy.GetEnemies().ForEach(enemy => enemy.Update(gameTime));
 
             Globals.Player.Update(gameTime);
+            Globals.Player.Weapon.Update(gameTime);
             Globals.Update(gameTime);
         }
 
@@ -199,7 +200,7 @@ internal class GameplayScreen : GameScreen
 
         Globals.Map.Draw();
 
-        if (Keyboard.GetState().IsKeyDown(Keys.Space))
+        if (Keyboard.GetState().IsKeyDown(Keys.Space) && !(Globals.Player.Weapon.GetType().ToString().Equals("FH_Project.Bow")))
         {
             Globals.Player.Weapon.Draw();
 

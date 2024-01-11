@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -24,6 +25,12 @@ public class Bow : Weapon
         throw new NotImplementedException();
     }
 
+    public override void Update(GameTime gameTime)
+    {
+        base.Update(gameTime);
+        attack(gameTime);
+    }
+
     public void attack(GameTime gameTime)
     {
         int index = -1;
@@ -31,10 +38,18 @@ public class Bow : Weapon
         {
             arrows.ForEach(arrow =>
             {
-                arrow.Update(gameTime);
+                arrow.Update(gameTime, 1);
 
                 if (!arrow.IsActive) index = arrows.IndexOf(arrow);
+                Room room = Map.GetRoomPlayerIsIn();
 
+                if(room != null)
+                {
+                    if(!room.Bereich.Intersects(arrow.ArrowBounds))
+                    {
+                        arrow.SetToFalse();
+                    }
+                }
 
 
             });
@@ -46,17 +61,19 @@ public class Bow : Weapon
 
         if (gameTime.TotalGameTime - lastAttackTime > attackCooldown)
         {
-            float distanceToMouse = Vector2.Distance(Globals.Player.Position, Globals.MouseState.Position.ToVector2());
-           
-            
-                // Pfeil in Richtung des Spielers schießen
-                Vector2 directionToMouse = Vector2.Normalize(Globals.Player.Position - Globals.MouseState.Position.ToVector2());
-                Vector2 arrowVelocity = directionToMouse * 10; // Setze ArrowSpeed als gewünschte Geschwindigkeit des Pfeils
-                Arrow arrow = new Arrow(Position, arrowVelocity, 10); // Annahme: Arrow ist eine Klasse für Pfeile
-                arrows.Add(arrow); // Annahme: Arrows ist eine Liste für alle Pfeile im Spiel
+            Vector2 mousePosition = Globals.MouseState.Position.ToVector2() + Camera.Position;
+            Vector2 mouseToPlayer = mousePosition - Globals.Player.Position;
+            float distanceToMouse = Vector2.Distance(Globals.Player.Position, mousePosition);
 
-                // Aktualisiere die Zeit des letzten Angriffs
-                lastAttackTime = gameTime.TotalGameTime;
+
+            // Pfeil in Richtung des Gegners schießen
+            Vector2 directionToMouse = Vector2.Normalize(mouseToPlayer);
+            Vector2 arrowVelocity = directionToMouse * 10; // Setze ArrowSpeed als gewünschte Geschwindigkeit des Pfeils
+            Arrow arrow = new Arrow(Position, arrowVelocity, 10); // Annahme: Arrow ist eine Klasse für Pfeile
+            arrows.Add(arrow); // Annahme: Arrows ist eine Liste für alle Pfeile im Spiel
+
+            // Aktualisiere die Zeit des letzten Angriffs
+            lastAttackTime = gameTime.TotalGameTime;
 
 
         }

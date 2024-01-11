@@ -35,4 +35,9 @@ public abstract class Weapon : Item
         Globals.SpriteBatch.Draw(Texture, Position, null, Color.White, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
     }
     public abstract void UseEffect();
+
+    public virtual void Update(GameTime gameTime) 
+    {
+       // Position = new Vector2(Position.X + Globals.Player.EntityTexture.Width * 2, Position.Y + Globals.Player.EntityTexture.Height);
+    }
 }

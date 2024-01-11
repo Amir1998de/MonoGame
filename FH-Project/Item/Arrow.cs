@@ -29,6 +29,30 @@ public class Arrow
         this.lifetime = lifetime;
     }
 
+    public void Update(GameTime gameTime, int z)
+    {
+        if (!IsActive)
+        {
+            Position *= Velocity;
+            ArrowBounds = new Rectangle((int)Position.X, (int)Position.Y, ArrowTexture.Width, ArrowTexture.Height);
+
+            foreach (var enemy in Enemy.enemies)
+            {
+                if (CollisionHandler.CollisionWithEnviorment(ArrowBounds, enemy))
+                {
+                    IsActive = false; break;
+                }
+            }
+            elapsedLifetime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (elapsedLifetime >= lifetime)
+            {
+                IsActive = false;
+            }
+
+        }
+
+    }
+
     public void Update(GameTime gameTime)
     {
         if (IsActive)
