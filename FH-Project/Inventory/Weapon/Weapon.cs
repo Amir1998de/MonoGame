@@ -29,6 +29,7 @@ public abstract class Weapon : Item
 
     //1=primary Weapon , 2=Bow
     public int ID { get; set; }
+    
 
     public virtual void Draw()
     {

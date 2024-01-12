@@ -128,9 +128,34 @@ public class Homebase : Room
             if (openShop && mouseState.LeftButton == ButtonState.Pressed && item.Contains(mousePosition) && !mouseClicked)
             {
                 mouseClicked = true;
-                if (count == 0) new HealingPotion(Globals.Player, healingPotion);
-                else if (count == 1) new ShieldPotion(Globals.Player, shieldPotion);
-                else if (count == 2) new RandomPotion(Globals.Player, randomPotion);
+                if (count == 0)
+                {
+                    new HealingPotion(Globals.Player, healingPotion);
+                    if (Inventory.ReturnItemCount() >= 5)
+                    {
+                        Inventory.RemoveItems(5);
+                    }
+
+
+                }
+                else if (count == 1)
+                {
+                    new ShieldPotion(Globals.Player, shieldPotion);
+                    if (Inventory.ReturnItemCount() >= 5)
+                    {
+                        Inventory.RemoveItems(5);
+                    }
+
+                }
+                else if (count == 2)
+                {
+                    new RandomPotion(Globals.Player, randomPotion);
+                    if (Inventory.ReturnItemCount() >= 5)
+                    {
+                        Inventory.RemoveItems(5);
+                    }
+
+                }
             }
             count++;
             

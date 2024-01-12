@@ -168,15 +168,5 @@ public class Room : MapEntity
         });
 
         //DrawRoomTexture();
-
-
     }
-
-
-
-
-
-
-
-
 }

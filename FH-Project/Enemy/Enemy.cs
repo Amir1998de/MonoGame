@@ -11,6 +11,8 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace FH_Project;
 
@@ -30,6 +32,8 @@ public abstract class Enemy : Entity, IObserver
     protected int damage;
     private Random random;
     protected Rectangle enemyBounds;
+    public static List<Enemydrops> enemydrops { get; private set; } = new List<Enemydrops>();
+    private Rectangle arrowBounds;
 
 
     #endregion Variablen
@@ -63,37 +67,21 @@ public abstract class Enemy : Entity, IObserver
 
             if (CheckIfDead())
             {
+                AddDrops();
+                
                 IsDestroyed = true;
                 index = enemies.IndexOf(this);
+                
+                
                 if (index != -1)
                     RemoveEnemyAtIndex(index);
+
                 return;
             }
 
         }
 
-        if(data == PlayerActions.SHOOT) 
-        {
-            foreach(Arrow arrow in Bow.Arrows)
-            {
-                int index = -1;
-                if (CheckCollision(new Rectangle((int)arrow.Position.X,(int)arrow.Position.Y,arrow.ArrowBounds.Width,arrow.ArrowBounds.Height)))
-                {
-                    ReduceHealth(Globals.Player.Weapon.Damage);
-                    Debug.WriteLine(GetHashCode() + " " + Health);
-                }
-
-                if (CheckIfDead())
-                {
-                    IsDestroyed = true;
-                    index = enemies.IndexOf(this);
-                    if (index != -1)
-                        RemoveEnemyAtIndex(index);
-                    return;
-                }
-            }
-           
-        }
+        
 
     }
 
@@ -118,14 +106,48 @@ public abstract class Enemy : Entity, IObserver
         return enemy;
     }
 
+    public void AddDrops()
+    {
+        if(IsDestroyed) return;
+
+         Random random = new Random();
+
+        /*int rndZahl = random.Next(2);
+        if(rndZahl == 0)
+        {
+            return;
+        }*/
+
+        enemydrops.Add(new Enemydrops(Position));
+    }
+
     public static void RemoveEnemyAtIndex(int index)
     {
         enemies.RemoveAt(index);
     }
 
+    
+
     public void Update(GameTime gameTime)
     {
-
+        if (enemydrops.Any())
+        {
+            int index = -1;
+            foreach(Enemydrops enemydrop in enemydrops)
+            {
+                if (Globals.Player.PlayerBounds.Intersects(enemydrop.DropBounds))
+                {
+                    enemydrop.UseEffect();
+                    index = enemydrops.IndexOf(enemydrop);
+                }
+                    
+            }
+            if(index != -1)
+                enemydrops.RemoveAt(index);
+        }
+        
+        
+        
 
         if (Globals.Player != null)
         {

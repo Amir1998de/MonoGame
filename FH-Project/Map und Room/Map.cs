@@ -184,14 +184,6 @@ public class Map : MapEntity
 
         /*x = room.Bereich.Left - room.TileHeight / 2;
         y = room.Bereich.Center.Y;*/
-
-
-
-
-
-
-
-
     }
 
 

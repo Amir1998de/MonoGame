@@ -298,24 +298,24 @@ public class Player : Entity
 
         if (currentKeyboardState.IsKeyDown(Keys.H) && !prevKeyboardState.IsKeyDown(Keys.H))
         {
-            Inventory.UseItem(Inventory.getPotion(1));
+            Inventory.UseItem(Inventory.GetPotion(1));
 
         }
 
 
         if (currentKeyboardState.IsKeyDown(Keys.J) && !prevKeyboardState.IsKeyDown(Keys.J))
-            Inventory.UseItem(Inventory.getPotion(2));
+            Inventory.UseItem(Inventory.GetPotion(2));
 
 
         if (currentKeyboardState.IsKeyDown(Keys.K) && !prevKeyboardState.IsKeyDown(Keys.K))
-            Inventory.UseItem(Inventory.getPotion(3));
+            Inventory.UseItem(Inventory.GetPotion(3));
 
 
         if (currentKeyboardState.IsKeyDown(Keys.L) && !prevKeyboardState.IsKeyDown(Keys.L))
-            Inventory.changeWeapon(1);
+            Inventory.ChangeWeapon(1);
 
         if (currentKeyboardState.IsKeyDown(Keys.O) && !prevKeyboardState.IsKeyDown(Keys.O))
-            Inventory.changeWeapon(2);
+            Inventory.ChangeWeapon(2);
 
 
 

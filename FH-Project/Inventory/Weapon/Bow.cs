@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace FH_Project;
 
@@ -13,10 +14,13 @@ public class Bow : Weapon
 {
     private TimeSpan attackCooldown = TimeSpan.FromSeconds(3);
     private TimeSpan lastAttackTime = TimeSpan.Zero;
+    public static bool MousePressed { private get; set; }
+
     public static List<Arrow> Arrows { get; private set; } = new List<Arrow>();
     public Bow(int damage, int speed, Texture2D texture) : base(damage, speed, texture)
     {
         ID = 2;
+        MousePressed = false;
     }
 
 
@@ -28,7 +32,14 @@ public class Bow : Weapon
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-        Attack(gameTime);
+       
+
+        if (Globals.MouseState.LeftButton == ButtonState.Pressed || MousePressed)
+        {
+            MousePressed = true;
+            Attack(gameTime);
+        }
+            
     }
 
     public void Attack(GameTime gameTime)
@@ -43,11 +54,12 @@ public class Bow : Weapon
                 if (!arrow.IsActive) index = Arrows.IndexOf(arrow);
                 Room room = Map.GetRoomPlayerIsIn();
 
-                if(room != null)
+                if (room != null)
                 {
-                    if(!room.Bereich.Intersects(arrow.ArrowBounds))
+                    if (!room.Bereich.Intersects(arrow.ArrowBounds))
                     {
                         arrow.SetToFalse();
+                        MousePressed = false;
                     }
                 }
 
@@ -69,7 +81,7 @@ public class Bow : Weapon
             // Pfeil in Richtung des Gegners schießen
             Vector2 directionToMouse = Vector2.Normalize(mouseToPlayer);
             Vector2 arrowVelocity = directionToMouse * 10; // Setze ArrowSpeed als gewünschte Geschwindigkeit des Pfeils
-            Arrow arrow = new Arrow(Position, arrowVelocity, 10); // Annahme: Arrow ist eine Klasse für Pfeile
+            Arrow arrow = new Arrow(Globals.Player.Position, arrowVelocity, 10); // Annahme: Arrow ist eine Klasse für Pfeile
             Arrows.Add(arrow); // Annahme: Arrows ist eine Liste für alle Pfeile im Spiel
 
             // Aktualisiere die Zeit des letzten Angriffs
@@ -87,7 +99,8 @@ public class Bow : Weapon
     public override void Draw()
     {
         Globals.SpriteBatch.Draw(Texture, Position, null, Color.White, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
-        DrawArrow();
+        if(MousePressed)
+            DrawArrow();
     }
 
 }

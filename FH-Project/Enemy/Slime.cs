@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using FH_Project;
 using static System.Net.Mime.MediaTypeNames;
+using System.Linq;
 
 namespace FH_Project;
 class Slime : Enemy
@@ -33,9 +34,17 @@ class Slime : Enemy
     public override void Draw()
     {
         Globals.SpriteBatch.Draw(EntityTexture, Position, null, Color.White, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
+        if (enemydrops.Any())
+        {
+            enemydrops.ForEach(enemyDrop =>
+            {
+                enemyDrop.Draw();
+            });
+        }
+
     }
 
-   
+
     public override void LoadContent()
     {
         EntityTexture = Globals.Content.Load<Texture2D>("Enemy/Slime/slime-idle-0");

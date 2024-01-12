@@ -74,6 +74,14 @@ public class Skeleton : Enemy
     {
 
         Globals.SpriteBatch.Draw(EntityTexture, Position, null, Color.White, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
+        if (enemydrops.Any())
+        {
+            enemydrops.ForEach(enemyDrop =>
+            {
+                enemyDrop.Draw();
+            });
+        }
+
         DrawArrow();
 
     }

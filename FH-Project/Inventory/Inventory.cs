@@ -16,7 +16,7 @@ public static class Inventory
     
 
     //ID gibt an welches Potion es ist
-    public static Item getPotion(int id)
+    public static Item GetPotion(int id)
     {
         foreach (var item in items)
         {
@@ -30,7 +30,19 @@ public static class Inventory
         throw new NoItemFoundException("This Item does not Exist");
     }
 
-    public static void changeWeapon(int id)
+    public static int ReturnItemCount()
+    {
+        int count = 0;
+        items.ForEach(item => {
+            if (item.GetType().ToString().Equals("FH_Project.Enemydrops"))
+                count++;
+        });
+
+
+        return count;
+    }
+
+    public static void ChangeWeapon(int id)
     {
         foreach(var item in items)
         {
@@ -60,6 +72,21 @@ public static class Inventory
         if (items.Count >= SPACE) throw new InventoryFullException("Inventory is Full");
 
         items.Add(item);
+    }
+
+    public static void RemoveItems(int howMany)
+    {
+        int count = 0;
+        for (int i = 0; i < items.Count; i++)
+        {
+            if(items[i].GetType().ToString().Equals("FH_Project.Enemydrops"))
+            {
+                RemoveItem(items[i]);
+                count++;
+            }
+            if (count >= howMany) return;
+        }
+
     }
 
     public static void RemoveItem(Item item)

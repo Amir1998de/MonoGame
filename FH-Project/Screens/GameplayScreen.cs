@@ -104,6 +104,7 @@ internal class GameplayScreen : GameScreen
         shieldPotionTexture = content.Load<Texture2D>("Items/Potions/PotionBlue");
         randomPotionTexture = content.Load<Texture2D>("Items/Potions/PotionGreen");
         Arrow.ArrowTexture = content.Load<Texture2D>("Enemy/Slime/slime-idle-0");
+        Enemydrops.EnemyDropTexture = content.Load<Texture2D>("GemBlue");
         font = Globals.Content.Load<SpriteFont>("Verdana");
 
         sword = new Sword(1, 5, swordTexture);
@@ -206,16 +207,13 @@ internal class GameplayScreen : GameScreen
 
         }
 
-        Globals.MouseState = Mouse.GetState();
 
-        if (Globals.MouseState.LeftButton == ButtonState.Pressed)
+        if (Globals.Player.Weapon.GetType().ToString().Equals("FH_Project.Bow"))
         {
-            if (Globals.Player.Weapon.GetType().ToString().Equals("FH_Project.Bow"))
-            {
-                Globals.Player.Weapon.Draw();
-            }
+            Globals.Player.Weapon.Draw();
         }
-        
+
+
 
 
         //player.sprite.Draw();
