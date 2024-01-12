@@ -108,7 +108,7 @@ internal class GameplayScreen : GameScreen
 
         sword = new Sword(1, 5, swordTexture);
         hammer = new Hammer(100, 5, hammerTexture);
-        bow = new Bow(100, 5, bowTexture);
+        bow = new Bow(4, 5, bowTexture);
 
         Globals.Player = new Player(3, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword, 3);
 
@@ -137,7 +137,7 @@ internal class GameplayScreen : GameScreen
         HealthPotion = new HealingPotion(player, healthPotionTexture);
         ShieldPotion = new ShieldPotion(player, shieldPotionTexture);
         RandomPotion = new RandomPotion(player, randomPotionTexture);
-        
+
 
 
         base.LoadContent();
@@ -206,6 +206,8 @@ internal class GameplayScreen : GameScreen
 
         }
 
+        Globals.MouseState = Mouse.GetState();
+
         if (Globals.MouseState.LeftButton == ButtonState.Pressed)
         {
             if (Globals.Player.Weapon.GetType().ToString().Equals("FH_Project.Bow"))
@@ -213,6 +215,8 @@ internal class GameplayScreen : GameScreen
                 Globals.Player.Weapon.Draw();
             }
         }
+        
+
 
         //player.sprite.Draw();
 

@@ -233,10 +233,10 @@ public class Player : Entity
     }
 
 
-    public override void Attack(GameTime gameTime)
+    public override void Attack(GameTime gameTime, PlayerActions data)
     {
         IsAttacking = true;
-        GetNotified(PlayerActions.ATTACK);
+        GetNotified(data);
         Animation();
     }
 
@@ -347,7 +347,13 @@ public class Player : Entity
 
         if (Globals.KeyboardState.IsKeyDown(Keys.Space) && !IsAttacking)
         {
-            Attack(gameTime);
+            Attack(gameTime, PlayerActions.ATTACK);
+        }
+        Globals.MouseState = Mouse.GetState();
+
+        if (Globals.MouseState.LeftButton == ButtonState.Pressed)
+        {
+            Attack(gameTime, PlayerActions.SHOOT);
         }
 
         //Debug.WriteLine(IsAttacking);

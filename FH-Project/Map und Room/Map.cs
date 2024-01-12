@@ -35,7 +35,7 @@ public class Map : MapEntity
     public Map()
     {
         räume = new List<Room>();
-        Ebenen = 1;
+        Ebenen = 2;
         Count = 1;
 
         _tiles = new Sprite[_mapTileSize.X, _mapTileSize.Y];

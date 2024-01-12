@@ -48,28 +48,52 @@ public abstract class Enemy : Entity, IObserver
     }
     public void OnNotify(PlayerActions data)
     {
-        if (!(data == PlayerActions.ATTACK)) return;
-
-        int index = -1;
-
-
-        // /8 weil Scalierung der Waffe auf 0.125
-        //Debug.WriteLine("test");
-        if (CheckCollision(new Rectangle((int)Globals.Player.Weapon.Position.X, (int)Globals.Player.Weapon.Position.Y, Globals.Player.Weapon.Texture.Width, Globals.Player.Weapon.Texture.Height)))
+        if (data == PlayerActions.ATTACK)
         {
-            ReduceHealth(Globals.Player.Weapon.Damage);
-            Debug.WriteLine(GetHashCode() + " " + Health);
+            int index = -1;
+
+
+            // /8 weil Scalierung der Waffe auf 0.125
+            //Debug.WriteLine("test");
+            if (CheckCollision(new Rectangle((int)Globals.Player.Weapon.Position.X, (int)Globals.Player.Weapon.Position.Y, Globals.Player.Weapon.Texture.Width, Globals.Player.Weapon.Texture.Height)))
+            {
+                ReduceHealth(Globals.Player.Weapon.Damage);
+                Debug.WriteLine(GetHashCode() + " " + Health);
+            }
+
+            if (CheckIfDead())
+            {
+                IsDestroyed = true;
+                index = enemies.IndexOf(this);
+                if (index != -1)
+                    RemoveEnemyAtIndex(index);
+                return;
+            }
+
         }
 
-        if (CheckIfDead())
+        if(data == PlayerActions.SHOOT) 
         {
-            IsDestroyed = true;
-            index = enemies.IndexOf(this);
-            if (index != -1)
-                RemoveEnemyAtIndex(index);
-            return;
-        }
+            foreach(Arrow arrow in Bow.Arrows)
+            {
+                int index = -1;
+                if (CheckCollision(new Rectangle((int)arrow.Position.X,(int)arrow.Position.Y,arrow.ArrowBounds.Width,arrow.ArrowBounds.Height)))
+                {
+                    ReduceHealth(Globals.Player.Weapon.Damage);
+                    Debug.WriteLine(GetHashCode() + " " + Health);
+                }
 
+                if (CheckIfDead())
+                {
+                    IsDestroyed = true;
+                    index = enemies.IndexOf(this);
+                    if (index != -1)
+                        RemoveEnemyAtIndex(index);
+                    return;
+                }
+            }
+           
+        }
 
     }
 
@@ -134,7 +158,7 @@ public abstract class Enemy : Entity, IObserver
 
         }
 
-        Attack(gameTime);
+        Attack(gameTime,PlayerActions.NONE);
         enemyBounds.X = (int)Position.X;
         enemyBounds.Y = (int)Position.Y;
     }

@@ -16,7 +16,7 @@ class Slime : Enemy
     }
 
 
-    public override void Attack(GameTime gameTime)
+    public override void Attack(GameTime gameTime, PlayerActions data)
     {
         if (CollisionHandler.CollisionEntitys(Globals.Player, this))
         {

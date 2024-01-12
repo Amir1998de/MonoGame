@@ -99,13 +99,13 @@ public abstract class Entity : Subject
     public void ReduceHealth(int value)
     {
         Health -= value;
-        if (Health < 0)
+        if (Health <= 0)
             Health = 0;
     }
 
 
 
-    public abstract void Attack(GameTime gameTime);
+    public abstract void Attack(GameTime gameTime, PlayerActions data);
 
     public virtual void Draw()
     {

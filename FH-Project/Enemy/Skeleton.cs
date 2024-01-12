@@ -20,7 +20,7 @@ public class Skeleton : Enemy
     public Skeleton(int health, float speed, Vector2 pos, Vector2 velocity, float chaseRadius, int scale) : base(health, speed, pos, velocity, chaseRadius, scale)
     {
     }
-    public override void Attack(GameTime gameTime)
+    public override void Attack(GameTime gameTime,PlayerActions data)
     {
         int index = -1;
         if (arrows.Count > 0)

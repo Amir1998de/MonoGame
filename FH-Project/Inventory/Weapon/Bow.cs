@@ -13,7 +13,7 @@ public class Bow : Weapon
 {
     private TimeSpan attackCooldown = TimeSpan.FromSeconds(3);
     private TimeSpan lastAttackTime = TimeSpan.Zero;
-    private List<Arrow> arrows = new List<Arrow>();
+    public static List<Arrow> Arrows { get; private set; } = new List<Arrow>();
     public Bow(int damage, int speed, Texture2D texture) : base(damage, speed, texture)
     {
         ID = 2;
@@ -28,19 +28,19 @@ public class Bow : Weapon
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-        attack(gameTime);
+        Attack(gameTime);
     }
 
-    public void attack(GameTime gameTime)
+    public void Attack(GameTime gameTime)
     {
         int index = -1;
-        if (arrows.Count > 0)
+        if (Arrows.Count > 0)
         {
-            arrows.ForEach(arrow =>
+            Arrows.ForEach(arrow =>
             {
                 arrow.Update(gameTime, 1);
 
-                if (!arrow.IsActive) index = arrows.IndexOf(arrow);
+                if (!arrow.IsActive) index = Arrows.IndexOf(arrow);
                 Room room = Map.GetRoomPlayerIsIn();
 
                 if(room != null)
@@ -54,7 +54,7 @@ public class Bow : Weapon
 
             });
             if (index != -1)
-                arrows.RemoveAt(index);
+                Arrows.RemoveAt(index);
         }
 
 
@@ -70,7 +70,7 @@ public class Bow : Weapon
             Vector2 directionToMouse = Vector2.Normalize(mouseToPlayer);
             Vector2 arrowVelocity = directionToMouse * 10; // Setze ArrowSpeed als gewünschte Geschwindigkeit des Pfeils
             Arrow arrow = new Arrow(Position, arrowVelocity, 10); // Annahme: Arrow ist eine Klasse für Pfeile
-            arrows.Add(arrow); // Annahme: Arrows ist eine Liste für alle Pfeile im Spiel
+            Arrows.Add(arrow); // Annahme: Arrows ist eine Liste für alle Pfeile im Spiel
 
             // Aktualisiere die Zeit des letzten Angriffs
             lastAttackTime = gameTime.TotalGameTime;
@@ -81,7 +81,7 @@ public class Bow : Weapon
 
     public void DrawArrow()
     {
-        arrows.ForEach(arrow => arrow.Draw());
+        Arrows.ForEach(arrow => arrow.Draw());
     }
 
     public override void Draw()

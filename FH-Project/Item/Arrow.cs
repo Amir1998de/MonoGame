@@ -31,15 +31,16 @@ public class Arrow
 
     public void Update(GameTime gameTime, int z)
     {
-        if (!IsActive)
+        if (IsActive)
         {
-            Position *= Velocity;
+            Position += Velocity;
             ArrowBounds = new Rectangle((int)Position.X, (int)Position.Y, ArrowTexture.Width, ArrowTexture.Height);
 
             foreach (var enemy in Enemy.enemies)
             {
                 if (CollisionHandler.CollisionWithEnviorment(ArrowBounds, enemy))
                 {
+                    
                     IsActive = false; break;
                 }
             }
