@@ -22,6 +22,21 @@ public class Skeleton : Enemy
     }
     public override void Attack(GameTime gameTime,PlayerActions data)
     {
+        if (Globals.Player != null)
+        {
+            float distanceToPlayer = Vector2.Distance(Position, Globals.Player.Position);
+
+            Room roomPlayerIsin = Map.GetRoomPlayerIsIn();
+            if (roomPlayerIsin != null && roomPlayerIsin.WhichKorridor != null)
+            {
+
+                if (distanceToPlayer <= chaseRadius && roomPlayerIsin.Bereich.Intersects(EnemyBounds))
+                    ChasePlayer();
+            }
+
+
+        }
+
         EnemyBounds = new Rectangle((int)Position.X + 10, (int)Position.Y + 15, EntityTexture.Width * 2, EntityTexture.Height * 2);
 
         int index = -1;

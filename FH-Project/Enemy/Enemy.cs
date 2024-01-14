@@ -52,7 +52,7 @@ public abstract class Enemy : Entity, IObserver
     }
     public void OnNotify(PlayerActions data)
     {
-        if (data == PlayerActions.ATTACK)
+        if (data == PlayerActions.ATTACK && !IsDestroyed)
         {
             int index = -1;
 
@@ -130,58 +130,31 @@ public abstract class Enemy : Entity, IObserver
 
     public void Update(GameTime gameTime)
     {
+
+        Room roomPlayerIsIn = Map.GetRoomPlayerIsIn();
+        Room roomEnemyIsIn = Map.GetRoomEnemyIsIn(this);
+        if(roomPlayerIsIn == null || roomEnemyIsIn == null) return;
+
         if (enemydrops.Any())
         {
             int index = -1;
-            foreach(Enemydrops enemydrop in enemydrops)
+            foreach (Enemydrops enemydrop in enemydrops)
             {
                 if (Globals.Player.PlayerBounds.Intersects(enemydrop.DropBounds))
                 {
                     enemydrop.UseEffect();
                     index = enemydrops.IndexOf(enemydrop);
                 }
-                    
+
             }
-            if(index != -1)
+            if (index != -1)
                 enemydrops.RemoveAt(index);
         }
-        
-        
-        
 
-        if (Globals.Player != null)
+        if (roomPlayerIsIn.Equals(roomEnemyIsIn))
         {
-            float distanceToPlayer = Vector2.Distance(Position, Globals.Player.Position);
-
-            // Überprüfen Sie, ob der Spieler in der Nähe ist
-            Room roomPlayerIsin = Map.GetRoomPlayerIsIn();
-            if (roomPlayerIsin != null && roomPlayerIsin.WhichKorridor != null)
-            {
-
-                if (distanceToPlayer <= chaseRadius && roomPlayerIsin.Bereich.Intersects(EnemyBounds))
-                    ChasePlayer();
-                else
-                {
-                    /*if (randomDirectionTimer > 1f)
-                {
-                    randomDirectionTimer = 0f;
-                    Vector2 randomDirection = new Vector2((float)random.NextDouble() * 2 - 1, (float)random.NextDouble() * 2 - 1);
-                    WanderRandomly(randomDirection);
-                }
-
-                if (randomDirectionTimer <= 1f)
-                {
-                    randomDirectionTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                }*/
-                }
-
-            }
-
-
-        }
-
-        Attack(gameTime,PlayerActions.NONE);
-        
+            Attack(gameTime, PlayerActions.NONE);
+        }       
     }
 
     public void ChasePlayer()

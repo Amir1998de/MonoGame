@@ -222,11 +222,11 @@ internal class GameplayScreen : GameScreen
         spriteBatch.DrawString(font, Globals.Map.Count.ToString(), new Vector2(400, 10) + Camera.Position, Color.Red);
 
         Globals.Player.Draw();
-        Enemy.DrawAll();
 
         Globals.Map.DrawEnemyCounter(10, 10, camera);
         Globals.Map.DrawEnemyRoomCounter(140, 10, camera);
 
+        Enemy.DrawAll();
         //enemy.CheckEnemy(spriteBatch, player);
 
         spriteBatch.End();

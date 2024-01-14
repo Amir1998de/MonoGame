@@ -1,4 +1,5 @@
 ﻿using FH_Project;
+using FH_Projekt;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -23,6 +24,11 @@ public class EnemyFactory
         if (existingEnemy.Equals("Skeleton"))
         {
             return new Skeleton(health, speed, pos, velocity, chaseRadius, scale);
+        }
+
+        if (existingEnemy.Equals("Wolf"))
+        {
+            return new Wolf(health,speed,pos,velocity, chaseRadius, scale);
         }
         return null;
     }

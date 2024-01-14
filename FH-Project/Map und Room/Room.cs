@@ -111,16 +111,16 @@ public class Room : MapEntity
             switch (selectedMonsterType)
             {
                 case MonsterType.SLIME:
-                    enemiesInRoom.Add(Enemy.AddEnemy("Slime", 3, 2.5f, pos, new Vector2(0, 0), 600f, 3));
+                    enemiesInRoom.Add(Enemy.AddEnemy("Slime", 3, 1.5f, pos, new Vector2(0, 0), 350f, 3));
                     break;
                 case MonsterType.SKELETON:
                     float chaseRadius = Math.Max(Bereich.Width, Bereich.Height);
                     enemiesInRoom.Add(Enemy.AddEnemy("Skeleton", 2, 0.3f, pos, new Vector2(0, 0), 1000, 3));
                     break;
-                case MonsterType.GOLEM:
-                    // Hier entsprechenden Code für GOLEM hinzufügen
+                case MonsterType.WOLF:
+                    enemiesInRoom.Add(Enemy.AddEnemy("Wolf", 2, 8, pos, new Vector2(0, 0), 0, 2));
                     break;
-                    // Weitere MonsterType-Werte können nach Bedarf hinzugefügt werden
+                    
             }
 
             count++;
@@ -150,7 +150,7 @@ public class Room : MapEntity
 
     public bool EnemiesAreInRoom(Enemy enemy)
     {
-        return Bereich.Contains(enemy.Position.X, enemy.Position.Y);
+        return Bereich.Intersects(enemy.EnemyBounds);
 
     }
 

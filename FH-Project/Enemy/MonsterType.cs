@@ -9,5 +9,5 @@ public enum MonsterType
 {
     SLIME,
     SKELETON,
-    GOLEM
+    WOLF
 }
