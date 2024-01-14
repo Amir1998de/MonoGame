@@ -19,7 +19,9 @@ class Slime : Enemy
 
     public override void Attack(GameTime gameTime, PlayerActions data)
     {
-        if (CollisionHandler.CollisionEntitys(Globals.Player, this))
+        EnemyBounds = new Rectangle((int)Position.X + 20, (int)Position.Y + 25, EntityTexture.Width * 2, EntityTexture.Height * 2);
+
+        if (CollisionHandler.CollisionEntitys(Globals.Player.PlayerBounds, EnemyBounds))
         {
             if (Globals.Player.CanGetHit)
             {
@@ -27,6 +29,7 @@ class Slime : Enemy
                 Globals.Player.CanGetHit = false;
             }
 
+            
             Debug.WriteLine("HIT! " + this.GetHashCode().ToString() + "\n " + Globals.Player.Health);
         }
     }
@@ -41,7 +44,7 @@ class Slime : Enemy
                 enemyDrop.Draw();
             });
         }
-
+        Globals.SpriteBatch.DrawRectangle(EnemyBounds, Color.White);
     }
 
 

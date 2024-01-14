@@ -114,7 +114,7 @@ internal class GameplayScreen : GameScreen
         Globals.Player = new Player(3, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword, 3);
 
         Globals.Map = new Map();
-        Globals.Map.GenerateMap(5, 2, 4, 3, 6);
+        Globals.Map.GenerateMap(5, 4, 6, 4, 6);
 
 
         spriteBatch = ScreenManager.SpriteBatch;
@@ -201,7 +201,7 @@ internal class GameplayScreen : GameScreen
 
         Globals.Map.Draw();
 
-        if (Keyboard.GetState().IsKeyDown(Keys.Space) && !(Globals.Player.Weapon.GetType().ToString().Equals("FH_Project.Bow")))
+        if (Globals.MouseState.LeftButton == ButtonState.Pressed && Globals.Player.Weapon.GetType().ToString().Equals("FH_Project.Sword"))
         {
             Globals.Player.Weapon.Draw();
 

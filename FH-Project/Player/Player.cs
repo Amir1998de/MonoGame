@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
+using System;
 
 public class Player : Entity
 {
@@ -18,6 +19,7 @@ public class Player : Entity
     GameTime gameTime;
     private KeyboardState prevKeyboardState;
     private KeyboardState currentKeyboardState;
+    private Room roomPlayerisIn;
 
     //Sprinten
     private float sprintTimer;
@@ -50,6 +52,7 @@ public class Player : Entity
     private Potion potion;
     public Rectangle PlayerBounds { get; set; }
     private Room KorridorPlayerIsIn;
+
 
 
     #endregion Variablen
@@ -93,67 +96,58 @@ public class Player : Entity
     public void MovePlayerLeft()
     {
         Position = new Vector2(Position.X - Speed, Position.Y);
-        Room roomPlayerisIn = Map.GetRoomPlayerIsIn();
 
-        if (roomPlayerisIn != null)
+
+
+        float distanceToPlayer = 0f;
+
+        float z = (float)EntityTexture.Width;
+
+        if (!KorridorPlayerIsIn.Bereich.Contains(Position))
+            distanceToPlayer = Vector2.Distance(new Vector2(roomPlayerisIn.WhichKorridor.Bereich.X, roomPlayerisIn.WhichKorridor.Bereich.Y), Globals.Player.Position);
+
+
+        if (distanceToPlayer <= 200 && roomPlayerisIn.GetEnemiesInRoomCount() <= 0)
         {
-            float z = (float)EntityTexture.Height / 5;
-
-            if (roomPlayerisIn.WhichKorridor != null)
+            if (PlayerBounds.Intersects(KorridorPlayerIsIn.Bereich) && roomPlayerisIn.Directions.Equals(RoomDirections.DOWN))
             {
-                float distanceToPlayer = Vector2.Distance(new Vector2(roomPlayerisIn.WhichKorridor.Bereich.X, roomPlayerisIn.WhichKorridor.Bereich.Y), Globals.Player.Position);
+                if (Position.X < KorridorPlayerIsIn.Bereich.Left - z)
+                    Position = new Vector2(KorridorPlayerIsIn.Bereich.Left - z, Position.Y);
 
-                if (distanceToPlayer <= 200 && roomPlayerisIn.GetEnemiesInRoomCount() <= 0)
-                {
-                    // Hier kannst du spezifische Aktionen ausführen, wenn der Spieler in der Nähe des Korridors ist und die Tab-Taste gedrückt wird.
-                }
-                else if (Position.X - z < roomPlayerisIn.Bereich.Left)
-                    Position = new Vector2(roomPlayerisIn.Bereich.Left + z, Position.Y);
-
-                Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
-            }
-            else
-            {
-                return;
             }
         }
-        else
-        {
-            return;
-        }
+        else if (Position.X < roomPlayerisIn.Bereich.Left - z)
+            Position = new Vector2(roomPlayerisIn.Bereich.Left - z, Position.Y);
+
+
     }
 
     public void MovePlayerRight()
     {
         Position = new Vector2(Position.X + Speed, Position.Y);
-        Room roomPlayerisIn = Map.GetRoomPlayerIsIn();
 
-        if (roomPlayerisIn != null)
+
+
+        float z = (float)EntityTexture.Width;
+        float distanceToPlayer = 0f;
+        if(KorridorPlayerIsIn != null)
+            if (!KorridorPlayerIsIn.Bereich.Contains(Position))
+                distanceToPlayer = Vector2.Distance(new Vector2(roomPlayerisIn.WhichKorridor.Bereich.X, roomPlayerisIn.WhichKorridor.Bereich.Y), Globals.Player.Position);
+        
+
+        if (distanceToPlayer <= 200 && roomPlayerisIn.GetEnemiesInRoomCount() <= 0)
         {
-            float z = (float)EntityTexture.Height * 3;
-
-            if (roomPlayerisIn.WhichKorridor != null)
+            if (PlayerBounds.Intersects(KorridorPlayerIsIn.Bereich) && roomPlayerisIn.Directions.Equals(RoomDirections.DOWN))
             {
-                float distanceToPlayer = Vector2.Distance(new Vector2(roomPlayerisIn.WhichKorridor.Bereich.X, roomPlayerisIn.WhichKorridor.Bereich.Y), Globals.Player.Position);
+                if (Position.X + z > KorridorPlayerIsIn.Bereich.Right - z * 2)
+                    Position = new Vector2(KorridorPlayerIsIn.Bereich.Right - z * 2, Position.Y);
 
-                if (distanceToPlayer <= 200 && roomPlayerisIn.GetEnemiesInRoomCount() <= 0)
-                {
-                    // Hier kannst du spezifische Aktionen ausführen, wenn der Spieler in der Nähe des Korridors ist und die Tab-Taste gedrückt wird.
-                }
-                else if (Position.X + z > roomPlayerisIn.Bereich.Right)
-                    Position = new Vector2(roomPlayerisIn.Bereich.Right - z, Position.Y);
-
-                Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
-            }
-            else
-            {
-                return;
             }
         }
-        else
-        {
-            return;
-        }
+        else if (Position.X  > roomPlayerisIn.Bereich.Right - z * 2)
+            Position = new Vector2(roomPlayerisIn.Bereich.Right - z * 2, Position.Y);
+
+
     }
 
     public void MovePlayerUp()
@@ -161,75 +155,62 @@ public class Player : Entity
         //bool directionPlayerCanGo = !roomPlayerisIn.Directions.Equals(RoomDirections.UP) && !roomPlayerisIn.ReverseDircetion.Equals(RoomDirections.DOWN) ? true: false;
 
         Position = new Vector2(Position.X, Position.Y - Speed);
-        Room roomPlayerisIn = Map.GetRoomPlayerIsIn();
 
-        if (roomPlayerisIn != null)
+
+        float z = (float)EntityTexture.Height;
+
+        float distanceToPlayer = 0f;
+
+
+        if (!KorridorPlayerIsIn.Bereich.Contains(Position))
+            distanceToPlayer = Vector2.Distance(new Vector2(roomPlayerisIn.WhichKorridor.Bereich.X, roomPlayerisIn.WhichKorridor.Bereich.Y), Globals.Player.Position);
+
+        if (distanceToPlayer <= 200 && roomPlayerisIn.GetEnemiesInRoomCount() <= 0)
         {
-            float z = (float)EntityTexture.Height / 5;
-
-            if (roomPlayerisIn.WhichKorridor != null)
+            if (PlayerBounds.Intersects(KorridorPlayerIsIn.Bereich) && roomPlayerisIn.Directions.Equals(RoomDirections.RIGHT))
             {
-                float distanceToPlayer = Vector2.Distance(new Vector2(roomPlayerisIn.WhichKorridor.Bereich.X, roomPlayerisIn.WhichKorridor.Bereich.Y), Globals.Player.Position);
+                if (Position.Y < KorridorPlayerIsIn.Bereich.Y - z)
+                    Position = new Vector2(Position.X, KorridorPlayerIsIn.Bereich.Y - z);
 
-                if (distanceToPlayer <= 200 && roomPlayerisIn.GetEnemiesInRoomCount() <= 0)
-                {
-                    // Hier kannst du spezifische Aktionen ausführen, wenn der Spieler in der Nähe des Korridors ist und die Tab-Taste gedrückt wird.
-                }
-                else if (Position.Y - z < roomPlayerisIn.Bereich.Top)
-                    Position = new Vector2(Position.X, roomPlayerisIn.Bereich.Top + z);
-
-                Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
-            }
-            else
-            {
-                return;
             }
         }
-        else
-        {
-            return;
-        }
+        else if (Position.Y < roomPlayerisIn.Bereich.Y - z)
+            Position = new Vector2(Position.X, roomPlayerisIn.Bereich.Y - z);
+
+
+
     }
 
     public void MovePlayerDown()
     {
         Position = new Vector2(Position.X, Position.Y + Speed);
-        Room roomPlayerisIn = Map.GetRoomPlayerIsIn();
 
 
 
-        if (roomPlayerisIn != null)
+
+        float distanceToPlayer = 0f;
+
+        float z = (float)EntityTexture.Height * 3;
+
+        if(!KorridorPlayerIsIn.Bereich.Contains(Position))
+            distanceToPlayer = Vector2.Distance(new Vector2(roomPlayerisIn.WhichKorridor.Bereich.X, roomPlayerisIn.WhichKorridor.Bereich.Y), Globals.Player.Position);
+
+
+        if (distanceToPlayer <= 200 && roomPlayerisIn.GetEnemiesInRoomCount() <= 0)
         {
-            if (KorridorPlayerIsIn == null) KorridorPlayerIsIn = roomPlayerisIn.WhichKorridor;
-            float z = (float)EntityTexture.Height * 3;
-
-            if (roomPlayerisIn.WhichKorridor != null)
+            if (PlayerBounds.Intersects(KorridorPlayerIsIn.Bereich) && roomPlayerisIn.Directions.Equals(RoomDirections.RIGHT))
             {
-                float distanceToPlayer = Vector2.Distance(new Vector2(roomPlayerisIn.WhichKorridor.Bereich.X, roomPlayerisIn.WhichKorridor.Bereich.Y), Globals.Player.Position);
-
-                if (distanceToPlayer <= 200 && roomPlayerisIn.GetEnemiesInRoomCount() <= 0)
-                {
-                    if (!KorridorPlayerIsIn.Equals(roomPlayerisIn.WhichKorridor))
-                        KorridorPlayerIsIn = roomPlayerisIn.WhichKorridor;
-                }
-                else if (Position.Y + z > roomPlayerisIn.Bereich.Bottom)
-                {
-
-                    if (Position.Y + z > roomPlayerisIn.Bereich.Bottom)
-                        Position = new Vector2(Position.X, roomPlayerisIn.Bereich.Bottom - z);
-                }
-
-                Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
-            }
-            else
-            {
-                return;
+                if (Position.Y > KorridorPlayerIsIn.Bereich.Bottom - z)
+                    Position = new Vector2(Position.X, KorridorPlayerIsIn.Bereich.Bottom - z);
             }
         }
-        else
-        {
-            return;
-        }
+        else if (Position.Y > roomPlayerisIn.Bereich.Bottom - z)
+            Position = new Vector2(Position.X, roomPlayerisIn.Bereich.Bottom - z);
+
+
+        //Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
+
+
     }
 
 
@@ -238,6 +219,20 @@ public class Player : Entity
         IsAttacking = true;
         GetNotified(data);
         Animation();
+    }
+
+    public void MausRichtiung()
+    {
+        Vector2 mousePosition = new Vector2(Globals.MouseState.X, Globals.MouseState.Y);
+
+        float horizontalDistance = mousePosition.X + Camera.Position.X;
+
+        if (horizontalDistance > Position.X)
+            Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
+        else
+            Weapon.Position = new Vector2(Position.X - EntityTexture.Width / 2 + 10, Position.Y + EntityTexture.Height);
+
+
     }
 
     public void Animation()
@@ -249,9 +244,21 @@ public class Player : Entity
     {
         UpdateIdle(gameTime);
         UpdateRun(gameTime);
+        if (Map.GetRoomPlayerIsIn() != null)
+        {
+            if (roomPlayerisIn == null || (!roomPlayerisIn.Equals(Map.GetRoomPlayerIsIn())))
+            {
+                if (!Map.GetRoomPlayerIsIn().IsKorridor)
+                {
+                    roomPlayerisIn = Map.GetRoomPlayerIsIn();
+                    KorridorPlayerIsIn = roomPlayerisIn.WhichKorridor;
+                }
 
 
+            }
 
+
+        }
 
         prevKeyboardState = Globals.KeyboardState;
 
@@ -344,14 +351,16 @@ public class Player : Entity
         {
             Debug.WriteLine("dsad");
         }
+        MausRichtiung();
 
-        if (Globals.KeyboardState.IsKeyDown(Keys.Space) && !IsAttacking)
+        if (Globals.MouseState.LeftButton == ButtonState.Pressed && !IsAttacking && Globals.Player.Weapon.GetType().ToString().Equals("FH_Project.Sword"))
         {
+
             Attack(gameTime, PlayerActions.ATTACK);
         }
         Globals.MouseState = Mouse.GetState();
 
-        if (Globals.MouseState.LeftButton == ButtonState.Pressed)
+        if (Globals.MouseState.LeftButton == ButtonState.Pressed && Globals.Player.Weapon.GetType().ToString().Equals("FH_Project.Bow"))
         {
             Attack(gameTime, PlayerActions.SHOOT);
         }
@@ -378,7 +387,7 @@ public class Player : Entity
         Sprite.Position += ScreenManager.Direction * Globals.Time * SPEED;
         Sprite.Position = Vector2.Clamp(Sprite.Position, _minPos, _maxPos);
 
-        PlayerBounds = new Rectangle((int)Position.X, (int)Position.Y, EntityTexture.Width, EntityTexture.Height);
+        PlayerBounds = new Rectangle((int)Position.X + 50, (int)Position.Y + 25, EntityTexture.Width, EntityTexture.Height * 2);
 
 
 

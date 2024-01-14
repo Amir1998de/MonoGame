@@ -92,8 +92,8 @@ public class Room : MapEntity
         int count = 0;
         while (EnemyCap >= count)
         {
-            int x = random.Next(Bereich.Left, Bereich.Right);
-            int y = random.Next(Bereich.Top, Bereich.Bottom);
+            int x = random.Next(Bereich.Left + 50, Bereich.Right - 50);
+            int y = random.Next(Bereich.Top + 50, Bereich.Bottom -50);
 
             Vector2 pos = new Vector2(x, y);
 
@@ -111,7 +111,7 @@ public class Room : MapEntity
             switch (selectedMonsterType)
             {
                 case MonsterType.SLIME:
-                    enemiesInRoom.Add(Enemy.AddEnemy("Slime", 3, 2, pos, new Vector2(0, 0), 300f, 3));
+                    enemiesInRoom.Add(Enemy.AddEnemy("Slime", 3, 2.5f, pos, new Vector2(0, 0), 600f, 3));
                     break;
                 case MonsterType.SKELETON:
                     float chaseRadius = Math.Max(Bereich.Width, Bereich.Height);
@@ -145,7 +145,7 @@ public class Room : MapEntity
 
     public bool PlayerIsInRoom()
     {
-        return Bereich.Contains(Globals.Player.Position.X, Globals.Player.Position.Y);
+        return Bereich.Intersects(Globals.Player.PlayerBounds);
     }
 
     public bool EnemiesAreInRoom(Enemy enemy)
@@ -168,5 +168,27 @@ public class Room : MapEntity
         });
 
         //DrawRoomTexture();
+    }
+
+    public override bool Equals(object obj)
+    {
+        return obj is Room room &&
+               Bereich.Equals(room.Bereich) &&
+               EqualityComparer<Sprite[,]>.Default.Equals(tiles, room.tiles) &&
+               tileSize.Equals(room.tileSize) &&
+               EqualityComparer<List<Texture2D>>.Default.Equals(textures, room.textures) &&
+               EqualityComparer<Random>.Default.Equals(random, room.random) &&
+               MaxWidth == room.MaxWidth &&
+               MaxHeight == room.MaxHeight &&
+               TileWidth == room.TileWidth &&
+               TileHeight == room.TileHeight &&
+               EnemyCap == room.EnemyCap &&
+               Directions == room.Directions &&
+               ReverseDircetion == room.ReverseDircetion &&
+               EqualityComparer<List<Room>>.Default.Equals(Korridore, room.Korridore) &&
+               EqualityComparer<Texture2D>.Default.Equals(roomTexture, room.roomTexture) &&
+               EqualityComparer<Room>.Default.Equals(WhichKorridor, room.WhichKorridor) &&
+               IsKorridor == room.IsKorridor &&
+               EqualityComparer<List<Enemy>>.Default.Equals(enemiesInRoom, room.enemiesInRoom);
     }
 }

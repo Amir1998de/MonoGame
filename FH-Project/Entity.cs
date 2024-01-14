@@ -110,6 +110,7 @@ public abstract class Entity : Subject
     public virtual void Draw()
     {
         Globals.SpriteBatch.Draw(EntityTexture, Position, null, Color.White, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
+        Globals.SpriteBatch.DrawRectangle(Globals.Player.PlayerBounds, Color.White);
     }
 
     public void Add(Entity entity, SpriteBatch spriteBatch)

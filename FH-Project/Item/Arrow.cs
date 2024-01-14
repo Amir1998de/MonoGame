@@ -42,7 +42,7 @@ public class Arrow
             foreach (var enemy in Enemy.enemies)
             {
                 int index = -1;
-                if (CollisionHandler.CollisionWithEnviorment(ArrowBounds, enemy))
+                if (CollisionHandler.CollisionWithEnviorment(ArrowBounds, enemy.EnemyBounds))
                 {
                     
                     IsActive = false; 
@@ -80,7 +80,7 @@ public class Arrow
             Position += Velocity;
             ArrowBounds = new Rectangle((int)Position.X, (int)Position.Y, ArrowTexture.Width, ArrowTexture.Height);
             
-            if (CollisionHandler.CollisionWithEnviorment(ArrowBounds, Globals.Player))
+            if (CollisionHandler.CollisionWithEnviorment(ArrowBounds, Globals.Player.PlayerBounds))
             {
                 Globals.Player.ReduceHealth(1);
                 IsActive = false;
@@ -116,6 +116,7 @@ public class Arrow
         {
             Globals.SpriteBatch.Draw(ArrowTexture, Position, Color.White);
         }
+        
     }
 
 }

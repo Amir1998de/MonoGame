@@ -13,25 +13,14 @@ public static class CollisionHandler
 {
 
 
-    public static bool CollisionEntitys(Entity e1, Entity e2)
+    public static bool CollisionEntitys(Rectangle entity1, Rectangle entity2)
     {
-        Rectangle enity1 = new((int)e1.Position.X, (int)e1.Position.Y, e1.EntityTexture.Width, e1.EntityTexture.Height);
-        Rectangle enity2 = new((int)e2.Position.X, (int)e2.Position.Y, e2.EntityTexture.Width, e2.EntityTexture.Height);
 
-        return enity1.Intersects(enity2);
+        return entity1.Intersects(entity2);
     }
 
-    public static bool CollisionWithEnviorment(Rectangle textureRectangle, Entity entity)
+    public static bool CollisionWithEnviorment(Rectangle textureRectangle, Rectangle enityRectangle)
     {
-        Rectangle enityRectangle = new Rectangle((int)entity.Position.X, (int)entity.Position.Y, entity.EntityTexture.Width, entity.EntityTexture.Height);
-
-
-      
-        bool collision = enityRectangle.Intersects(textureRectangle);
-        
-
-        return collision;
-
-
+        return enityRectangle.Intersects(textureRectangle);
     }
 }

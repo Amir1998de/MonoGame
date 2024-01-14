@@ -194,7 +194,7 @@ public class Map : MapEntity
             if (Ebenen > Count && homebase.AreWeDone)
             {
 
-                GenerateMap(5, 2, 4, 3, 6);
+                GenerateMap(5, 4, 6, 4, 6);
                 Globals.Player.Position = new Vector2(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2);
                 Count++;
             }
@@ -204,10 +204,12 @@ public class Map : MapEntity
         if (Ebenen <= Count)
         {
             homebase = new Homebase(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2, 8, 8, false);
+            homebase.WhichKorridor = new Room(0, 0, 0, 0, true);
             homebase.AreWeDone = false;
             räume.Clear();
             Enemy.enemies.Clear();
             homebase.LoadContent();
+            räume.Add(homebase);
         }
 
         if (!homebase.AreWeDone)
@@ -333,5 +335,19 @@ public class Map : MapEntity
 
 
         DrawEnemyInRoom();
+    }
+
+    public override bool Equals(object obj)
+    {
+        return obj is Map map &&
+               _mapTileSize.Equals(map._mapTileSize) &&
+               EqualityComparer<Sprite[,]>.Default.Equals(_tiles, map._tiles) &&
+               TileSize.Equals(map.TileSize) &&
+               MapSize.Equals(map.MapSize) &&
+               EqualityComparer<List<Texture2D>>.Default.Equals(textures, map.textures) &&
+               EqualityComparer<Random>.Default.Equals(random, map.random) &&
+               Ebenen == map.Ebenen &&
+               Count == map.Count &&
+               EqualityComparer<Homebase>.Default.Equals(homebase, map.homebase);
     }
 }

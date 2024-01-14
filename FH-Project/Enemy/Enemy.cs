@@ -31,7 +31,7 @@ public abstract class Enemy : Entity, IObserver
     private int enemiesToDefeat;
     protected int damage;
     private Random random;
-    protected Rectangle enemyBounds;
+    public Rectangle EnemyBounds { get; set; }
     public static List<Enemydrops> enemydrops { get; private set; } = new List<Enemydrops>();
     private Rectangle arrowBounds;
 
@@ -42,7 +42,7 @@ public abstract class Enemy : Entity, IObserver
     {
         LoadContent();
         random = new();
-        enemyBounds = new((int)Position.X, (int)Position.Y, EntityTexture.Width, EntityTexture.Height);
+        EnemyBounds = new((int)Position.X, (int)Position.Y, EntityTexture.Width, EntityTexture.Height);
         // AddEnemy(this);
         enemiesToDefeat = enemies.Count;
         Globals.Player.AddObserver(this);
@@ -158,7 +158,7 @@ public abstract class Enemy : Entity, IObserver
             if (roomPlayerIsin != null && roomPlayerIsin.WhichKorridor != null)
             {
 
-                if (distanceToPlayer <= chaseRadius && roomPlayerIsin.Bereich.Intersects(enemyBounds))
+                if (distanceToPlayer <= chaseRadius && roomPlayerIsin.Bereich.Intersects(EnemyBounds))
                     ChasePlayer();
                 else
                 {
@@ -181,8 +181,7 @@ public abstract class Enemy : Entity, IObserver
         }
 
         Attack(gameTime,PlayerActions.NONE);
-        enemyBounds.X = (int)Position.X;
-        enemyBounds.Y = (int)Position.Y;
+        
     }
 
     public void ChasePlayer()

@@ -22,6 +22,8 @@ public class Skeleton : Enemy
     }
     public override void Attack(GameTime gameTime,PlayerActions data)
     {
+        EnemyBounds = new Rectangle((int)Position.X + 10, (int)Position.Y + 15, EntityTexture.Width * 2, EntityTexture.Height * 2);
+
         int index = -1;
         if (arrows.Count > 0)
         {
@@ -63,6 +65,7 @@ public class Skeleton : Enemy
             }
 
         }
+        
     }
 
     public void DrawArrow()
@@ -83,7 +86,7 @@ public class Skeleton : Enemy
         }
 
         DrawArrow();
-
+        Globals.SpriteBatch.DrawRectangle(EnemyBounds, Color.White);
     }
 
 
