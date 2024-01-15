@@ -68,11 +68,11 @@ public abstract class Enemy : Entity, IObserver
             if (CheckIfDead())
             {
                 AddDrops();
-                
+
                 IsDestroyed = true;
                 index = enemies.IndexOf(this);
-                
-                
+
+
                 if (index != -1)
                     RemoveEnemyAtIndex(index);
 
@@ -81,7 +81,7 @@ public abstract class Enemy : Entity, IObserver
 
         }
 
-        
+
 
     }
 
@@ -108,17 +108,18 @@ public abstract class Enemy : Entity, IObserver
 
     public void AddDrops()
     {
-        if(IsDestroyed) return;
+        if (IsDestroyed) return;
 
-         Random random = new Random();
+        Random random = new Random();
 
-        /*int rndZahl = random.Next(2);
-        if(rndZahl == 0)
+        int rndZahl = random.Next(2);
+
+        if (rndZahl == 0)
         {
             return;
-        }*/
+        }
 
-        enemydrops.Add(new Enemydrops(Position));
+        //enemydrops.Add(new Enemydrops(Position));
     }
 
     public static void RemoveEnemyAtIndex(int index)
@@ -126,14 +127,14 @@ public abstract class Enemy : Entity, IObserver
         enemies.RemoveAt(index);
     }
 
-    
+
 
     public void Update(GameTime gameTime)
     {
 
         Room roomPlayerIsIn = Map.GetRoomPlayerIsIn();
         Room roomEnemyIsIn = Map.GetRoomEnemyIsIn(this);
-        if(roomPlayerIsIn == null || roomEnemyIsIn == null) return;
+        if (roomPlayerIsIn == null || roomEnemyIsIn == null) return;
 
         if (enemydrops.Any())
         {
@@ -154,7 +155,7 @@ public abstract class Enemy : Entity, IObserver
         if (roomPlayerIsIn.Equals(roomEnemyIsIn))
         {
             Attack(gameTime, PlayerActions.NONE);
-        }       
+        }
     }
 
     public void ChasePlayer()

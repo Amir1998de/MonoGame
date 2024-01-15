@@ -7,22 +7,23 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace FH_Project;
-public class BowAnimation
+public class PlayerAnimation
 {
     private static Texture2D _texture;
-    private Vector2 _position;
+    public Vector2 _position;
     private readonly Animation _anim;
 
-    public BowAnimation(Vector2 pos, int number, int count)
+    public PlayerAnimation(int frameX, int frameY, int number, int count)
     {
-        _texture = Globals.Content.Load<Texture2D>("neue Sprites/sArrow_strip4");
-        _anim = new(_texture, 4, 1, 0.1f,number,count);
-        _position = pos;
+        _texture = Globals.Content.Load<Texture2D>("neue Sprites/sPlayerRun_strip32");
+        _anim = new(_texture, frameX, frameY, 0.1f,number,count);
+        
     }
 
     public void Update()
     {
         _anim.Update();
+        _position = Globals.Player.Position;
     }
 
     public void Draw()

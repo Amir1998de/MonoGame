@@ -40,6 +40,10 @@ public class Player : Entity
     private Texture2D[] playerLeftTexture;
     private Texture2D[] playerUpTexture;
     private Texture2D[] playerDownTexture;
+    public PlayerAnimation up;
+    public PlayerAnimation down;
+    public PlayerAnimation right;
+    public PlayerAnimation left;
 
 
 
@@ -68,6 +72,15 @@ public class Player : Entity
         coolDownForSprint = false;
         CanGetHit = true;
         Sprint = 5f;
+        EntityTexture = Globals.Content.Load<Texture2D>("sPlayer_Idle1");
+        up = new PlayerAnimation(32,1,8,8);
+        down = new PlayerAnimation(32,1,24,8);
+        right = new PlayerAnimation(32,1, 0, 8);
+        left = new PlayerAnimation(32,1, 16, 8);
+        up._position = Position;
+        down._position = Position;
+        right._position = Position;
+        left._position = Position;
     }
 
     public void AddShield(int value)
@@ -262,38 +275,43 @@ public class Player : Entity
 
         prevKeyboardState = Globals.KeyboardState;
 
+        /*
         if (!Globals.KeyboardState.IsKeyDown(Keys.Right) &&
             !Globals.KeyboardState.IsKeyDown(Keys.Left) &&
             !Globals.KeyboardState.IsKeyDown(Keys.Up) &&
             !Globals.KeyboardState.IsKeyDown(Keys.Down)) PlayerAnimation(playerIdleTexture, gameTime, idleTimer, frameRunTime, currentIdleFrame, totalIdleFrames);
-
+        */
 
         if (Globals.KeyboardState.IsKeyDown(Keys.A))
         {
 
-            PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
+            //PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
             MovePlayerLeft();
+            left.Update();
         }
 
         if (Globals.KeyboardState.IsKeyDown(Keys.D))
         {
 
-            PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
+            //PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
             MovePlayerRight();
+            right.Update();
         }
 
         if (Globals.KeyboardState.IsKeyDown(Keys.W))
         {
 
-            PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
+            //PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
             MovePlayerUp();
+            up.Update();
         }
 
         if (Globals.KeyboardState.IsKeyDown(Keys.S))
         {
 
-            PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
+           // PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
             MovePlayerDown();
+            down.Update();
         }
 
 
@@ -389,8 +407,34 @@ public class Player : Entity
 
         PlayerBounds = new Rectangle((int)Position.X + 50, (int)Position.Y + 25, EntityTexture.Width, EntityTexture.Height * 2);
 
+        Weapon.Update(gameTime);
 
+    }
 
+    public override void Draw()
+    {
+        if (Globals.KeyboardState.IsKeyDown(Keys.A) && Globals.KeyboardState.IsKeyDown(Keys.W)) Globals.Player.left.Draw();
+        else
+        {
+            if (Globals.KeyboardState.IsKeyDown(Keys.A)) Globals.Player.left.Draw();
+            if (Globals.KeyboardState.IsKeyDown(Keys.W)) Globals.Player.up.Draw();
+
+        }
+        if (Globals.KeyboardState.IsKeyDown(Keys.S) && Globals.KeyboardState.IsKeyDown(Keys.D)) Globals.Player.right.Draw();
+        else
+        {
+
+            if (Globals.KeyboardState.IsKeyDown(Keys.S)) Globals.Player.down.Draw();
+            if (Globals.KeyboardState.IsKeyDown(Keys.D)) Globals.Player.right.Draw();
+        }
+
+        if (!Globals.KeyboardState.IsKeyDown(Keys.A) && !Globals.KeyboardState.IsKeyDown(Keys.W) &&
+            !Globals.KeyboardState.IsKeyDown(Keys.S) && !Globals.KeyboardState.IsKeyDown(Keys.D))
+        {
+            Globals.SpriteBatch.Draw(EntityTexture, Position, null, Color.White, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
+            Globals.SpriteBatch.DrawRectangle(Globals.Player.PlayerBounds, Color.White);
+        }
+        
     }
 
     public void UpdateIdle(GameTime gameTime)

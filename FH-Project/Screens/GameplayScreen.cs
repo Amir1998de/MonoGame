@@ -119,7 +119,7 @@ internal class GameplayScreen : GameScreen
         hammer = new Hammer(100, 5, hammerTexture);
         bow = new Bow(4, 5, bowTexture);
 
-        Globals.Player = new Player(6, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword, 4);
+        Globals.Player = new Player(3, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword, 3);
 
 
         Globals.Map = new Map();
