@@ -12,6 +12,7 @@ public static class Inventory
 {
     private const int SPACE = 20;
     private static List<Item> items = new List<Item>();
+    public static int anzahlPfeile = 5;
 
     
 
@@ -28,6 +29,11 @@ public static class Inventory
 
         }
         throw new NoItemFoundException("This Item does not Exist");
+    }
+
+    public static void AddArrow(int number)
+    {
+        anzahlPfeile += number;
     }
 
     public static int ReturnItemCount()

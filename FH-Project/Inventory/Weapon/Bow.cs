@@ -44,50 +44,55 @@ public class Bow : Weapon
 
     public void Attack(GameTime gameTime)
     {
-        int index = -1;
-        if (Arrows.Count > 0)
+        if(Inventory.anzahlPfeile!=0)
         {
-            Arrows.ForEach(arrow =>
+
+            int index = -1;
+            if (Arrows.Count > 0)
             {
-                arrow.Update(gameTime, 1);
-
-                if (!arrow.IsActive) index = Arrows.IndexOf(arrow);
-                Room room = Map.GetRoomPlayerIsIn();
-
-                if (room != null)
+                Arrows.ForEach(arrow =>
                 {
-                    if (!room.Bereich.Intersects(arrow.ArrowBounds))
+                    arrow.Update(gameTime, 1);
+
+                    if (!arrow.IsActive) index = Arrows.IndexOf(arrow);
+                    Room room = Map.GetRoomPlayerIsIn();
+
+                    if (room != null)
                     {
-                        arrow.SetToFalse();
-                        MousePressed = false;
+                        if (!room.Bereich.Intersects(arrow.ArrowBounds))
+                        {
+                            arrow.SetToFalse();
+                            MousePressed = false;
+                        }
                     }
-                }
 
 
-            });
-            if (index != -1)
-                Arrows.RemoveAt(index);
-        }
+                });
+                if (index != -1)
+                    Arrows.RemoveAt(index);
+            }
 
 
 
-        if (gameTime.TotalGameTime - lastAttackTime > attackCooldown)
-        {
-            Vector2 mousePosition = Globals.MouseState.Position.ToVector2() + Camera.Position;
-            Vector2 mouseToPlayer = mousePosition - Globals.Player.Position;
-            float distanceToMouse = Vector2.Distance(Globals.Player.Position, mousePosition);
+            if (gameTime.TotalGameTime - lastAttackTime > attackCooldown)
+            {
+                Vector2 mousePosition = Globals.MouseState.Position.ToVector2() + Camera.Position;
+                Vector2 mouseToPlayer = mousePosition - Globals.Player.Position;
+                float distanceToMouse = Vector2.Distance(Globals.Player.Position, mousePosition);
 
 
-            // Pfeil in Richtung des Gegners schießen
-            Vector2 directionToMouse = Vector2.Normalize(mouseToPlayer);
-            Vector2 arrowVelocity = directionToMouse * 10; // Setze ArrowSpeed als gewünschte Geschwindigkeit des Pfeils
-            Arrow arrow = new Arrow(Globals.Player.Position, arrowVelocity, 10); // Annahme: Arrow ist eine Klasse für Pfeile
-            Arrows.Add(arrow); // Annahme: Arrows ist eine Liste für alle Pfeile im Spiel
+                // Pfeil in Richtung des Gegners schießen
+                Vector2 directionToMouse = Vector2.Normalize(mouseToPlayer);
+                Vector2 arrowVelocity = directionToMouse * 10; // Setze ArrowSpeed als gewünschte Geschwindigkeit des Pfeils
+                Arrow arrow = new Arrow(Globals.Player.Position, arrowVelocity, 10); // Annahme: Arrow ist eine Klasse für Pfeile
+                Arrows.Add(arrow); // Annahme: Arrows ist eine Liste für alle Pfeile im Spiel
 
-            // Aktualisiere die Zeit des letzten Angriffs
-            lastAttackTime = gameTime.TotalGameTime;
+                // Aktualisiere die Zeit des letzten Angriffs
+                lastAttackTime = gameTime.TotalGameTime;
 
 
+            }
+            Inventory.anzahlPfeile--;
         }
     }
 
