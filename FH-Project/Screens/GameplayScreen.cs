@@ -23,6 +23,7 @@ namespace FH_Project;
 internal class GameplayScreen : GameScreen
 {
     #region Fields
+    private HealthGUI healthGUI;
     private SoundManagement soundManagement;
     private KeyboardState currentKeyboardState;
     public static bool isPasue = false;
@@ -60,6 +61,7 @@ internal class GameplayScreen : GameScreen
     private Texture2D healthPotionTexture;
     private Texture2D shieldPotionTexture;
     private Texture2D randomPotionTexture;
+    private Texture2D heartTexture;
     private Potion HealthPotion;
     private Potion ShieldPotion;
     private Potion RandomPotion;
@@ -97,6 +99,10 @@ internal class GameplayScreen : GameScreen
         Globals.Content = content;
         Globals.MouseState = Mouse.GetState();
 
+        spriteBatch = ScreenManager.SpriteBatch;
+        viewport = ScreenManager.GraphicsDevice.Viewport;
+
+
         swordTexture = content.Load<Texture2D>("Items/Weapon/SwordT2");
         hammerTexture = content.Load<Texture2D>("Items/Weapon/HammerT2");
         bowTexture = content.Load<Texture2D>("Items/Weapon/BowT1");
@@ -106,19 +112,23 @@ internal class GameplayScreen : GameScreen
         Arrow.ArrowTexture = content.Load<Texture2D>("Enemy/Slime/slime-idle-0");
         Enemydrops.EnemyDropTexture = content.Load<Texture2D>("GemBlue");
         font = Globals.Content.Load<SpriteFont>("Verdana");
+        heartTexture = content.Load<Texture2D>("heart");
+
 
         sword = new Sword(1, 5, swordTexture);
         hammer = new Hammer(100, 5, hammerTexture);
         bow = new Bow(4, 5, bowTexture);
 
-        Globals.Player = new Player(3, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword, 3);
+        Globals.Player = new Player(6, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword, 3);
+        healthGUI = new HealthGUI(Globals.Player,  heartTexture);
+
+
 
         Globals.Map = new Map();
         Globals.Map.GenerateMap(5, 4, 6, 4, 6);
 
 
-        spriteBatch = ScreenManager.SpriteBatch;
-        viewport = ScreenManager.GraphicsDevice.Viewport;
+        
 
 
         Entity.View(viewport.Width, viewport.Height);
@@ -161,8 +171,12 @@ internal class GameplayScreen : GameScreen
     public override void Update(GameTime gameTime, bool otherScreenHasFocus,
                                                    bool coveredByOtherScreen)
     {
+
+
         if (!isPasue)
         {
+
+
             base.Update(gameTime, otherScreenHasFocus, false);
 
             // update 
@@ -194,10 +208,15 @@ internal class GameplayScreen : GameScreen
     public override void Draw(GameTime gameTime)
     {
 
+
+
         ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
                                            Color.CornflowerBlue, 0, 0);
 
         spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(Map.GetRoomPlayerIsIn()));
+
+
+
 
         Globals.Map.Draw();
 
@@ -228,6 +247,10 @@ internal class GameplayScreen : GameScreen
 
         Enemy.DrawAll();
         //enemy.CheckEnemy(spriteBatch, player);
+
+
+        // Health GUI 
+        healthGUI.UpdateHerz();
 
         spriteBatch.End();
 
