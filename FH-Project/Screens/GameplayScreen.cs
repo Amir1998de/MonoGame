@@ -120,7 +120,7 @@ internal class GameplayScreen : GameScreen
         bow = new Bow(4, 5, bowTexture);
 
         Globals.Player = new Player(6, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword, 3);
-        healthGUI = new HealthGUI(Globals.Player,  heartTexture);
+        
 
 
 
@@ -149,7 +149,8 @@ internal class GameplayScreen : GameScreen
         ShieldPotion = new ShieldPotion(player, shieldPotionTexture);
         RandomPotion = new RandomPotion(player, randomPotionTexture);
 
-
+        // healthGUI
+        healthGUI = new HealthGUI(Globals.Player, heartTexture);
 
         base.LoadContent();
         ScreenManager.Game.ResetElapsedTime();
