@@ -17,13 +17,16 @@ public class Animation
     private readonly float _frameTime;
     private float _frameTimeLeft;
     private bool _active = true;
-
-    public Animation(Texture2D texture, int framesX, int framesY, float frameTime, int row = 1)
+    private int frameNumber;
+    private int frameCount;
+    public Animation(Texture2D texture, int framesX, int framesY, float frameTime, int number,int count, int row = 1)
     {
         _texture = texture;
         _frameTime = frameTime;
         _frameTimeLeft = _frameTime;
         _frames = framesX;
+        frameNumber = number;
+        frameCount = count;
         var frameWidth = _texture.Width / framesX;
         var frameHeight = _texture.Height / framesY;
 
@@ -58,12 +61,12 @@ public class Animation
         if (_frameTimeLeft <= 0)
         {
             _frameTimeLeft += _frameTime;
-            _frame = (_frame + 1) % _frames;
+            _frame = (_frame + 1) % frameCount;
         }
     }
 
     public void Draw(Vector2 pos)
     {
-        Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame], Color.White, 0, Vector2.Zero, Vector2.One, SpriteEffects.None, 1);
+        Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame+frameNumber], Color.White, 0, Vector2.Zero, 4, SpriteEffects.None, 1);
     }
 }

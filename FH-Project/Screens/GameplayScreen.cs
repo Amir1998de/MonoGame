@@ -111,7 +111,7 @@ internal class GameplayScreen : GameScreen
         hammer = new Hammer(100, 5, hammerTexture);
         bow = new Bow(4, 5, bowTexture);
 
-        Globals.Player = new Player(3, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword, 3);
+        Globals.Player = new Player(3, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword, 4);
 
         Globals.Map = new Map();
         Globals.Map.GenerateMap(5, 4, 6, 4, 6);
@@ -183,7 +183,6 @@ internal class GameplayScreen : GameScreen
             Enemy.GetEnemies().ForEach(enemy => enemy.Update(gameTime));
 
             Globals.Player.Update(gameTime);
-            Globals.Player.Weapon.Update(gameTime);
             Globals.Update(gameTime);
         }
 
@@ -222,10 +221,7 @@ internal class GameplayScreen : GameScreen
         spriteBatch.DrawString(font, Globals.Map.Count.ToString(), new Vector2(400, 10) + Camera.Position, Color.Red);
 
         Globals.Player.Draw();
-        if (Globals.KeyboardState.IsKeyDown(Keys.A)) Globals.Player.left.Draw();
-        if (Globals.KeyboardState.IsKeyDown(Keys.W)) Globals.Player.up.Draw();
-        if (Globals.KeyboardState.IsKeyDown(Keys.S)) Globals.Player.down.Draw();
-        if (Globals.KeyboardState.IsKeyDown(Keys.D)) Globals.Player.right.Draw();
+        
 
         Globals.Map.DrawEnemyCounter(10, 10, camera);
         Globals.Map.DrawEnemyRoomCounter(140, 10, camera);

@@ -13,10 +13,10 @@ public class BowAnimation
     private Vector2 _position;
     private readonly Animation _anim;
 
-    public BowAnimation(Vector2 pos)
+    public BowAnimation(Vector2 pos, int number, int count)
     {
         _texture = Globals.Content.Load<Texture2D>("neue Sprites/sArrow_strip4");
-        _anim = new(_texture, 4, 1, 0.1f);
+        _anim = new(_texture, 4, 1, 0.1f,number,count);
         _position = pos;
     }
 
