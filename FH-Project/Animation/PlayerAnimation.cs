@@ -15,7 +15,7 @@ public class PlayerAnimation
 
     public PlayerAnimation(int frameX, int frameY)
     {
-        _texture = Globals.Content.Load<Texture2D>("sPlayerRun_strip32");
+        _texture = Globals.Content.Load<Texture2D>("neue Sprites/sPlayerRun_strip32");
         _anim = new(_texture, frameX, frameY, 0.1f);
         _position = Globals.Player.Position;
     }
