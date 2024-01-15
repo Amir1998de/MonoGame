@@ -40,6 +40,10 @@ public class Player : Entity
     private Texture2D[] playerLeftTexture;
     private Texture2D[] playerUpTexture;
     private Texture2D[] playerDownTexture;
+    public PlayerAnimation up;
+    public PlayerAnimation down;
+    public PlayerAnimation right;
+    public PlayerAnimation left;
 
 
 
@@ -68,6 +72,10 @@ public class Player : Entity
         coolDownForSprint = false;
         CanGetHit = true;
         Sprint = 5f;
+        up = new PlayerAnimation(9,16);
+        down = new PlayerAnimation(25,32);
+        right = new PlayerAnimation(1,8);
+        left = new PlayerAnimation(17,24);
     }
 
     public void AddShield(int value)
@@ -273,6 +281,7 @@ public class Player : Entity
 
             PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
             MovePlayerLeft();
+            left.Update();
         }
 
         if (Globals.KeyboardState.IsKeyDown(Keys.D))
@@ -280,6 +289,7 @@ public class Player : Entity
 
             PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
             MovePlayerRight();
+            right.Update();
         }
 
         if (Globals.KeyboardState.IsKeyDown(Keys.W))
@@ -287,6 +297,7 @@ public class Player : Entity
 
             PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
             MovePlayerUp();
+            up.Update();
         }
 
         if (Globals.KeyboardState.IsKeyDown(Keys.S))
@@ -294,6 +305,7 @@ public class Player : Entity
 
             PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
             MovePlayerDown();
+            down.Update();
         }
 
 

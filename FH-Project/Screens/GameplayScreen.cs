@@ -222,6 +222,10 @@ internal class GameplayScreen : GameScreen
         spriteBatch.DrawString(font, Globals.Map.Count.ToString(), new Vector2(400, 10) + Camera.Position, Color.Red);
 
         Globals.Player.Draw();
+        if (Globals.KeyboardState.IsKeyDown(Keys.A)) Globals.Player.left.Draw();
+        if (Globals.KeyboardState.IsKeyDown(Keys.W)) Globals.Player.up.Draw();
+        if (Globals.KeyboardState.IsKeyDown(Keys.S)) Globals.Player.down.Draw();
+        if (Globals.KeyboardState.IsKeyDown(Keys.D)) Globals.Player.right.Draw();
 
         Globals.Map.DrawEnemyCounter(10, 10, camera);
         Globals.Map.DrawEnemyRoomCounter(140, 10, camera);
