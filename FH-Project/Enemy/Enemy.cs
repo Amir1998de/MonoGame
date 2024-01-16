@@ -29,7 +29,7 @@ public abstract class Enemy : Entity, IObserver
     protected Texture2D[] enemyIdleTexture;
     private float randomDirectionTimer;
     private int enemiesToDefeat;
-    protected int damage;
+    public static int Damage { get; set; } = 1;
     private Random random;
     public Rectangle EnemyBounds { get; set; }
     public static List<Enemydrops> enemydrops { get; private set; } = new List<Enemydrops>();
@@ -48,7 +48,7 @@ public abstract class Enemy : Entity, IObserver
         Globals.Player.AddObserver(this);
         exisits = false;
         this.chaseRadius = chaseRadius;
-        damage = 1;
+        
     }
     public void OnNotify(PlayerActions data)
     {
@@ -119,7 +119,7 @@ public abstract class Enemy : Entity, IObserver
             return;
         }
 
-        //enemydrops.Add(new Enemydrops(Position));
+        enemydrops.Add(new Enemydrops(Position));
     }
 
     public static void RemoveEnemyAtIndex(int index)

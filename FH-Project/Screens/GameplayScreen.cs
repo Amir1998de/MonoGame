@@ -123,7 +123,7 @@ internal class GameplayScreen : GameScreen
 
 
         Globals.Map = new Map();
-        Globals.Map.GenerateMap(5, 4, 6, 4, 6);
+        Globals.Map.GenerateMap(1, 4, 6, 4, 6);
 
 
         
@@ -196,7 +196,19 @@ internal class GameplayScreen : GameScreen
             Enemy.GetEnemies().ForEach(enemy => enemy.Update(gameTime));
 
             Globals.Player.Update(gameTime);
+
+            if (Globals.Player.CheckIfDead())
+            {
+                Globals.Map = new Map();
+                Globals.Player = new Player(3, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword, 3);
+                Globals.Map.GenerateMap(1, 4, 6, 4, 6);
+                Enemy.enemies.Clear();
+            }
+
+
             Globals.Update(gameTime);
+
+            Debug.WriteLine(Inventory.ReturnItemCount());
         }
 
 

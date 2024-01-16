@@ -17,7 +17,6 @@ class Slime : Enemy
 
     public Slime(int health, float speed, Vector2 pos, Vector2 velocity,float chaseRadius, int scale) : base(health, speed, pos, velocity, chaseRadius, scale)
     {
-        randomMovementTimer = TimeSpan.Zero;
     }
 
 
@@ -37,12 +36,12 @@ class Slime : Enemy
                 if (distanceToPlayer <= chaseRadius && roomPlayerIsin.Bereich.Intersects(EnemyBounds))
                 {
                     ChasePlayer();
-                    Speed = 3f;
+                    Speed = 3f + Map.EnemySpeedAdder;
                 }
                     
                 else
                 {
-                    Speed = 1.5f;
+                    Speed = 1.5f + Map.EnemySpeedAdder;
                     if (Position.Y > roomPlayerIsin.Bereich.Bottom - EntityTexture.Height * 3)
                         ChangeRandomDirection();
                     else if (Position.Y < roomPlayerIsin.Bereich.Y - EntityTexture.Height)
@@ -75,7 +74,7 @@ class Slime : Enemy
         {
             if (Globals.Player.CanGetHit)
             {
-                Globals.Player.ReduceHealth(damage);
+                Globals.Player.ReduceHealth(Damage);
                 Globals.Player.CanGetHit = false;
             }
 
@@ -111,7 +110,7 @@ class Slime : Enemy
                 enemyDrop.Draw();
             });
         }
-        Globals.SpriteBatch.DrawRectangle(EnemyBounds, Color.White);
+        //Globals.SpriteBatch.DrawRectangle(EnemyBounds, Color.White);
     }
 
 

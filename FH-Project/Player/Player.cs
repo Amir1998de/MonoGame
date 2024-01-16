@@ -40,10 +40,10 @@ public class Player : Entity
     private Texture2D[] playerLeftTexture;
     private Texture2D[] playerUpTexture;
     private Texture2D[] playerDownTexture;
-    public PlayerAnimation up;
-    public PlayerAnimation down;
-    public PlayerAnimation right;
-    public PlayerAnimation left;
+    public PlayerAnimation Up { get; private set; }
+    public PlayerAnimation Down { get; private set; }
+    public PlayerAnimation Right { get; private set; }
+    public PlayerAnimation Left { get; private set; }
 
 
 
@@ -73,14 +73,14 @@ public class Player : Entity
         CanGetHit = true;
         Sprint = 5f;
         EntityTexture = Globals.Content.Load<Texture2D>("sPlayer_Idle1");
-        up = new PlayerAnimation(32,1,8,8);
-        down = new PlayerAnimation(32,1,24,8);
-        right = new PlayerAnimation(32,1, 0, 8);
-        left = new PlayerAnimation(32,1, 16, 8);
-        up._position = Position;
-        down._position = Position;
-        right._position = Position;
-        left._position = Position;
+        Up = new PlayerAnimation(32,1,8,8);
+        Down = new PlayerAnimation(32,1,24,8);
+        Right = new PlayerAnimation(32,1, 0, 8);
+        Left = new PlayerAnimation(32,1, 16, 8);
+        Up._position = Position;
+        Down._position = Position;
+        Right._position = Position;
+        Left._position = Position;
     }
 
     public void AddShield(int value)
@@ -243,7 +243,7 @@ public class Player : Entity
         if (horizontalDistance > Position.X)
             Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
         else
-            Weapon.Position = new Vector2(Position.X - EntityTexture.Width / 2 + 10, Position.Y + EntityTexture.Height);
+            Weapon.Position = new Vector2(Position.X - EntityTexture.Width / 2 - 40, Position.Y + EntityTexture.Height);
 
 
     }
@@ -263,7 +263,7 @@ public class Player : Entity
             {
                 if (!Map.GetRoomPlayerIsIn().IsKorridor)
                 {
-                    roomPlayerisIn = Map.GetRoomPlayerIsIn();
+                    roomPlayerisIn = Map.GetRoomPlayerIsIn();                
                     KorridorPlayerIsIn = roomPlayerisIn.WhichKorridor;
                 }
 
@@ -273,167 +273,169 @@ public class Player : Entity
 
         }
 
-        prevKeyboardState = Globals.KeyboardState;
-
-        /*
-        if (!Globals.KeyboardState.IsKeyDown(Keys.Right) &&
-            !Globals.KeyboardState.IsKeyDown(Keys.Left) &&
-            !Globals.KeyboardState.IsKeyDown(Keys.Up) &&
-            !Globals.KeyboardState.IsKeyDown(Keys.Down)) PlayerAnimation(playerIdleTexture, gameTime, idleTimer, frameRunTime, currentIdleFrame, totalIdleFrames);
-        */
-
-        if (Globals.KeyboardState.IsKeyDown(Keys.A))
+        if(roomPlayerisIn != null)
         {
+            prevKeyboardState = Globals.KeyboardState;
 
-            //PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
-            MovePlayerLeft();
-            left.Update();
-        }
+            /*
+            if (!Globals.KeyboardState.IsKeyDown(Keys.Right) &&
+                !Globals.KeyboardState.IsKeyDown(Keys.Left) &&
+                !Globals.KeyboardState.IsKeyDown(Keys.Up) &&
+                !Globals.KeyboardState.IsKeyDown(Keys.Down)) PlayerAnimation(playerIdleTexture, gameTime, idleTimer, frameRunTime, currentIdleFrame, totalIdleFrames);
+            */
 
-        if (Globals.KeyboardState.IsKeyDown(Keys.D))
-        {
-
-            //PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
-            MovePlayerRight();
-            right.Update();
-        }
-
-        if (Globals.KeyboardState.IsKeyDown(Keys.W))
-        {
-
-            //PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
-            MovePlayerUp();
-            up.Update();
-        }
-
-        if (Globals.KeyboardState.IsKeyDown(Keys.S))
-        {
-
-           // PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
-            MovePlayerDown();
-            down.Update();
-        }
-
-
-
-        prevKeyboardState = currentKeyboardState;
-        currentKeyboardState = Globals.KeyboardState;
-
-
-
-        if (currentKeyboardState.IsKeyDown(Keys.H) && !prevKeyboardState.IsKeyDown(Keys.H))
-        {
-            Inventory.UseItem(Inventory.GetPotion(1));
-
-        }
-
-
-        if (currentKeyboardState.IsKeyDown(Keys.J) && !prevKeyboardState.IsKeyDown(Keys.J))
-            Inventory.UseItem(Inventory.GetPotion(2));
-
-
-        if (currentKeyboardState.IsKeyDown(Keys.K) && !prevKeyboardState.IsKeyDown(Keys.K))
-            Inventory.UseItem(Inventory.GetPotion(3));
-
-
-        if (currentKeyboardState.IsKeyDown(Keys.L) && !prevKeyboardState.IsKeyDown(Keys.L))
-            Inventory.ChangeWeapon(1);
-
-        if (currentKeyboardState.IsKeyDown(Keys.O) && !prevKeyboardState.IsKeyDown(Keys.O))
-            Inventory.ChangeWeapon(2);
-
-
-
-        if (Globals.KeyboardState.IsKeyDown(Keys.LeftShift) && !coolDownForSprint)
-        {
-            if (sprintTimer <= 0f || sprintTimer <= 3f)
+            if (Globals.KeyboardState.IsKeyDown(Keys.A))
             {
-                Speed = Sprint;
-                sprintTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            }
-            if (sprintTimer >= 3f) coolDownForSprint = true;
-        }
-        else Speed = BaseSpeed;
 
-        if (coolDownForSprint)
-        {
-            sprintTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (sprintTimer < 0f)
+                //PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
+                MovePlayerLeft();
+                Left.Update();
+            }
+
+            if (Globals.KeyboardState.IsKeyDown(Keys.D))
             {
-                sprintTimer = 0f;
-                coolDownForSprint = false;
+
+                //PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
+                MovePlayerRight();
+                Right.Update();
             }
+
+            if (Globals.KeyboardState.IsKeyDown(Keys.W))
+            {
+
+                //PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
+                MovePlayerUp();
+                Up.Update();
+            }
+
+            if (Globals.KeyboardState.IsKeyDown(Keys.S))
+            {
+
+                // PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
+                MovePlayerDown();
+                Down.Update();
+            }
+
+
+
+            prevKeyboardState = currentKeyboardState;
+            currentKeyboardState = Globals.KeyboardState;
+
+
+
+            if (currentKeyboardState.IsKeyDown(Keys.H) && !prevKeyboardState.IsKeyDown(Keys.H))
+            {
+                Inventory.UseItem(Inventory.GetPotion(1));
+
+            }
+
+
+            if (currentKeyboardState.IsKeyDown(Keys.J) && !prevKeyboardState.IsKeyDown(Keys.J))
+                Inventory.UseItem(Inventory.GetPotion(2));
+
+
+            if (currentKeyboardState.IsKeyDown(Keys.K) && !prevKeyboardState.IsKeyDown(Keys.K))
+                Inventory.UseItem(Inventory.GetPotion(3));
+
+
+            if (currentKeyboardState.IsKeyDown(Keys.L) && !prevKeyboardState.IsKeyDown(Keys.L))
+                Inventory.ChangeWeapon(1);
+
+            if (currentKeyboardState.IsKeyDown(Keys.O) && !prevKeyboardState.IsKeyDown(Keys.O))
+                Inventory.ChangeWeapon(2);
+
+
+
+            if (Globals.KeyboardState.IsKeyDown(Keys.LeftShift) && !coolDownForSprint)
+            {
+                if (sprintTimer <= 0f || sprintTimer <= 3f)
+                {
+                    Speed = Sprint;
+                    sprintTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                }
+                if (sprintTimer >= 3f) coolDownForSprint = true;
+            }
+            else Speed = BaseSpeed;
+
+            if (coolDownForSprint)
+            {
+                sprintTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (sprintTimer < 0f)
+                {
+                    sprintTimer = 0f;
+                    coolDownForSprint = false;
+                }
+            }
+
+
+            MausRichtiung();
+
+            if (Globals.MouseState.LeftButton == ButtonState.Pressed && !IsAttacking && Globals.Player.Weapon.GetType().ToString().Equals("FH_Project.Sword"))
+            {
+
+                Attack(gameTime, PlayerActions.ATTACK);
+            }
+            Globals.MouseState = Mouse.GetState();
+
+            if (Globals.MouseState.LeftButton == ButtonState.Pressed && Globals.Player.Weapon.GetType().ToString().Equals("FH_Project.Bow"))
+            {
+                Attack(gameTime, PlayerActions.SHOOT);
+            }
+
+            //Debug.WriteLine(IsAttacking);
+
+            if (IsAttacking && attackTimer >= 0.5f)
+            {
+                IsAttacking = false;
+                attackTimer = 0f;
+            }
+
+            if (IsAttacking) attackTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (!CanGetHit) invincibilityFrames += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            //Debug.WriteLine("Attack Timer: " + attackTimer);
+
+            if (invincibilityFrames >= 3)
+            {
+                CanGetHit = true;
+                invincibilityFrames = 0;
+            }
+
+            
+
+            
+
+            Weapon.Update(gameTime);
+
         }
-
-        if (CheckIfDead())
-        {
-            Debug.WriteLine("dsad");
-        }
-        MausRichtiung();
-
-        if (Globals.MouseState.LeftButton == ButtonState.Pressed && !IsAttacking && Globals.Player.Weapon.GetType().ToString().Equals("FH_Project.Sword"))
-        {
-
-            Attack(gameTime, PlayerActions.ATTACK);
-        }
-        Globals.MouseState = Mouse.GetState();
-
-        if (Globals.MouseState.LeftButton == ButtonState.Pressed && Globals.Player.Weapon.GetType().ToString().Equals("FH_Project.Bow"))
-        {
-            Attack(gameTime, PlayerActions.SHOOT);
-        }
-
-        //Debug.WriteLine(IsAttacking);
-
-        if (IsAttacking && attackTimer >= 0.5f)
-        {
-            IsAttacking = false;
-            attackTimer = 0f;
-        }
-
-        if (IsAttacking) attackTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-        if (!CanGetHit) invincibilityFrames += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-        //Debug.WriteLine("Attack Timer: " + attackTimer);
-
-        if (invincibilityFrames >= 3)
-        {
-            CanGetHit = true;
-            invincibilityFrames = 0;
-        }
-
         Sprite.Position += ScreenManager.Direction * Globals.Time * SPEED;
         Sprite.Position = Vector2.Clamp(Sprite.Position, _minPos, _maxPos);
-
-        PlayerBounds = new Rectangle((int)Position.X + 50, (int)Position.Y + 25, EntityTexture.Width, EntityTexture.Height * 2);
-
-        Weapon.Update(gameTime);
-
+        PlayerBounds = new Rectangle((int)Position.X + 20, (int)Position.Y + 25, EntityTexture.Width * 2, EntityTexture.Height * 2);
     }
 
     public override void Draw()
     {
-        if (Globals.KeyboardState.IsKeyDown(Keys.A) && Globals.KeyboardState.IsKeyDown(Keys.W)) Globals.Player.left.Draw();
+        if (Globals.KeyboardState.IsKeyDown(Keys.A) && Globals.KeyboardState.IsKeyDown(Keys.W)) Globals.Player.Left.Draw();
         else
         {
-            if (Globals.KeyboardState.IsKeyDown(Keys.A)) Globals.Player.left.Draw();
-            if (Globals.KeyboardState.IsKeyDown(Keys.W)) Globals.Player.up.Draw();
+            if (Globals.KeyboardState.IsKeyDown(Keys.A)) Globals.Player.Left.Draw();
+            if (Globals.KeyboardState.IsKeyDown(Keys.W)) Globals.Player.Up.Draw();
 
         }
-        if (Globals.KeyboardState.IsKeyDown(Keys.S) && Globals.KeyboardState.IsKeyDown(Keys.D)) Globals.Player.right.Draw();
+        if (Globals.KeyboardState.IsKeyDown(Keys.S) && Globals.KeyboardState.IsKeyDown(Keys.D)) Globals.Player.Right.Draw();
         else
         {
 
-            if (Globals.KeyboardState.IsKeyDown(Keys.S)) Globals.Player.down.Draw();
-            if (Globals.KeyboardState.IsKeyDown(Keys.D)) Globals.Player.right.Draw();
+            if (Globals.KeyboardState.IsKeyDown(Keys.S)) Globals.Player.Down.Draw();
+            if (Globals.KeyboardState.IsKeyDown(Keys.D)) Globals.Player.Right.Draw();
         }
 
         if (!Globals.KeyboardState.IsKeyDown(Keys.A) && !Globals.KeyboardState.IsKeyDown(Keys.W) &&
             !Globals.KeyboardState.IsKeyDown(Keys.S) && !Globals.KeyboardState.IsKeyDown(Keys.D))
         {
             Globals.SpriteBatch.Draw(EntityTexture, Position, null, Color.White, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
-            Globals.SpriteBatch.DrawRectangle(Globals.Player.PlayerBounds, Color.White);
         }
+            Globals.SpriteBatch.DrawRectangle(Globals.Player.PlayerBounds, Color.White);
         
     }
 

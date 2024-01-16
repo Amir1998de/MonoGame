@@ -10,9 +10,8 @@ namespace FH_Project;
 
 public static class Inventory
 {
-    private const int SPACE = 20;
     private static List<Item> items = new List<Item>();
-    public static int anzahlPfeile = 5;
+    public static int AnzahlPfeile { get; set; } = 5;
 
     
 
@@ -28,12 +27,12 @@ public static class Inventory
             }
 
         }
-        throw new NoItemFoundException("This Item does not Exist");
+        return null;
     }
 
     public static void AddArrow(int number)
     {
-        anzahlPfeile += number;
+        AnzahlPfeile += number;
     }
 
     public static int ReturnItemCount()
@@ -67,7 +66,7 @@ public static class Inventory
 
     public static void UseItem(Item item)
     {
-        if (!items.Contains(item)) throw new NoItemFoundException("This Item does not Exist");
+        if (!items.Contains(item)) return;
 
         items.Find(i => i.Equals(item)).UseEffect();
 
@@ -75,8 +74,6 @@ public static class Inventory
 
     public static void AddItem(Item item)
     {
-        if (items.Count >= SPACE) throw new InventoryFullException("Inventory is Full");
-
         items.Add(item);
     }
 

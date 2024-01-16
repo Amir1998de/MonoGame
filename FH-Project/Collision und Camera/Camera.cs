@@ -53,8 +53,5 @@ public class Camera
 
         Position = new(dx, dy);
         return transformMatrix;
-
-
-
     }
 }

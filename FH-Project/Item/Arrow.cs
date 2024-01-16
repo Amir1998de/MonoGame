@@ -82,7 +82,7 @@ public class Arrow
             
             if (CollisionHandler.CollisionWithEnviorment(ArrowBounds, Globals.Player.PlayerBounds))
             {
-                Globals.Player.ReduceHealth(1);
+                Globals.Player.ReduceHealth(Enemy.Damage);
                 IsActive = false;
             }
             /*

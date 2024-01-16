@@ -44,7 +44,7 @@ public class Bow : Weapon
 
     public void Attack(GameTime gameTime)
     {
-        if(Inventory.anzahlPfeile!=0)
+        if(Inventory.AnzahlPfeile != 0)
         {
 
             int index = -1;
@@ -92,7 +92,7 @@ public class Bow : Weapon
 
 
             }
-            Inventory.anzahlPfeile--;
+            Inventory.AnzahlPfeile--;
         }
     }
 

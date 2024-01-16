@@ -33,7 +33,8 @@ public abstract class Weapon : Item
 
     public virtual void Draw()
     {
-        Globals.SpriteBatch.Draw(Texture, Position, null, Color.White, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+        if(!Globals.Player.IsAttacking)
+            Globals.SpriteBatch.Draw(Texture, Position, null, Color.White, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
     }
     public abstract void UseEffect();
 

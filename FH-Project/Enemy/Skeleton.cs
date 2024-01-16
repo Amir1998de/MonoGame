@@ -16,9 +16,11 @@ public class Skeleton : Enemy
     private TimeSpan attackCooldown = TimeSpan.FromSeconds(3);
     private TimeSpan lastAttackTime = TimeSpan.Zero;
     private List<Arrow> arrows = new List<Arrow>();
+    
 
     public Skeleton(int health, float speed, Vector2 pos, Vector2 velocity, float chaseRadius, int scale) : base(health, speed, pos, velocity, chaseRadius, scale)
     {
+        
     }
     public override void Attack(GameTime gameTime,PlayerActions data)
     {
@@ -29,8 +31,12 @@ public class Skeleton : Enemy
             Room roomPlayerIsin = Map.GetRoomPlayerIsIn();
             if (roomPlayerIsin != null && roomPlayerIsin.WhichKorridor != null)
             {
-
-                if (distanceToPlayer <= chaseRadius && roomPlayerIsin.Bereich.Intersects(EnemyBounds))
+                if(distanceToPlayer <= 150 && roomPlayerIsin.Bereich.Intersects(EnemyBounds))
+                {
+                    arrows.Clear();
+                    return;
+                }
+                else if (distanceToPlayer <= chaseRadius && roomPlayerIsin.Bereich.Intersects(EnemyBounds))
                     ChasePlayer();
             }
 
@@ -70,7 +76,7 @@ public class Skeleton : Enemy
             {
                 // Pfeil in Richtung des Spielers schießen
                 Vector2 directionToPlayer = Vector2.Normalize(Globals.Player.Position - Position);
-                Vector2 arrowVelocity = directionToPlayer * 10; // Setze ArrowSpeed als gewünschte Geschwindigkeit des Pfeils
+                Vector2 arrowVelocity = directionToPlayer * 5; // Setze ArrowSpeed als gewünschte Geschwindigkeit des Pfeils
                 Arrow arrow = new Arrow(Position, arrowVelocity, 10); // Annahme: Arrow ist eine Klasse für Pfeile
                 arrows.Add(arrow); // Annahme: Arrows ist eine Liste für alle Pfeile im Spiel
 
@@ -101,7 +107,7 @@ public class Skeleton : Enemy
         }
 
         DrawArrow();
-        Globals.SpriteBatch.DrawRectangle(EnemyBounds, Color.White);
+        //Globals.SpriteBatch.DrawRectangle(EnemyBounds, Color.White);
     }
 
 

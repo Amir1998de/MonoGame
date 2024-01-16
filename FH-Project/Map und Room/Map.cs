@@ -26,6 +26,9 @@ public class Map : MapEntity
     public int Ebenen { get; private set; }
     public int Count { get; private set; }
     private Homebase homebase = new Homebase(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2, 8, 8, false);
+    private int runs;
+    public static int EnemyHealthAdder { get; private set; }
+    public static int EnemySpeedAdder { get; private set; }
 
 
 
@@ -34,6 +37,9 @@ public class Map : MapEntity
 
     public Map()
     {
+        EnemyHealthAdder = 0;
+        EnemySpeedAdder = 0;
+        runs = 0;
         räume = new List<Room>();
         Ebenen = 2;
         Count = 1;
@@ -193,14 +199,14 @@ public class Map : MapEntity
         {
             if (Ebenen > Count && homebase.AreWeDone)
             {
-
-                GenerateMap(5, 4, 6, 4, 6);
+                
+                GenerateMap(1 + runs, 4, 6, 4, 6);
                 Globals.Player.Position = new Vector2(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2);
                 Count++;
             }
 
         }
-
+        
         if (Ebenen <= Count)
         {
             homebase = new Homebase(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2, 8, 8, false);
@@ -210,15 +216,22 @@ public class Map : MapEntity
             Enemy.enemies.Clear();
             homebase.LoadContent();
             räume.Add(homebase);
+            Globals.Player.Health = Globals.Player.MaxHealth;
+            runs++;
+            if (runs % 3 == 0)
+            {
+                Ebenen++;
+                Enemy.Damage += 1;
+                EnemyHealthAdder += 1;
+                EnemySpeedAdder += 1;  
+            }
+
         }
 
         if (!homebase.AreWeDone)
         {
-
             homebase.Update();
-
             homebase.HandleInput();
-
             Count = 0;
         }
 
@@ -255,7 +268,7 @@ public class Map : MapEntity
     {
         räume.ForEach(room =>
         {
-            room.CreateEnemyInRoom();
+            room.CreateEnemyInRoom(EnemyHealthAdder, EnemySpeedAdder);
         });
 
     }
@@ -330,6 +343,7 @@ public class Map : MapEntity
         if (räume.Count > 0)
         {
             räume.Clear();
+            Enemy.enemydrops.Clear();
         }
         ErstelleZufälligeKarte(roomCount, minRoomWidth, maxRoomWidth, minRoomHeight, maxRoomHeight);
 

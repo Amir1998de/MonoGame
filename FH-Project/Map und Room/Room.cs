@@ -86,7 +86,7 @@ public class Room : MapEntity
         }
     }
 
-    public void CreateEnemyInRoom()
+    public void CreateEnemyInRoom(int health, int speed)
     {
 
         int count = 0;
@@ -111,14 +111,14 @@ public class Room : MapEntity
             switch (selectedMonsterType)
             {
                 case MonsterType.SLIME:
-                    enemiesInRoom.Add(Enemy.AddEnemy("Slime", 3, 1.5f, pos, new Vector2(0, 0), 350f, 3));
+                    enemiesInRoom.Add(Enemy.AddEnemy("Slime", 3 + health, 1.5f + speed, pos, new Vector2(0, 0), 350f, 3));
                     break;
                 case MonsterType.SKELETON:
                     float chaseRadius = Math.Max(Bereich.Width, Bereich.Height);
-                    enemiesInRoom.Add(Enemy.AddEnemy("Skeleton", 2, 0.3f, pos, new Vector2(0, 0), 1000, 3));
+                    enemiesInRoom.Add(Enemy.AddEnemy("Skeleton", 2 + health, 0.3f + speed, pos, new Vector2(0, 0), 1000, 3));
                     break;
                 case MonsterType.WOLF:
-                    enemiesInRoom.Add(Enemy.AddEnemy("Wolf", 2, 8, pos, new Vector2(0, 0), 0, 2));
+                    enemiesInRoom.Add(Enemy.AddEnemy("Wolf", 6 + health, 8 + speed, pos, new Vector2(0, 0), 0, 2));
                     break;
                     
             }

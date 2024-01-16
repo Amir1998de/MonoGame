@@ -12,6 +12,8 @@ namespace FH_Projekt;
 
 public class Wolf : Enemy
 {
+    
+
     public Wolf(int health, float speed, Vector2 pos, Vector2 velocity, float chaseRadius, int scale) : base(health, speed, pos, velocity, chaseRadius, scale)
     {
         
@@ -28,12 +30,12 @@ public class Wolf : Enemy
             {
                 if (distanceToPlayer + (chaseRadius - 200) <= chaseRadius && roomPlayerIsin.Bereich.Intersects(EnemyBounds))
                 {
-                    Speed = 1f;
+                    Speed = 1f + Map.EnemySpeedAdder;
                     ChasePlayer();
                 }
                 else
                 {
-                    Speed = 8f;
+                    Speed = 8f + Map.EnemySpeedAdder;
                     ChasePlayer();
                 }
                     
@@ -49,7 +51,7 @@ public class Wolf : Enemy
         {
             if (Globals.Player.CanGetHit)
             {
-                Globals.Player.ReduceHealth(damage);
+                Globals.Player.ReduceHealth(Damage);
                 Globals.Player.CanGetHit = false;
             }
 

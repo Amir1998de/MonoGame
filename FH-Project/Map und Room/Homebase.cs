@@ -130,31 +130,41 @@ public class Homebase : Room
                 mouseClicked = true;
                 if (count == 0)
                 {
-                    new HealingPotion(Globals.Player, healingPotion);
+                    
                     if (Inventory.ReturnItemCount() >= 5)
                     {
                         Inventory.RemoveItems(5);
+                        new HealingPotion(Globals.Player, healingPotion);
                     }
 
 
                 }
                 else if (count == 1)
                 {
-                    new ShieldPotion(Globals.Player, shieldPotion);
+                   
                     if (Inventory.ReturnItemCount() >= 5)
                     {
                         Inventory.RemoveItems(5);
+                        new ShieldPotion(Globals.Player, shieldPotion);
                     }
 
                 }
                 else if (count == 2)
                 {
-                    new RandomPotion(Globals.Player, randomPotion);
+                    
                     if (Inventory.ReturnItemCount() >= 5)
                     {
                         Inventory.RemoveItems(5);
+                        new RandomPotion(Globals.Player, randomPotion);
                     }
 
+                }
+                else if(count == 3)
+                {
+                    if(Inventory.ReturnItemCount() >= 5)
+                    {
+
+                    }
                 }
             }
             count++;
@@ -236,6 +246,11 @@ public class Homebase : Room
                     }
                     if (perksList[i].Equals(Perklist.PLAYERATTACK)) Globals.Player.Weapon.Damage += 1;
                     if (perksList[i].Equals(Perklist.PLAYERDEFENSE)) new ShieldPotion(Globals.Player, shieldPotion);
+                    if (perksList[i].Equals(Perklist.PLAYERDOPPELDMG))
+                    {
+                        Enemy.Damage *= 2;
+                        Globals.Player.Weapon.Damage *= 2;
+                    }
 
                     mouseClicked = true;
                     ChoicesBeenMade = true;
