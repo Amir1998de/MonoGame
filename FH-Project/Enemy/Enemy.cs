@@ -50,6 +50,14 @@ public abstract class Enemy : Entity, IObserver
         this.chaseRadius = chaseRadius;
         
     }
+
+    public static void ResetEnemy()
+    {
+        Damage = 1;
+        enemydrops.Clear();
+        enemies.Clear();
+    }
+
     public void OnNotify(PlayerActions data)
     {
         if (data == PlayerActions.ATTACK && !IsDestroyed)
@@ -62,6 +70,7 @@ public abstract class Enemy : Entity, IObserver
             if (CheckCollision(new Rectangle((int)Globals.Player.Weapon.Position.X, (int)Globals.Player.Weapon.Position.Y, Globals.Player.Weapon.Texture.Width, Globals.Player.Weapon.Texture.Height)))
             {
                 ReduceHealth(Globals.Player.Weapon.Damage);
+                if (GetType().ToString().Equals("FH_Project.Slime")) SoundManagement.PlaySound(SoundManagement.SlimeHit);
                 Debug.WriteLine(GetHashCode() + " " + Health);
             }
 

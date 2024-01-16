@@ -10,7 +10,7 @@ using System.Diagnostics;
 
 namespace FH_Project;
 
-public class Map : MapEntity
+public class Map
 {
     private static List<Room> räume;
 
@@ -27,6 +27,7 @@ public class Map : MapEntity
     public int Count { get; private set; }
     private Homebase homebase = new Homebase(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2, 8, 8, false);
     private int runs;
+    private int raumAnzahl;
     public static int EnemyHealthAdder { get; private set; }
     public static int EnemySpeedAdder { get; private set; }
 
@@ -40,6 +41,7 @@ public class Map : MapEntity
         EnemyHealthAdder = 0;
         EnemySpeedAdder = 0;
         runs = 0;
+        raumAnzahl = 2;
         räume = new List<Room>();
         Ebenen = 2;
         Count = 1;
@@ -68,7 +70,11 @@ public class Map : MapEntity
     }
 
 
-
+    public static void ResetMap()
+    {
+        EnemyHealthAdder = 0;
+        EnemySpeedAdder = 0;
+    }
 
     public void ErstelleZufälligeKarte(int raumAnzahl, int minRaumBreite, int maxRaumBreite, int minRaumHöhe, int maxRaumHöhe)
     {
@@ -148,8 +154,8 @@ public class Map : MapEntity
             räume.Add(neuerRaum);
 
         }
-        räume[räume.Count - 1].Korridore.RemoveRange(0, 2);
-        räume[räume.Count - 1].WhichKorridor = räume[räume.Count - 1].Korridore[0];
+        räume[räume.Count - 1].Korridore.Clear();
+        räume[räume.Count - 1].WhichKorridor = new Room(0, 0, 0, 0, true);
 
 
 
@@ -199,8 +205,11 @@ public class Map : MapEntity
         {
             if (Ebenen > Count && homebase.AreWeDone)
             {
-                
-                GenerateMap(1 + runs, 4, 6, 4, 6);
+                if (runs % 2 == 0 && runs != 0)
+                    raumAnzahl++;
+
+                Globals.Player.AllowInput = false;
+                GenerateMap(raumAnzahl, 4, 6, 4, 6);
                 Globals.Player.Position = new Vector2(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2);
                 Count++;
             }
@@ -210,13 +219,15 @@ public class Map : MapEntity
         if (Ebenen <= Count)
         {
             homebase = new Homebase(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2, 8, 8, false);
+            Globals.Player.Position = new Vector2(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2);
             homebase.WhichKorridor = new Room(0, 0, 0, 0, true);
             homebase.AreWeDone = false;
             räume.Clear();
             Enemy.enemies.Clear();
+            Globals.Player.AllowInput = false;
             homebase.LoadContent();
             räume.Add(homebase);
-            Globals.Player.Health = Globals.Player.MaxHealth;
+            Globals.Player.AddHealth(1);
             runs++;
             if (runs % 3 == 0)
             {
@@ -235,7 +246,7 @@ public class Map : MapEntity
             Count = 0;
         }
 
-
+        Globals.Player.AllowInput = true;
     }
 
     public static Room GetRoomPlayerIsIn()
@@ -363,5 +374,10 @@ public class Map : MapEntity
                Ebenen == map.Ebenen &&
                Count == map.Count &&
                EqualityComparer<Homebase>.Default.Equals(homebase, map.homebase);
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
     }
 }

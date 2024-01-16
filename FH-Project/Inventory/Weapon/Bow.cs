@@ -6,13 +6,14 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace FH_Project;
 
 public class Bow : Weapon
 {
-    private TimeSpan attackCooldown = TimeSpan.FromSeconds(3);
+    private TimeSpan attackCooldown = TimeSpan.FromSeconds(1);
     private TimeSpan lastAttackTime = TimeSpan.Zero;
     public static bool MousePressed { private get; set; }
 
@@ -32,7 +33,7 @@ public class Bow : Weapon
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-       
+        
 
         if (Globals.MouseState.LeftButton == ButtonState.Pressed || MousePressed)
         {
@@ -44,9 +45,10 @@ public class Bow : Weapon
 
     public void Attack(GameTime gameTime)
     {
-        if(Inventory.AnzahlPfeile != 0)
+        if(Inventory.AnzahlPfeile > 0)
         {
-
+            
+            
             int index = -1;
             if (Arrows.Count > 0)
             {
@@ -89,9 +91,10 @@ public class Bow : Weapon
 
                 // Aktualisiere die Zeit des letzten Angriffs
                 lastAttackTime = gameTime.TotalGameTime;
-
+                Inventory.AnzahlPfeile--;
 
             }
+            
         }
     }
 
@@ -103,7 +106,7 @@ public class Bow : Weapon
     public override void Draw()
     {
         Globals.SpriteBatch.Draw(Texture, Position, null, Color.White, 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
-        if(MousePressed)
+        if(MousePressed && Inventory.AnzahlPfeile > 0)
             DrawArrow();
     }
 

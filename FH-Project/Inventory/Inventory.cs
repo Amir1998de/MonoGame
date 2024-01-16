@@ -54,9 +54,9 @@ public static class Inventory
             if (item.GetType().ToString().Equals("FH_Project.Sword") || item.GetType().ToString().Equals("FH_Project.Bow") || item.GetType().ToString().Equals("FH_Project.Hammer"))
             {
                 Weapon weapon = (Weapon)item;
-                if(weapon.ID==id)
+                if(weapon.ID == id)
                 {
-                    Globals.Player.Weapon= weapon;
+                    Globals.Player.Weapon = weapon;
                     return;
                 }
             }
@@ -90,6 +90,12 @@ public static class Inventory
             if (count >= howMany) return;
         }
 
+    }
+
+    public static void ResetInventory()
+    {
+        items.Clear();
+        AnzahlPfeile = 5;
     }
 
     public static void RemoveItem(Item item)

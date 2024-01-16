@@ -29,6 +29,7 @@ public class Homebase : Room
     private Texture2D healingPotion;
     private Texture2D shieldPotion;
     private Texture2D randomPotion;
+    private Texture2D arrowTexture;
     private bool mouseClicked = false;
     private Rectangle done;
 
@@ -44,9 +45,11 @@ public class Homebase : Room
         healingPotion = Globals.Content.Load<Texture2D>("Items/Potions/PotionRed");
         shieldPotion = Globals.Content.Load<Texture2D>("Items/Potions/PotionBlue");
         randomPotion = Globals.Content.Load<Texture2D>("Items/Potions/PotionGreen");
+        arrowTexture = Globals.Content.Load<Texture2D>("neue Sprites/sArrowDrop");
         shopItems.Add(healingPotion);
         shopItems.Add(shieldPotion);
         shopItems.Add(randomPotion);
+        shopItems.Add(arrowTexture);
 
     }
 
@@ -91,7 +94,7 @@ public class Homebase : Room
     {
         int count = 0;
         int diff = 300;
-
+        Debug.WriteLine("Gems: " + Inventory.ReturnItemCount());
         
 
         if (!ChoicesBeenMade)
@@ -113,7 +116,7 @@ public class Homebase : Room
         {
             openShop = true;
             diff = 500;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
             {
                 position = new Vector2(Globals.WindowSize.X / 2 + 100, diff);
                 shopChoices.Add(new Rectangle((int)position.X, (int)position.Y, 150, 100));
@@ -161,9 +164,10 @@ public class Homebase : Room
                 }
                 else if(count == 3)
                 {
-                    if(Inventory.ReturnItemCount() >= 5)
+                    if(Inventory.ReturnItemCount() >= 2)
                     {
-
+                        Inventory.RemoveItems(2);
+                        Inventory.AddArrow(1);
                     }
                 }
             }

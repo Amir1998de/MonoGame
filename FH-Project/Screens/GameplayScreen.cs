@@ -10,12 +10,12 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
-using GameStateManagement.Fachlogik;
 using System;
 using System.Threading;
 using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
 using System.Diagnostics;
+using Microsoft.Xna.Framework.Media;
 #endregion Using Statements
 
 namespace FH_Project;
@@ -24,7 +24,6 @@ internal class GameplayScreen : GameScreen
 {
     #region Fields
     private HealthGUI healthGUI;
-    private SoundManagement soundManagement;
     private KeyboardState currentKeyboardState;
     public static bool isPasue = false;
 
@@ -85,7 +84,7 @@ internal class GameplayScreen : GameScreen
     {
         TransitionOnTime = TimeSpan.FromSeconds(1.5);
         TransitionOffTime = TimeSpan.FromSeconds(0.5);
-        soundManagement = new SoundManagement();
+        
 
     }
 
@@ -113,6 +112,12 @@ internal class GameplayScreen : GameScreen
         Enemydrops.EnemyDropTexture = content.Load<Texture2D>("GemBlue");
         font = Globals.Content.Load<SpriteFont>("Verdana");
         heartTexture = content.Load<Texture2D>("heart");
+        SoundManagement.HomeBaseMusic = content.Load<Song>("Sound/HomeBase");
+        //SoundManagement.MainMusic = content.Load<SoundEffect>("Sound/MainMusic");
+        SoundManagement.SlimeHit = content.Load<SoundEffect>("Sound/SlimeHit");
+        SoundManagement.Hit = content.Load<SoundEffect>("Sound/Hit");
+        SoundManagement.SwordSlash = content.Load<SoundEffect>("Sound/SwordSlash");
+        SoundManagement.PlayMusic(SoundManagement.HomeBaseMusic);
 
 
         sword = new Sword(1, 5, swordTexture);
@@ -124,6 +129,7 @@ internal class GameplayScreen : GameScreen
 
         Globals.Map = new Map();
         Globals.Map.GenerateMap(1, 4, 6, 4, 6);
+
 
 
         
@@ -181,6 +187,7 @@ internal class GameplayScreen : GameScreen
             // update 
             Globals.KeyboardState = Keyboard.GetState();
 
+            
 
             _direction = Vector2.Zero;
             //Debug.WriteLine(Map.GetRoomPlayerIsIn().WallCollision());
@@ -190,7 +197,7 @@ internal class GameplayScreen : GameScreen
             if (keyboardState.IsKeyDown(Keys.Right)) _direction.X++;
 
             if (_direction != Microsoft.Xna.Framework.Vector2.Zero) _direction.Normalize();
-            Globals.Map.Update(gameTime);
+           
 
 
             Enemy.GetEnemies().ForEach(enemy => enemy.Update(gameTime));
@@ -199,16 +206,22 @@ internal class GameplayScreen : GameScreen
 
             if (Globals.Player.CheckIfDead())
             {
-                Globals.Map = new Map();
-                Globals.Player = new Player(3, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword, 3);
-                Globals.Map.GenerateMap(1, 4, 6, 4, 6);
-                Enemy.enemies.Clear();
+                Enemy.ResetEnemy();
+                Map.ResetMap();
+                Inventory.ResetInventory();
+                UnloadContent();
+                LoadContent();
+                
+            }
+            else
+            {
+                Globals.Map.Update(gameTime);
             }
 
-
+            
             Globals.Update(gameTime);
 
-            Debug.WriteLine(Inventory.ReturnItemCount());
+            //Debug.WriteLine(Inventory.ReturnItemCount());
         }
 
 
@@ -287,7 +300,7 @@ internal class GameplayScreen : GameScreen
         {
             isPasue = true;
             ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
-            Debug.WriteLine("Pause");
+            //Debug.WriteLine("Pause");
         }
         else
         {

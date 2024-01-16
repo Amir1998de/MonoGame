@@ -17,6 +17,7 @@ public class Skeleton : Enemy
     private TimeSpan lastAttackTime = TimeSpan.Zero;
     private List<Arrow> arrows = new List<Arrow>();
     
+    
 
     public Skeleton(int health, float speed, Vector2 pos, Vector2 velocity, float chaseRadius, int scale) : base(health, speed, pos, velocity, chaseRadius, scale)
     {
@@ -76,7 +77,7 @@ public class Skeleton : Enemy
             {
                 // Pfeil in Richtung des Spielers schießen
                 Vector2 directionToPlayer = Vector2.Normalize(Globals.Player.Position - Position);
-                Vector2 arrowVelocity = directionToPlayer * 5; // Setze ArrowSpeed als gewünschte Geschwindigkeit des Pfeils
+                Vector2 arrowVelocity = directionToPlayer * (5 + Map.EnemySpeedAdder); // Setze ArrowSpeed als gewünschte Geschwindigkeit des Pfeils
                 Arrow arrow = new Arrow(Position, arrowVelocity, 10); // Annahme: Arrow ist eine Klasse für Pfeile
                 arrows.Add(arrow); // Annahme: Arrows ist eine Liste für alle Pfeile im Spiel
 

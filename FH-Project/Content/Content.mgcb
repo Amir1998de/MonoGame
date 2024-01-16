@@ -1557,6 +1557,18 @@
 /processorParam:TextureFormat=Compressed
 /build:menufont.spritefont
 
+#begin neue Sprites/sArrowDrop.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:neue Sprites/sArrowDrop.png
+
 #begin neue Sprites/sPlayerRun_strip32.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1796,6 +1808,36 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:skull_v2_4.png
+
+#begin Sound/Hit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/Hit.wav
+
+#begin Sound/HomeBase.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sound/HomeBase.mp3
+
+#begin Sound/MainMusic.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/MainMusic.wav
+
+#begin Sound/SlimeHit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/SlimeHit.wav
+
+#begin Sound/SwordSlash.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/SwordSlash.wav
 
 #begin sPlayer_Idle1.png
 /importer:TextureImporter

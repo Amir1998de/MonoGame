@@ -47,7 +47,9 @@ public class Arrow
                     
                     IsActive = false; 
                     Bow.MousePressed = false;
-                    enemy.ReduceHealth(5);
+                    enemy.ReduceHealth(2);
+                    if (enemy.GetType().ToString().Equals("FH_Project.Slime")) SoundManagement.PlaySound(SoundManagement.SlimeHit);
+
                     if (enemy.CheckIfDead())
                     {
                         enemy.AddDrops();

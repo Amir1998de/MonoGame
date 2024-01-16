@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace FH_Project;
 
-public class Room : MapEntity
+public class Room
 {
     public Rectangle Bereich { get; set; }
 
@@ -190,5 +190,10 @@ public class Room : MapEntity
                EqualityComparer<Room>.Default.Equals(WhichKorridor, room.WhichKorridor) &&
                IsKorridor == room.IsKorridor &&
                EqualityComparer<List<Enemy>>.Default.Equals(enemiesInRoom, room.enemiesInRoom);
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
     }
 }

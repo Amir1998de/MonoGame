@@ -56,7 +56,7 @@ public class Player : Entity
     private Potion potion;
     public Rectangle PlayerBounds { get; set; }
     private Room KorridorPlayerIsIn;
-
+    public bool AllowInput { get; set; } = true; 
 
 
     #endregion Variablen
@@ -130,7 +130,10 @@ public class Player : Entity
             }
         }
         else if (Position.X < roomPlayerisIn.Bereich.Left - z)
+        {
+            SoundManagement.PlaySound(SoundManagement.Hit);
             Position = new Vector2(roomPlayerisIn.Bereich.Left - z, Position.Y);
+        }
 
 
     }
@@ -158,7 +161,10 @@ public class Player : Entity
             }
         }
         else if (Position.X  > roomPlayerisIn.Bereich.Right - z * 2)
+        {
+            SoundManagement.PlaySound(SoundManagement.Hit);
             Position = new Vector2(roomPlayerisIn.Bereich.Right - z * 2, Position.Y);
+        }
 
 
     }
@@ -188,7 +194,10 @@ public class Player : Entity
             }
         }
         else if (Position.Y < roomPlayerisIn.Bereich.Y - z)
+        {
+            SoundManagement.PlaySound(SoundManagement.Hit);
             Position = new Vector2(Position.X, roomPlayerisIn.Bereich.Y - z);
+        }
 
 
 
@@ -218,7 +227,11 @@ public class Player : Entity
             }
         }
         else if (Position.Y > roomPlayerisIn.Bereich.Bottom - z)
+        {
+            SoundManagement.PlaySound(SoundManagement.Hit);
             Position = new Vector2(Position.X, roomPlayerisIn.Bereich.Bottom - z);
+        }
+            
 
 
         //Weapon.Position = new Vector2(Position.X + EntityTexture.Width * 2, Position.Y + EntityTexture.Height);
@@ -273,7 +286,7 @@ public class Player : Entity
 
         }
 
-        if(roomPlayerisIn != null)
+        if(roomPlayerisIn != null && AllowInput)
         {
             prevKeyboardState = Globals.KeyboardState;
 
@@ -338,10 +351,10 @@ public class Player : Entity
                 Inventory.UseItem(Inventory.GetPotion(3));
 
 
-            if (currentKeyboardState.IsKeyDown(Keys.L) && !prevKeyboardState.IsKeyDown(Keys.L))
+            if (currentKeyboardState.IsKeyDown(Keys.D1) && !prevKeyboardState.IsKeyDown(Keys.D1))
                 Inventory.ChangeWeapon(1);
 
-            if (currentKeyboardState.IsKeyDown(Keys.O) && !prevKeyboardState.IsKeyDown(Keys.O))
+            if (currentKeyboardState.IsKeyDown(Keys.D2) && !prevKeyboardState.IsKeyDown(Keys.D2))
                 Inventory.ChangeWeapon(2);
 
 
@@ -367,20 +380,21 @@ public class Player : Entity
                 }
             }
 
-
+            Debug.WriteLine(Inventory.AnzahlPfeile);
             MausRichtiung();
 
             if (Globals.MouseState.LeftButton == ButtonState.Pressed && !IsAttacking && Globals.Player.Weapon.GetType().ToString().Equals("FH_Project.Sword"))
             {
 
                 Attack(gameTime, PlayerActions.ATTACK);
+                SoundManagement.PlaySound(SoundManagement.SwordSlash);
             }
             Globals.MouseState = Mouse.GetState();
 
             if (Globals.MouseState.LeftButton == ButtonState.Pressed && Globals.Player.Weapon.GetType().ToString().Equals("FH_Project.Bow"))
             {
                 Attack(gameTime, PlayerActions.SHOOT);
-                Inventory.AnzahlPfeile--;
+                
             }
 
             //Debug.WriteLine(IsAttacking);
@@ -436,7 +450,7 @@ public class Player : Entity
         {
             Globals.SpriteBatch.Draw(EntityTexture, Position, null, Color.White, 0, new Vector2(0, 0), scale, SpriteEffects.None, 0);
         }
-            Globals.SpriteBatch.DrawRectangle(Globals.Player.PlayerBounds, Color.White);
+            //Globals.SpriteBatch.DrawRectangle(Globals.Player.PlayerBounds, Color.White);
         
     }
 
