@@ -92,7 +92,6 @@ public class Bow : Weapon
 
 
             }
-            Inventory.AnzahlPfeile--;
         }
     }
 

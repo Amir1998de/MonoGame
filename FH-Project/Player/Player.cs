@@ -380,6 +380,7 @@ public class Player : Entity
             if (Globals.MouseState.LeftButton == ButtonState.Pressed && Globals.Player.Weapon.GetType().ToString().Equals("FH_Project.Bow"))
             {
                 Attack(gameTime, PlayerActions.SHOOT);
+                Inventory.AnzahlPfeile--;
             }
 
             //Debug.WriteLine(IsAttacking);
