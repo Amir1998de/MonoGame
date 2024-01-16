@@ -12,15 +12,13 @@ using System.Numerics;
 namespace FH_Project;
 public class HealthGUI
 {
-    private Player player;
     private bool isMKeyPressed = false; // Pluss Herz
     private bool isNKeyPressed = false;// Minus Herz
     private Texture2D heartTexture;
     private GameTime  gameTime;
 
 
-    public HealthGUI(Player player, Texture2D heartTexture) {
-        this.player = player;
+    public HealthGUI(Texture2D heartTexture) {
         this.heartTexture = heartTexture;
         Debug.WriteLine("Haupt Health " + Globals.Player.Health);
     

@@ -1,0 +1,337 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FH_Project.Entity">
+    <Position X="12.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIQCAEABAAACgAwACACBBGDAIABAECQBAQAgAAgCRQ=</HashCode>
+      <FileName>Entity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.Subject">
+    <Position X="9.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAhCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Subject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.Enemy">
+    <Position X="10.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BARIAFCAACBAAACAAAAAAAAAACGAQAARAAQBgAAIAAA=</HashCode>
+      <FileName>Enemy\Enemy.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Player">
+    <Position X="16.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gA6AAAPIAAhKCwkBqgIAAEAAEIEUACgACiTEAICUAAY=</HashCode>
+      <FileName>Player\Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.Potion">
+    <Position X="6.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgBAgAAAAIAAAAAAAIABAAQCBAAAAgA=</HashCode>
+      <FileName>Inventory\Potion\Potion.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FH_Project.Skeleton">
+    <Position X="8" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAgABAAAAAAAAAIAAAAAAAAAAAAIIAAQ=</HashCode>
+      <FileName>Enemy\Skeleton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.Slime">
+    <Position X="10.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAgAIAAAAAAAAAIAAAABAAQAAAAAQAAQ=</HashCode>
+      <FileName>Enemy\Slime.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Projekt.Wolf">
+    <Position X="12.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAIAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Enemy\Wolf.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.Animation">
+    <Position X="19.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAASAAJgAAAAEFAAIAAAAAAAAAoAAQgAAAAAA=</HashCode>
+      <FileName>Animation\Animation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.PlayerAnimation">
+    <Position X="21.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAQAAAgAAAAAAAAEAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Animation\PlayerAnimation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.AnimationManager">
+    <Position X="21.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAEAAABAAgAAAAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Animation\AnimationManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.Camera">
+    <Position X="27.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAgEAAAAAAAACgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Collision und Camera\Camera.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.CollisionHandler">
+    <Position X="29.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Collision und Camera\CollisionHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.CollisionWrapper">
+    <Position X="29.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAIAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Collision und Camera\CollisionWrapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.EnemyFactory">
+    <Position X="12.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enemy\EnemyFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.Inventory">
+    <Position X="1" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAQAAAAEAAAAAAwAAAACgAAAAAAEIAACAAAAAAA=</HashCode>
+      <FileName>Inventory\Inventory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.HealingPotion">
+    <Position X="1.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAIAAAAACAAAAAAA=</HashCode>
+      <FileName>Inventory\Potion\HealingPotion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.RandomPotion">
+    <Position X="4.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQCAAAAAAA=</HashCode>
+      <FileName>Inventory\Potion\RandomPotion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.ShieldPotion">
+    <Position X="6.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Inventory\Potion\ShieldPotion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.Enemydrops">
+    <Position X="0.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAgAAIAAAIAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Inventory\Drop\Enemydrops.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FH_Project.InventoryFullException">
+    <Position X="27.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Inventory\InventoryFullException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.Arrow">
+    <Position X="38.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAQAAAAAAiAgECAAAAAAAAAAgAAAAAAAAABEAAA=</HashCode>
+      <FileName>Item\Arrow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.ItemFactory">
+    <Position X="40.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Item\ItemFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.NoItemFoundException">
+    <Position X="40.5" Y="15.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Item\NoItemFoundException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.MapEntity">
+    <Position X="20.5" Y="18" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Map und Room\MapEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.Map">
+    <Position X="19.5" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQQAQAcAEBAAgEAiEAAAgQAIBAFAAAIAhQAAAAAABA=</HashCode>
+      <FileName>Map und Room\Map.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.Room">
+    <Position X="21.75" Y="19.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAUEAAgAAgABACCiAIgAAAAAIBAYAAQAIEBE=</HashCode>
+      <FileName>Map und Room\Room.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.Homebase">
+    <Position X="21.75" Y="26.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQQAACASACAggEAACABIAAAgAJABAAgAAQAAAAJAYQ=</HashCode>
+      <FileName>Map und Room\Homebase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.Ability">
+    <Position X="18.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Player\Ability.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.Sprite">
+    <Position X="28.25" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAgAgAAAAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Sprite.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.SpriteBatchExtensions">
+    <Position X="30.75" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAQAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SpriteBatchExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.Fachlogik.SoundManagement">
+    <Position X="31.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SoundManagement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.Globals">
+    <Position X="29.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAxACAAAAAAAAAAAAAAAAAAAAQAAEAQAAAQA=</HashCode>
+      <FileName>Globals.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.Boss">
+    <Position X="7.25" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enemy\Boss.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.CommonEnemy">
+    <Position X="9.25" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Enemy\CommonEnemy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.Weapon">
+    <Position X="4" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAACAAAAAggAgAAAAAAABAAAAAAAAAAICAAAAAAA=</HashCode>
+      <FileName>Inventory\Weapon\Weapon.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FH_Project.Bow" Collapsed="true">
+    <Position X="2.75" Y="21" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAQAAAgABAAAAAAAAAIAAAAAAIAgCAAIAAAA=</HashCode>
+      <FileName>Inventory\Weapon\Bow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.Hammer" Collapsed="true">
+    <Position X="5.5" Y="21" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Inventory\Weapon\Hammer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.Sword" Collapsed="true">
+    <Position X="7.5" Y="21" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Inventory\Weapon\Sword.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FH_Project.HealthGUI">
+    <Position X="24.75" Y="18.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAgIAAEAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Map und Room\HealthGUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="FH_Projekt.IObserver">
+    <Position X="15.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>IObserver.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FH_Project.Item">
+    <Position X="38.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Item\Item.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="FH_Project.MonsterType">
+    <Position X="6" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAEAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Enemy\MonsterType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="FH_Project.Perklist">
+    <Position X="24.25" Y="23" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAgAAAAAABAABAAAAAIAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Map und Room\PerksList.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="RoomDirections">
+    <Position X="27.25" Y="22" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAICAAAgAAAAAAgAAAA=</HashCode>
+      <FileName>Map und Room\RoomDirections.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="FH_Project.PlayerActions">
+    <Position X="19" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQAAgAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Player\PlayerActions.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="FH_Project.EnemyType">
+    <Position X="6" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>Enemy\EnemyTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

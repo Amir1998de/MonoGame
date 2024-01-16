@@ -148,7 +148,7 @@ internal class GameplayScreen : GameScreen
         RandomPotion = new RandomPotion(player, randomPotionTexture);
 
         // healthGUI
-        healthGUI = new HealthGUI(Globals.Player, heartTexture);
+        healthGUI = new HealthGUI(heartTexture);
 
         base.LoadContent();
         ScreenManager.Game.ResetElapsedTime();

@@ -67,6 +67,6 @@ public class Animation
 
     public void Draw(Vector2 pos)
     {
-        Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame+frameNumber], Color.White, 0, Vector2.Zero, 4, SpriteEffects.None, 1);
+        Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame+frameNumber], Color.White, 0, Vector2.Zero, 3, SpriteEffects.None, 1);
     }
 }
