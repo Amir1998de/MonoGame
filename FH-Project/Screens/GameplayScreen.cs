@@ -121,7 +121,7 @@ internal class GameplayScreen : GameScreen
 
 
         sword = new Sword(1, 5, swordTexture);
-        hammer = new Hammer(100, 5, hammerTexture);
+        hammer = new Hammer(3, 2, hammerTexture);
         bow = new Bow(4, 5, bowTexture);
 
         Globals.Player = new Player(3, 100000, new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2), new Vector2(0, 0), sword, 3);
@@ -243,7 +243,7 @@ internal class GameplayScreen : GameScreen
 
         Globals.Map.Draw();
 
-        if (Globals.MouseState.LeftButton == ButtonState.Pressed && Globals.Player.Weapon.GetType().ToString().Equals("FH_Project.Sword"))
+        if (Globals.MouseState.LeftButton == ButtonState.Pressed && !(Globals.Player.Weapon.GetType().ToString().Equals("FH_Project.Bow")))
         {
             Globals.Player.Weapon.Draw();
 
