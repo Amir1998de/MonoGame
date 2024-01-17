@@ -36,22 +36,6 @@ public class Animation
         }
     }
 
-    public void Stop()
-    {
-        _active = false;
-    }
-
-    public void Start()
-    {
-        _active = true;
-    }
-
-    public void Reset()
-    {
-        _frame = 0;
-        _frameTimeLeft = _frameTime;
-    }
-
     public void Update()
     {
         if (!_active) return;

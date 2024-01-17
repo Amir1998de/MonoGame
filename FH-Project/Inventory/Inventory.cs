@@ -54,7 +54,7 @@ public static class Inventory
             if (item.GetType().ToString().Equals("FH_Project.Sword") || item.GetType().ToString().Equals("FH_Project.Bow") || item.GetType().ToString().Equals("FH_Project.Hammer"))
             {
                 Weapon weapon = (Weapon)item;
-                if(weapon.ID == id)
+                if(weapon.ID == id && !weapon.GetType().ToString().Equals(Globals.Player.Weapon.GetType().ToString()))
                 {
                     Globals.Player.Weapon = weapon;
                     return;

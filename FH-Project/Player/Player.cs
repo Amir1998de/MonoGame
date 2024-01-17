@@ -16,7 +16,6 @@ public class Player : Entity
     protected int shield;
     private int maxShield = 100;
     public Weapon Weapon { get; set; }
-    GameTime gameTime;
     private KeyboardState prevKeyboardState;
     private KeyboardState currentKeyboardState;
     private Room roomPlayerisIn;
@@ -26,20 +25,9 @@ public class Player : Entity
     private bool coolDownForSprint;
     public float Sprint { get; set; }
 
-
-    private float frameIdleTime = 0.2f;
-    private float idleTimer = 0f;
-
-    private float frameRunTime = 0.1f;
-    private float runtimer = 0f;
-
     //Arrays für die jeweiligen Arrays
-    private Texture2D playerTexture;
     private Texture2D[] playerIdleTexture;
     private Texture2D[] playerRightTexture;
-    private Texture2D[] playerLeftTexture;
-    private Texture2D[] playerUpTexture;
-    private Texture2D[] playerDownTexture;
     public PlayerAnimation Up { get; private set; }
     public PlayerAnimation Down { get; private set; }
     public PlayerAnimation Right { get; private set; }
@@ -52,8 +40,6 @@ public class Player : Entity
 
     private Vector2 _minPos, _maxPos;
     private float SPEED = 300;
-
-    private Potion potion;
     public Rectangle PlayerBounds { get; set; }
     private Room KorridorPlayerIsIn;
     public bool AllowInput { get; set; } = true; 
@@ -90,8 +76,6 @@ public class Player : Entity
             Health = maxShield;
     }
 
-    public int GetShield() { return shield; }
-
 
     public void ReduceShield(int value)
     {
@@ -99,12 +83,6 @@ public class Player : Entity
         if (shield < 0)
             shield = 0;
     }
-    public bool CanAttack()
-    {
-        return !(IsAttacking);
-    }
-
-
 
     public void MovePlayerLeft()
     {
@@ -244,7 +222,6 @@ public class Player : Entity
     {
         IsAttacking = true;
         GetNotified(data);
-        Animation();
     }
 
     public void MausRichtiung()
@@ -261,15 +238,9 @@ public class Player : Entity
 
     }
 
-    public void Animation()
-    {
-
-    }
 
     public void Update(GameTime gameTime)
     {
-        UpdateIdle(gameTime);
-        UpdateRun(gameTime);
         if (Map.GetRoomPlayerIsIn() != null)
         {
             if (roomPlayerisIn == null || (!roomPlayerisIn.Equals(Map.GetRoomPlayerIsIn())))
@@ -290,17 +261,11 @@ public class Player : Entity
         {
             prevKeyboardState = Globals.KeyboardState;
 
-            /*
-            if (!Globals.KeyboardState.IsKeyDown(Keys.Right) &&
-                !Globals.KeyboardState.IsKeyDown(Keys.Left) &&
-                !Globals.KeyboardState.IsKeyDown(Keys.Up) &&
-                !Globals.KeyboardState.IsKeyDown(Keys.Down)) PlayerAnimation(playerIdleTexture, gameTime, idleTimer, frameRunTime, currentIdleFrame, totalIdleFrames);
-            */
+            
 
             if (Globals.KeyboardState.IsKeyDown(Keys.A))
             {
 
-                //PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
                 MovePlayerLeft();
                 Left.Update();
             }
@@ -308,7 +273,6 @@ public class Player : Entity
             if (Globals.KeyboardState.IsKeyDown(Keys.D))
             {
 
-                //PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
                 MovePlayerRight();
                 Right.Update();
             }
@@ -316,7 +280,6 @@ public class Player : Entity
             if (Globals.KeyboardState.IsKeyDown(Keys.W))
             {
 
-                //PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
                 MovePlayerUp();
                 Up.Update();
             }
@@ -324,7 +287,6 @@ public class Player : Entity
             if (Globals.KeyboardState.IsKeyDown(Keys.S))
             {
 
-                // PlayerAnimation(playerRightTexture, gameTime, runtimer, frameRunTime, currentRightFrame, totalRightFrames);
                 MovePlayerDown();
                 Down.Update();
             }
@@ -454,15 +416,7 @@ public class Player : Entity
         
     }
 
-    public void UpdateIdle(GameTime gameTime)
-    {
-        idleTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-        if (idleTimer > frameIdleTime)
-        {
-            currentIdleFrame = (currentIdleFrame + 1) % totalIdleFrames;
-            idleTimer = 0f;
-        }
-    }
+   
 
     public override void LoadContent()
     {
@@ -481,31 +435,6 @@ public class Player : Entity
         }
 
         Sprite = new Sprite(EntityTexture, Position);
-    }
-
-    public void UpdateRun(GameTime gameTime)
-    {
-        runtimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-        if (runtimer > frameRunTime)
-        {
-            currentRightFrame = (currentRightFrame + 1) % totalRightFrames;
-            currentLeftFrame = (currentLeftFrame + 1) % totalLeftFrames;
-            currentUpFrame = (currentUpFrame + 1) % totalUpFrames;
-            currentDownFrame = (currentDownFrame + 1) % totalDownFrames;
-            runtimer = 0f;
-        }
-    }
-
-    public void PlayerAnimation(Texture2D[] animation, GameTime gameTime, float timer, float frameTime, int currentFrame, int totalFrames)
-    {
-        timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-        if (timer > frameTime)
-        {
-            // Zum nächsten Frame wechseln
-            currentFrame = (currentFrame + 1) % totalFrames;
-            timer = 0f;
-        }
-        EntityTexture = animation[currentFrame];
     }
 
     public void SetBounds(Point mapSize, Point tileSize)

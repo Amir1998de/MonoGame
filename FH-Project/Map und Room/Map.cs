@@ -284,13 +284,6 @@ public class Map
 
     }
 
-    public bool isCorrdior(Vector2 playerPosition)
-    {
-
-
-        return false;
-    }
-
     public void Draw()
     {
         /*for (int y = 0; y < _mapTileSize.Y; y++)

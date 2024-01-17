@@ -113,15 +113,6 @@ public abstract class Entity : Subject
         Globals.SpriteBatch.DrawRectangle(Globals.Player.PlayerBounds, Color.White);
     }
 
-    public void Add(Entity entity, SpriteBatch spriteBatch)
-    {
-
-    }
-
-    public void Remove(Entity entity, SpriteBatch spriteBatch)
-    {
-
-    }
 
     public bool CheckCollision(Rectangle playerBounds)
     {

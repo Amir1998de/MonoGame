@@ -27,13 +27,10 @@ public abstract class Enemy : Entity, IObserver
 
     protected Texture2D enemyTexture;
     protected Texture2D[] enemyIdleTexture;
-    private float randomDirectionTimer;
-    private int enemiesToDefeat;
+  
     public static int Damage { get; set; } = 1;
-    private Random random;
     public Rectangle EnemyBounds { get; set; }
     public static List<Enemydrops> enemydrops { get; private set; } = new List<Enemydrops>();
-    private Rectangle arrowBounds;
 
 
     #endregion Variablen
@@ -41,10 +38,8 @@ public abstract class Enemy : Entity, IObserver
     public Enemy(int health, float speed, Vector2 pos, Vector2 velocity, float chaseRadius, int scale) : base(health, speed, pos, velocity, scale)
     {
         LoadContent();
-        random = new();
         EnemyBounds = new((int)Position.X, (int)Position.Y, EntityTexture.Width, EntityTexture.Height);
         // AddEnemy(this);
-        enemiesToDefeat = enemies.Count;
         Globals.Player.AddObserver(this);
         exisits = false;
         this.chaseRadius = chaseRadius;
@@ -173,35 +168,5 @@ public abstract class Enemy : Entity, IObserver
         Position += direction * Speed;
     }
 
-
-
-
-
-    public void WanderRandomly(Vector2 randomDirection)
-    {
-
-
-        randomDirection.Normalize();
-
-        // Neue Position basierend auf zufälliger Richtung und Wander-Geschwindigkeit berechnen
-        Vector2 newPosition = Position + randomDirection * 2;
-
-        // Überprüfen Sie, ob die neue Position innerhalb der Raumgrenzen liegt
-
-        /*enemies.ForEach(enemy =>
-        {
-            try
-            {
-                if (Map.GetRoomEnemyIsIn(enemy).Bereich.Contains(newPosition))
-                {
-                    Position = newPosition;
-                }
-            }
-            catch(NullReferenceException e){}
-            
-        });*/
-
-
-    }
 
 }

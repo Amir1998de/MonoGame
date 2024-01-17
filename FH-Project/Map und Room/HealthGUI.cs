@@ -15,7 +15,6 @@ public class HealthGUI
     private bool isMKeyPressed = false; // Pluss Herz
     private bool isNKeyPressed = false;// Minus Herz
     private Texture2D heartTexture;
-    private GameTime  gameTime;
 
 
     public HealthGUI(Texture2D heartTexture) {

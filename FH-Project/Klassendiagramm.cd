@@ -17,7 +17,7 @@
   <Class Name="FH_Project.Enemy">
     <Position X="10.25" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BARIAFCAACBAAACAAAAAAAAAACGAQAARAAQBgAAIAAA=</HashCode>
+      <HashCode>BARIAFCAACBAAACEAAAAAAAAACGAQAARAAQBgAAIAAA=</HashCode>
       <FileName>Enemy\Enemy.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -93,13 +93,6 @@
       <FileName>Collision und Camera\CollisionHandler.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="FH_Project.CollisionWrapper">
-    <Position X="29.5" Y="3.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAQAAAIAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
-      <FileName>Collision und Camera\CollisionWrapper.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="FH_Project.EnemyFactory">
     <Position X="12.5" Y="14" Width="1.5" />
     <TypeIdentifier>
@@ -110,7 +103,7 @@
   <Class Name="FH_Project.Inventory">
     <Position X="1" Y="9.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAQAAAAEAAAAAAwAAAACgAAAAAAEIAACAAAAAAA=</HashCode>
+      <HashCode>AAACAAQAAAAEAAAAAAwAAAACoAAAAAAEIAACAAAAAAA=</HashCode>
       <FileName>Inventory\Inventory.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -157,13 +150,6 @@
       <FileName>Item\Arrow.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="FH_Project.ItemFactory">
-    <Position X="40.5" Y="13.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Item\ItemFactory.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="FH_Project.NoItemFoundException">
     <Position X="40.5" Y="15.25" Width="1.5" />
     <TypeIdentifier>
@@ -171,31 +157,24 @@
       <FileName>Item\NoItemFoundException.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="FH_Project.MapEntity">
-    <Position X="20.5" Y="18" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Map und Room\MapEntity.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="FH_Project.Map">
     <Position X="19.5" Y="19.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQQAQAcAEBAAgEAiEAAAgQAIBAFAAAIAhQAAAAAABA=</HashCode>
+      <HashCode>AAQQAQAcAEBAAgEAiEAAAgQAIBAFAIAIAhQAAAAAABA=</HashCode>
       <FileName>Map und Room\Map.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FH_Project.Room">
     <Position X="21.75" Y="19.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAABAAAUEAAgAAgABACCiAIgAAAAAIBAYAAQAIEBE=</HashCode>
+      <HashCode>AAAAABAAAUEAAgAAgABACCiAIgAAAIAIBAYAAQAIEBE=</HashCode>
       <FileName>Map und Room\Room.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FH_Project.Homebase">
     <Position X="21.75" Y="26.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQQAACASACAggEAACABIAAAgAJABAAgAAQAAAAJAYQ=</HashCode>
+      <HashCode>AAQQAACASACAggEAACABIAAggAJABAAgAAQAAAAJAYQ=</HashCode>
       <FileName>Map und Room\Homebase.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -220,32 +199,11 @@
       <FileName>SpriteBatchExtension.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="GameStateManagement.Fachlogik.SoundManagement">
-    <Position X="31.25" Y="10.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>SoundManagement.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="FH_Project.Globals">
     <Position X="29.25" Y="7.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAAxACAAAAAAAAAAAAAAAAAAAAQAAEAQAAAQA=</HashCode>
       <FileName>Globals.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="FH_Project.Boss">
-    <Position X="7.25" Y="15" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Enemy\Boss.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="FH_Project.CommonEnemy">
-    <Position X="9.25" Y="15" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Enemy\CommonEnemy.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FH_Project.Weapon">
@@ -324,13 +282,6 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAQAAgAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Player\PlayerActions.cs</FileName>
-    </TypeIdentifier>
-  </Enum>
-  <Enum Name="FH_Project.EnemyType">
-    <Position X="6" Y="13.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
-      <FileName>Enemy\EnemyTypes.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9" />
