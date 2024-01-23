@@ -23,6 +23,7 @@ namespace FH_Project;
 internal class GameplayScreen : GameScreen
 {
     #region Fields
+    private InventoryDraw inventoryDraw;
     private HealthGUI healthGUI;
     private KeyboardState currentKeyboardState;
     public static bool isPasue = false;
@@ -63,6 +64,7 @@ internal class GameplayScreen : GameScreen
     private Texture2D heartTexture;
     private Potion HealthPotion;
     private Potion ShieldPotion;
+    private Potion ShieldPotion2;
     private Potion RandomPotion;
 
     private SpriteFont font;
@@ -84,7 +86,8 @@ internal class GameplayScreen : GameScreen
     {
         TransitionOnTime = TimeSpan.FromSeconds(1.5);
         TransitionOffTime = TimeSpan.FromSeconds(0.5);
-        
+
+
 
     }
 
@@ -92,6 +95,7 @@ internal class GameplayScreen : GameScreen
 
     public override void LoadContent()
     {
+
         if (content == null)
             content = new ContentManager(ScreenManager.Game.Services, "Content");
 
@@ -102,12 +106,15 @@ internal class GameplayScreen : GameScreen
         viewport = ScreenManager.GraphicsDevice.Viewport;
 
 
+
+        // items
         swordTexture = content.Load<Texture2D>("Items/Weapon/SwordT2");
         hammerTexture = content.Load<Texture2D>("Items/Weapon/HammerT2");
         bowTexture = content.Load<Texture2D>("Items/Weapon/BowT1");
         healthPotionTexture = content.Load<Texture2D>("Items/Potions/PotionRed");
         shieldPotionTexture = content.Load<Texture2D>("Items/Potions/PotionBlue");
         randomPotionTexture = content.Load<Texture2D>("Items/Potions/PotionGreen");
+
         Arrow.ArrowTexture = content.Load<Texture2D>("Enemy/Slime/slime-idle-0");
         Enemydrops.EnemyDropTexture = content.Load<Texture2D>("GemBlue");
         font = Globals.Content.Load<SpriteFont>("Verdana");
@@ -118,7 +125,6 @@ internal class GameplayScreen : GameScreen
         SoundManagement.Hit = content.Load<SoundEffect>("Sound/Hit");
         SoundManagement.SwordSlash = content.Load<SoundEffect>("Sound/SwordSlash");
         SoundManagement.PlayMusic(SoundManagement.HomeBaseMusic);
-
 
         sword = new Sword(1, 5, swordTexture);
         hammer = new Hammer(3, 2, hammerTexture);
@@ -132,7 +138,7 @@ internal class GameplayScreen : GameScreen
 
 
 
-        
+
 
 
         Entity.View(viewport.Width, viewport.Height);
@@ -151,10 +157,21 @@ internal class GameplayScreen : GameScreen
         //enemy = enemyFactory.createEnemy("Slime", 700, 2, new Vector2(viewport.Height / 2, viewport.Width / 3), new Vector2(0, 0));
         HealthPotion = new HealingPotion(player, healthPotionTexture);
         ShieldPotion = new ShieldPotion(player, shieldPotionTexture);
+
         RandomPotion = new RandomPotion(player, randomPotionTexture);
 
         // healthGUI
         healthGUI = new HealthGUI(heartTexture);
+
+        // inventory
+        inventoryDraw = new InventoryDraw();
+        inventoryDraw.AddTexture(swordTexture, "FH_Project.Sword");
+        inventoryDraw.AddTexture(hammerTexture, "FH_Project.Hammer");
+        inventoryDraw.AddTexture(bowTexture, "FH_Project.Bow");
+        inventoryDraw.AddTexture(healthPotionTexture, "FH_Project.HealingPotion");
+        inventoryDraw.AddTexture(shieldPotionTexture, "FH_Project.ShieldPotion");
+        inventoryDraw.AddTexture(randomPotionTexture, "FH_Project.RandomPotion");
+
 
         base.LoadContent();
         ScreenManager.Game.ResetElapsedTime();
@@ -187,7 +204,7 @@ internal class GameplayScreen : GameScreen
             // update 
             Globals.KeyboardState = Keyboard.GetState();
 
-            
+
 
             _direction = Vector2.Zero;
             //Debug.WriteLine(Map.GetRoomPlayerIsIn().WallCollision());
@@ -197,7 +214,7 @@ internal class GameplayScreen : GameScreen
             if (keyboardState.IsKeyDown(Keys.Right)) _direction.X++;
 
             if (_direction != Microsoft.Xna.Framework.Vector2.Zero) _direction.Normalize();
-           
+
 
 
             Enemy.GetEnemies().ForEach(enemy => enemy.Update(gameTime));
@@ -211,14 +228,14 @@ internal class GameplayScreen : GameScreen
                 Inventory.ResetInventory();
                 UnloadContent();
                 LoadContent();
-                
+
             }
             else
             {
                 Globals.Map.Update(gameTime);
             }
 
-            
+
             Globals.Update(gameTime);
 
             //Debug.WriteLine(Inventory.ReturnItemCount());
@@ -264,7 +281,7 @@ internal class GameplayScreen : GameScreen
         spriteBatch.DrawString(font, Globals.Map.Count.ToString(), new Vector2(400, 10) + Camera.Position, Color.Red);
 
         Globals.Player.Draw();
-        
+
 
         Globals.Map.DrawEnemyCounter(10, 10, camera);
         Globals.Map.DrawEnemyRoomCounter(140, 10, camera);
@@ -275,6 +292,10 @@ internal class GameplayScreen : GameScreen
 
         // Health GUI 
         healthGUI.UpdateHerz();
+
+        // Inventory GUI
+        inventoryDraw.Draw();
+        inventoryDraw.TestInventoryDraw(shieldPotionTexture);
 
         spriteBatch.End();
 
@@ -349,6 +370,5 @@ internal class GameplayScreen : GameScreen
 
 
     #endregion Update and Draw
-
 
 }

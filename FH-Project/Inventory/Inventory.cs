@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace FH_Project;
 
@@ -103,5 +104,27 @@ public static class Inventory
         if (!items.Contains(item)) throw new NoItemFoundException("This Item does not Exist");
 
         items.Remove(item);
+    }
+
+    public static void PrintAll()
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i] != null)
+            {
+                Debug.WriteLine("Inventory : " + items[i].GetType().ToString());
+            }
+
+        }
+    }
+
+    public static List<Item> GetAll()
+    {
+        return items;
+    }
+
+    public static void Draw()
+    {
+
     }
 }
